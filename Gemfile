@@ -18,9 +18,25 @@ gem "stimulus-rails"
 gem "tailwindcss-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
+# icons
+gem "heroicons-rails"
+
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
+
+# User authentication and authorization
+gem 'devise'
+# Google OAuth2 integration for authentication
+gem 'omniauth-google-oauth2'
+# Authorization policies
+gem 'pundit'
+# Fake data generation for testing or seeding
+gem 'faker'
+# Environment variable management
+gem 'dotenv-rails'
+# Image storage
+gem 'aws-sdk-s3', require: false
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
