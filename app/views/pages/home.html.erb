@@ -5,7 +5,7 @@
       <div class="flex-1">
         <%= link_to root_path, class: "flex items-center space-x-2" do %>
           <span class="w-3 h-3 rounded-full bg-blue-500 shadow-[0_0_6px_#3b82f6]"></span>
-          <span class="font-bold text-2xl text-gray-900">Supernova</span>
+          <span class="font-bold text-2xl text-gray-900">LesVraisProfs</span>
         <% end %>
       </div>
       <div class="flex-none gap-6 items-center hidden lg:flex">
@@ -44,7 +44,7 @@
 
   <main>
     <!-- Hero -->
-    <section class="py-20 md:py-24 bg-white">
+    <section class="py-20 md:py-24 bg-white hero-section-pattern">
       <div class="container mx-auto max-w-6xl px-6">
         <div class="grid gap-12 md:grid-cols-2 md:items-center">
           <div class="space-y-6">
@@ -60,19 +60,19 @@
             <div class="flex flex-wrap gap-3">
               <%= link_to "/parents",
                   class: "btn btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white rounded-lg",
-                  "aria-label": "Découvrir Supernova pour les parents" do %>
+                  "aria-label": "Découvrir LesVraisProfs pour les parents" do %>
                 Je suis parent
               <% end %>
               <%= link_to "/profs",
                   class: "btn bg-white border border-stone-300 text-gray-900 hover:bg-stone-50 rounded-lg",
-                  "aria-label": "Rejoindre Supernova en tant que professeur" do %>
+                  "aria-label": "Rejoindre LesVraisProfs en tant que professeur" do %>
                 Je suis professeur
               <% end %>
             </div>
           </div>
           <div class="w-full">
             <%= image_tag "home-hero.jpg",
-                alt: "Parent et élève recherchant un professeur certifié sur Supernova",
+                alt: "Parent et élève recherchant un professeur certifié sur LesVraisProfs",
                 class: "w-full rounded-xl shadow-lg object-cover" %>
           </div>
         </div>
@@ -85,17 +85,17 @@
         <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Les professeurs passionnés méritent mieux qu’un job étudiant.</h2>
         <p class="mt-4 text-gray-600 leading-relaxed">
           En France, beaucoup d’enseignants de l’Éducation nationale veulent transmettre au-delà de leur classe, pour le plaisir d’enseigner, et parfois pour compléter un revenu souvent trop juste.
-          Supernova leur donne cette place : un espace simple, sérieux et valorisant, dédié aux vrais professeurs.
+          LesVraisProfs leur donne cette place : un espace simple, sérieux et valorisant, dédié aux vrais professeurs.
         </p>
       </div>
     </section>
 
-    <!-- Pourquoi Supernova -->
+    <!-- Pourquoi LesVraisProfs -->
     <section class="py-20 md:py-24 bg-white">
       <div class="container mx-auto max-w-6xl px-6 space-y-10">
         <div class="max-w-3xl space-y-3">
-          <span class="inline-flex items-center rounded-full border border-stone-200 bg-white px-4 py-1 text-sm font-medium text-gray-600">Pourquoi Supernova ?</span>
-          <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Pourquoi choisir Supernova ?</h2>
+          <span class="inline-flex items-center rounded-full border border-stone-200 bg-white px-4 py-1 text-sm font-medium text-gray-600">Pourquoi LesVraisProfs ?</span>
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Pourquoi choisir LesVraisProfs ?</h2>
           <p class="text-gray-600 leading-relaxed">Nous sélectionnons des professeurs de métier, pour des progrès réels et durables.</p>
         </div>
         <div class="grid gap-6 md:grid-cols-3">
@@ -142,7 +142,7 @@
         </div>
         <div>
           <%= image_tag "home-search.jpg",
-              alt: "Interface Supernova pour trouver un professeur certifié",
+              alt: "Interface LesVraisProfs pour trouver un professeur certifié",
               class: "w-full rounded-xl shadow-lg object-cover" %>
         </div>
       </div>
@@ -193,7 +193,7 @@
       <div class="container mx-auto max-w-6xl px-6 space-y-10">
         <div class="max-w-3xl space-y-3">
           <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Ils nous font confiance</h2>
-          <p class="text-gray-600 leading-relaxed">Parents et professeurs partagent leur expérience avec Supernova.</p>
+          <p class="text-gray-600 leading-relaxed">Parents et professeurs partagent leur expérience avec LesVraisProfs.</p>
         </div>
         <div class="grid gap-6 md:grid-cols-3">
           <% testimonials = [
@@ -223,7 +223,7 @@
         <div class="grid gap-6 md:grid-cols-2">
           <article class="card bg-white border border-stone-200 shadow-sm text-center">
             <div class="card-body space-y-4">
-              <%= image_tag "gaelle.jpeg", alt: "Gaëlle Bailly-Maître Léonardon, cofondatrice de Supernova", class: "h-32 w-32 mx-auto rounded-full object-cover shadow-md" %>
+              <%= image_tag "gaelle.jpeg", alt: "Gaëlle Bailly-Maître Léonardon, cofondatrice de LesVraisProfs", class: "h-32 w-32 mx-auto rounded-full object-cover shadow-md" %>
               <div>
                 <h3 class="text-xl font-semibold text-gray-900">Gaëlle Bailly-Maître Léonardon</h3>
                 <p class="text-gray-600 leading-relaxed">Professeure certifiée et autrice. Elle redonne confiance avec exigence et méthode.</p>
@@ -232,7 +232,7 @@
           </article>
           <article class="card bg-white border border-stone-200 shadow-sm text-center">
             <div class="card-body space-y-4">
-              <%= image_tag "boris.jpeg", alt: "Boris Paillard, cofondateur de Supernova", class: "h-32 w-32 mx-auto rounded-full object-cover shadow-md" %>
+              <%= image_tag "boris.jpeg", alt: "Boris Paillard, cofondateur de LesVraisProfs", class: "h-32 w-32 mx-auto rounded-full object-cover shadow-md" %>
               <div>
                 <h3 class="text-xl font-semibold text-gray-900">Boris Paillard</h3>
                 <p class="text-gray-600 leading-relaxed">Ex-CEO du Wagon. Il valorise les professeurs qui font progresser les élèves.</p>
@@ -256,7 +256,7 @@
           <% end %>
           <%= link_to "/profs",
               class: "btn bg-white border border-white/70 text-blue-600 hover:bg-white rounded-lg",
-              "aria-label": "Je suis professeur, rejoindre Supernova" do %>
+              "aria-label": "Je suis professeur, rejoindre LesVraisProfs" do %>
             Je suis professeur
           <% end %>
         </div>
@@ -269,7 +269,7 @@
         <div class="max-w-3xl space-y-3">
           <span class="inline-flex items-center rounded-full border border-stone-200 bg-gray-50 px-4 py-1 text-sm font-medium text-gray-600">Questions fréquentes</span>
           <h2 class="text-3xl md:text-4xl font-bold text-gray-900">FAQ</h2>
-          <p class="text-gray-600 leading-relaxed">Les réponses clés pour comprendre Supernova.</p>
+          <p class="text-gray-600 leading-relaxed">Les réponses clés pour comprendre LesVraisProfs.</p>
         </div>
         <div class="join join-vertical w-full border border-stone-200 bg-white rounded-lg overflow-hidden">
           <div class="collapse collapse-arrow join-item bg-white">
@@ -295,12 +295,12 @@
   <!-- Footer -->
   <footer class="border-t border-stone-200">
     <div class="max-w-6xl mx-auto px-4 md:px-6 py-10 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-      <div class="text-lg font-semibold text-blue-600">Supernova</div>
+      <div class="text-lg font-semibold text-blue-600">LesVraisProfs</div>
       <div class="flex flex-wrap gap-4 text-sm text-gray-600">
         <%= link_to "Parents", "/parents", class: "hover:text-blue-600" %>
         <%= link_to "Professeurs", "/profs", class: "hover:text-blue-600" %>
         <%= link_to "FAQ", "/faq", class: "hover:text-blue-600" %>
-        <a href="mailto:contact@supernova.fr" class="hover:text-blue-600">contact@supernova.fr</a>
+        <a href="mailto:contact@LesVraisProfs.fr" class="hover:text-blue-600">contact@lesvraisprofs.fr</a>
       </div>
     </div>
   </footer>
