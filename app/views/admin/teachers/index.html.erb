@@ -1,0 +1,55 @@
+<div class="container mx-auto max-w-6xl px-4 py-12">
+  <div class="space-y-6">
+    <h1 class="text-4xl font-bold text-gray-900">Administration - Professeurs</h1>
+
+    <!-- Filtres -->
+    <div class="flex gap-4">
+      <%= link_to "Tous", admin_teachers_path, class: "btn #{params[:status].blank? ? 'btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white rounded-lg' : 'btn-ghost'}" %>
+      <%= link_to "En attente", admin_teachers_path(status: "pending"), class: "btn #{params[:status] == 'pending' ? 'btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white rounded-lg' : 'btn-ghost'}" %>
+      <%= link_to "Approuvés", admin_teachers_path(status: "approved"), class: "btn #{params[:status] == 'approved' ? 'btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white rounded-lg' : 'btn-ghost'}" %>
+      <%= link_to "Refusés", admin_teachers_path(status: "rejected"), class: "btn #{params[:status] == 'rejected' ? 'btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white rounded-lg' : 'btn-ghost'}" %>
+    </div>
+
+    <!-- Table -->
+    <div class="overflow-x-auto">
+      <table class="table table-zebra">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Académie</th>
+            <th>Matières</th>
+            <th>Statut</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @teachers.each do |teacher| %>
+            <tr>
+              <td><%= link_to teacher.display_name, admin_teacher_path(teacher), class: "link link-primary" %></td>
+              <td><%= teacher.academy_name || "-" %></td>
+              <td>
+                <% if teacher.subjects_tags.present? %>
+                  <%= teacher.subjects_tags.first(2).join(", ") %>
+                <% else %>
+                  -
+                <% end %>
+              </td>
+              <td>
+                <% if teacher.pending? %>
+                  <span class="badge badge-warning">En attente</span>
+                <% elsif teacher.approved? %>
+                  <span class="badge bg-blue-600 text-white">Approuvé</span>
+                <% elsif teacher.rejected? %>
+                  <span class="badge badge-error">Refusé</span>
+                <% end %>
+              </td>
+              <td>
+                <%= link_to "Voir", admin_teacher_path(teacher), class: "btn btn-sm btn-ghost" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

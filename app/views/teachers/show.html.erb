@@ -1,0 +1,106 @@
+<div class="container mx-auto max-w-4xl px-4 py-12">
+  <div class="space-y-6">
+    <%= link_to "← Retour à l'annuaire", teachers_path, class: "link link-primary" %>
+
+    <div class="card bg-white shadow-lg">
+      <div class="card-body">
+        <div class="flex items-start gap-6 mb-6">
+          <div class="w-24 h-24 rounded-full overflow-hidden flex-shrink-0" style="background-color: #e5e7eb;">
+            <% if @teacher.profile_image_url.present? %>
+              <%= image_tag @teacher.profile_image_url, alt: @teacher.display_name, class: "w-full h-full object-cover", style: "min-width: 96px; min-height: 96px; max-width: 96px; max-height: 96px;", onerror: "this.style.display='none'; this.nextElementSibling.style.display='flex';" %>
+              <div class="hidden w-24 h-24 flex items-center justify-center text-gray-600 font-semibold text-2xl" style="background-color: #e5e7eb;">
+                <%= teacher_initials(@teacher) %>
+              </div>
+            <% else %>
+              <div class="w-24 h-24 flex items-center justify-center text-gray-600 font-semibold text-2xl" style="background-color: #e5e7eb;">
+                <%= teacher_initials(@teacher) %>
+              </div>
+            <% end %>
+          </div>
+          <div class="flex-1">
+            <h1 class="text-3xl font-bold text-gray-900"><%= @teacher.display_name %></h1>
+            <% if @teacher.academy_name.present? %>
+              <p class="text-lg text-gray-600 mt-1"><%= @teacher.academy_name %></p>
+            <% end %>
+            <% if @teacher.school_name.present? %>
+              <p class="text-sm text-gray-500 mt-1"><%= @teacher.school_name %></p>
+            <% end %>
+            <% if @teacher.career_status.present? %>
+              <p class="text-sm text-gray-500 mt-1"><%= @teacher.career_status.humanize %></p>
+            <% end %>
+          </div>
+        </div>
+
+        <% if @teacher.subjects_tags.present? %>
+          <div class="flex flex-wrap gap-2 mb-6">
+            <% @teacher.subjects_tags.each do |tag| %>
+              <span class="badge badge-ghost"><%= tag.humanize %></span>
+            <% end %>
+          </div>
+        <% end %>
+
+        <div class="divider"></div>
+
+        <% if @teacher.levels.present? %>
+          <div class="mb-4">
+            <h3 class="font-semibold text-gray-900 mb-2">Niveaux enseignés</h3>
+            <p class="text-gray-600"><%= @teacher.levels.join(", ") %></p>
+          </div>
+        <% end %>
+
+        <% if @teacher.teaching_formats.present? %>
+          <div class="mb-4">
+            <h3 class="font-semibold text-gray-900 mb-2">Formats d'enseignement</h3>
+            <p class="text-gray-600"><%= @teacher.teaching_formats.map { |f| f.humanize }.join(", ") %></p>
+          </div>
+        <% end %>
+
+        <% if @teacher.base_city.present? %>
+          <div class="mb-4">
+            <h3 class="font-semibold text-gray-900 mb-2">Localisation</h3>
+            <p class="text-gray-600">
+              📍 <%= @teacher.base_city %>
+              <% if @teacher.base_zip_code.present? %>
+                (<%= @teacher.base_zip_code %>)
+              <% end %>
+              <% if @teacher.radius_text.present? %>
+                - Rayon: <%= @teacher.radius_text %>
+              <% end %>
+            </p>
+          </div>
+        <% end %>
+
+        <% if @teacher.support_text.present? %>
+          <div class="mb-4">
+            <h3 class="font-semibold text-gray-900 mb-2">Approche pédagogique</h3>
+            <p class="text-gray-600 whitespace-pre-line"><%= @teacher.support_text %></p>
+          </div>
+        <% end %>
+
+        <% if @teacher.experience_text.present? %>
+          <div class="mb-4">
+            <h3 class="font-semibold text-gray-900 mb-2">Expérience</h3>
+            <p class="text-gray-600 whitespace-pre-line"><%= @teacher.experience_text %></p>
+          </div>
+        <% end %>
+
+        <% if @teacher.pricing_text.present? %>
+          <div class="mb-4">
+            <h3 class="font-semibold text-gray-900 mb-2">Tarifs</h3>
+            <p class="text-gray-600 whitespace-pre-line"><%= @teacher.pricing_text %></p>
+          </div>
+        <% end %>
+
+        <div class="divider"></div>
+
+        <div class="text-center mt-6">
+          <p class="text-gray-600 mb-4">Intéressé(e) par ce professeur ?</p>
+          <button class="btn btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white rounded-lg" disabled>
+            Demander une mise en relation
+          </button>
+          <p class="text-sm text-gray-500 mt-2">Cette fonctionnalité sera disponible prochainement</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

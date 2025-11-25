@@ -24,6 +24,6 @@ class Teachers::RegistrationsController < Devise::RegistrationsController
   private
 
   def after_sign_up_path_for(resource)
-    dashboard_teacher_path
+    teacher_profile_path
   end
 end

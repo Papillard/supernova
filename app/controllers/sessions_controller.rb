@@ -5,7 +5,7 @@ class SessionsController < Devise::SessionsController
     if resource.parent?
       teachers_path
     elsif resource.teacher?
-      dashboard_teacher_path
+      teacher_profile_path
     else
       super
     end

@@ -180,7 +180,7 @@
                   <% end %>
                 </div>
                 <p class="text-gray-600 leading-relaxed"><%= teacher[:summary] %></p>
-                <%= link_to "Voir ce professeur", "/teachers", class: "btn btn-outline rounded-lg", "aria-label": "Voir le profil de #{teacher[:name]}" %>
+                <%= link_to "Voir ce professeur", "/teachers", class: "btn bg-white border border-stone-300 text-gray-900 hover:bg-stone-50 rounded-lg", "aria-label": "Voir le profil de #{teacher[:name]}" %>
               </div>
             </div>
           <% end %>
@@ -259,7 +259,7 @@
         <p class="text-white/90 leading-relaxed">Nos professeurs certifiés accompagnent déjà 500 familles partout en France.</p>
         <div class="flex flex-wrap justify-center gap-4">
           <%= link_to "/teachers",
-              class: "btn btn-primary bg-blue-600 hover:bg-blue-700 border-blue-400 text-white rounded-lg",
+              class: "btn btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white rounded-lg",
               "aria-label": "Voir la liste des professeurs disponibles" do %>
             Voir les professeurs
           <% end %>

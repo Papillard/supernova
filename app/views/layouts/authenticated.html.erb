@@ -37,13 +37,18 @@
                 <span class="text-sm text-gray-700">
                   <%= current_user.first_name.presence || current_user.email %>
                   <% if current_user.teacher? %>
-                    <span class="badge badge-primary badge-sm ml-2">Professeur</span>
+                    <span class="badge bg-blue-600 text-white badge-sm ml-2">Professeur</span>
                   <% else %>
                     <span class="badge badge-ghost badge-sm ml-2">Parent</span>
                   <% end %>
                 </span>
               </label>
               <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-white rounded-box w-52 border border-stone-200">
+                <% if current_user.teacher? %>
+                  <li>
+                    <%= link_to "Mon profil", teacher_profile_path, class: "text-gray-700" %>
+                  </li>
+                <% end %>
                 <li>
                   <%= button_to "Déconnexion", destroy_user_session_path, method: :delete, class: "text-red-600" %>
                 </li>

@@ -24,10 +24,22 @@ Rails.application.routes.draw do
   # Pages
   get "pages/home"
 
-  # Teachers listing (placeholder)
-  get "teachers", to: "teachers#index", as: :teachers
+  # Teacher profile
+  get "teacher/profile", to: "teacher_profiles#show", as: :teacher_profile
+  patch "teacher/profile", to: "teacher_profiles#update"
 
-  # Teacher dashboard (placeholder)
-  get "dashboard/teacher", to: "dashboard/teachers#show", as: :dashboard_teacher
+  # Teachers listing (public annuaire)
+  get "teachers", to: "teachers#index", as: :teachers
+  get "teachers/:id", to: "teachers#show", as: :teacher
+
+  # Admin
+  namespace :admin do
+    resources :teachers, only: [:index, :show] do
+      member do
+        patch :approve
+        patch :reject
+      end
+    end
+  end
 
 end

@@ -1,0 +1,65 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  first_name: MyString
+  last_name: MyString
+  display_name: MyString
+  gender: MyString
+  academy_name: MyString
+  school_name: MyString
+  career_status: MyString
+  levels: MyText
+  subjects_tags: MyText
+  teaching_formats: MyText
+  base_city: MyString
+  base_zip_code: MyString
+  radius_text: MyString
+  support_text: MyText
+  experience_text: MyText
+  special_skills_text: MyText
+  interest_text: MyText
+  exams_raw_text: MyText
+  exam_tags: MyText
+  pedagogy_tags: MyText
+  pricing_text: MyText
+  target_students_range: MyString
+  email_pro: MyString
+  email_perso: MyString
+  phone: MyString
+  profile_image_url: MyString
+  profile_image_attached: false
+  status: MyString
+  rgpd_consent: false
+
+two:
+  user: two
+  first_name: MyString
+  last_name: MyString
+  display_name: MyString
+  gender: MyString
+  academy_name: MyString
+  school_name: MyString
+  career_status: MyString
+  levels: MyText
+  subjects_tags: MyText
+  teaching_formats: MyText
+  base_city: MyString
+  base_zip_code: MyString
+  radius_text: MyString
+  support_text: MyText
+  experience_text: MyText
+  special_skills_text: MyText
+  interest_text: MyText
+  exams_raw_text: MyText
+  exam_tags: MyText
+  pedagogy_tags: MyText
+  pricing_text: MyText
+  target_students_range: MyString
+  email_pro: MyString
+  email_perso: MyString
+  phone: MyString
+  profile_image_url: MyString
+  profile_image_attached: false
+  status: MyString
+  rgpd_consent: false

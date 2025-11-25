@@ -10,4 +10,7 @@ class User < ApplicationRecord
   # Validations
   validates :email, presence: true, uniqueness: true
   validates :role, presence: true, inclusion: { in: %w[parent teacher] }
+
+  # Associations
+  has_one :teacher, dependent: :destroy
 end

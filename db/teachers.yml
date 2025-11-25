@@ -1,0 +1,1186 @@
+teachers:
+  - id: aurelie-adda
+    first_name: "Aurelie"
+    last_name: "Adda"
+    display_name: "Aurelie Adda"
+    gender: female
+    birth_year: 1971
+
+    career_status: certifie
+    diploma_name: "Master histoire médiévale"
+    diploma_year: 1996
+    school_name: "Lycée Molière"
+    academy_name: "Paris"
+
+    levels: ["college", "lycee"]
+    subjects: ["histoire-geographie", "emc", "hggsp"]
+    teaching_formats: ["at_student_home", "at_teacher_home", "online"]
+
+    pricing_text: "50 € si déplacement au domicile de l’élève"
+    target_students_range: six_to_ten
+
+    base_city: "Paris"
+    base_zip_code: "75016"
+    radius_text: deux_a_5_km
+    service_areas_raw: "Paris, Banlieue (92, 93, 94, 78, 91, 95)"
+
+    support_text: >
+      Méthodologie, compétences écrites... Grand oral.
+    experience_text: >
+      Professeure de l’Éducation nationale depuis 1996...
+    special_skills_text: >
+      Motivante, à l’écoute... Autrice du livre Parcoursup.
+    interest_text: >
+      ProfConnect est une plateforme pratique et intéressante.
+    exams_raw_text: "Brevet, baccalauréat, HGGSP, Grand oral"
+
+    exam_tags: ["brevet", "bac_general", "grand_oral"]
+    pedagogy_tags: ["methodologie", "orientation", "eleves_en_difficulte"]
+
+    email_pro: "Aurélie.adda@ac-paris.fr"
+    email_perso: "addaaurelie@gmail.com"
+    phone: "0687165046"
+
+    status: approved
+    rgpd_consent: true
+
+
+  - id: laurence-rapidel
+    first_name: "Laurence"
+    last_name: "Rapidel"
+    display_name: "Laurence Rapidel"
+    gender: female
+    birth_year: 1970
+
+    career_status: certifie
+    diploma_name: "Licence"
+    diploma_year: 1992
+    school_name: "Collège Molière"
+    academy_name: "Paris"
+
+    levels: ["college", "lycee"]
+    subjects: ["mathematiques"]
+    teaching_formats: ["at_teacher_home", "online"]
+
+    pricing_text: "50 €"
+    target_students_range: one_to_two
+
+    base_city: "Paris"
+    base_zip_code: "75016"
+    radius_text: moins_de_1_km
+    service_areas_raw: "Paris"
+
+    support_text: "Accompagnement en mathématiques de la 4e à la terminale."
+    experience_text: "Professeure de mathématiques depuis 17 ans."
+    special_skills_text: "Aide aux élèves ayant des blocages."
+    interest_text: "Cours ponctuels mais de qualité."
+    exams_raw_text: "Brevet, épreuve anticipée de première"
+
+    exam_tags: ["brevet", "bac_general"]
+    pedagogy_tags: ["eleves_en_difficulte", "methodologie"]
+
+    email_pro: "Laurence.rapidel@ac-paris.fr"
+    email_perso: "laurencerapidel@gmail.com"
+    phone: "0675940679"
+
+    status: approved
+    rgpd_consent: true
+
+
+  - id: emmanuelle-jean-baptiste
+    first_name: "Emmanuelle"
+    last_name: "Jean-Baptiste"
+    display_name: "Emmanuelle Jean-Baptiste"
+    gender: female
+    birth_year: 1975
+
+    career_status: certifie
+    diploma_name: "Master 2 Info et Com, Sciences Po"
+    diploma_year: 2003
+    school_name: "Lycée Colbert"
+    academy_name: "Paris"
+
+    levels: ["lycee"]
+    subjects: ["histoire-geographie", "geopolitique", "sciences-politiques"]
+    teaching_formats: ["at_student_home", "at_teacher_home"]
+
+    pricing_text: "45–60 €"
+    target_students_range: three_to_five
+
+    base_city: "Paris"
+    base_zip_code: "75018"
+    radius_text: deux_a_5_km
+    service_areas_raw: "Paris"
+
+    support_text: "Renforcement spécialité HGGSP, méthodo Sc Po."
+    experience_text: "Professeure HG, DGEMC, DNL anglais."
+    special_skills_text: "Bienveillance, motivation, attendus précis."
+    interest_text: "Pour le sérieux et la simplicité de ProfConnect."
+    exams_raw_text: "Bac, Sciences Po"
+
+    exam_tags: ["bac_general", "sciences_po"]
+    pedagogy_tags: ["methodologie", "eleves_en_difficulte"]
+
+    email_pro: "emmanuelle.jean-baptiste@ac-paris.fr"
+    email_perso: "emmanuelle.jean-baptiste@ac-paris.fr"
+    phone: "0684069630"
+
+    status: approved
+    rgpd_consent: true
+
+
+  - id: chantal-da-silva
+    first_name: "Chantal"
+    last_name: "Da Silva"
+    display_name: "Chantal Da Silva"
+    gender: female
+    birth_year: 1976
+
+    career_status: certifie
+    diploma_name: "DEA histoire"
+    diploma_year: 2022
+    school_name: "Collège Béranger / Lycée Sophie-Germain / Lycée Molière"
+    academy_name: "Paris"
+
+    levels: ["college", "lycee"]
+    subjects: ["portugais", "histoire-geographie"]
+    teaching_formats: ["online"]
+
+    pricing_text: "50 €"
+    target_students_range: three_to_five
+
+    base_city: "Paris"
+    base_zip_code: "94250"
+    radius_text: deux_a_5_km
+    service_areas_raw: "Paris, banlieue, autres villes"
+
+    support_text: "Méthodologie, enseignement de la discipline."
+    experience_text: "20 ans d’enseignement collège / lycée / supérieur."
+    special_skills_text: "À l’écoute, trouve des méthodes."
+    interest_text: "Aider des élèves motivés."
+    exams_raw_text: "Brevet, Bac"
+
+    exam_tags: ["brevet", "bac_general"]
+    pedagogy_tags: ["methodologie"]
+
+    email_pro: "Chantal.Da-Silva@ac-paris.fr"
+    email_perso: "da_silva_chantal@hotmail.com"
+    phone: "0664164239"
+
+    status: approved
+    rgpd_consent: true
+
+
+  - id: marion-cochet
+    first_name: "Marion"
+    last_name: "Cochet"
+    display_name: "Marion Cochet"
+    gender: female
+    birth_year: 1973
+
+    career_status: agrege
+    diploma_name: "Master"
+    diploma_year: 2002
+    school_name: "Institut Notre Dame de Sainte Croix"
+    academy_name: "Versailles"
+
+    levels: ["prepa", "lycee"]
+    subjects: ["espagnol", "litterature", "geopolitique"]
+    teaching_formats: ["online"]
+
+    pricing_text: "60 €"
+    target_students_range: three_to_five
+
+    base_city: "Versailles"
+    base_zip_code: "92200"
+    radius_text: deux_a_5_km
+    service_areas_raw: "Banlieue, Paris"
+
+    support_text: "Préparation concours école de commerce, Bac, Bachibac."
+    experience_text: "20 ans d'expérience en littéraire / géopolitique."
+    special_skills_text: "Pointue, dynamique."
+    interest_text: "Projet motivant."
+    exams_raw_text: "École de commerce, Bac, Bachibac"
+
+    exam_tags: ["ecoles_de_commerce", "bac_general", "bachibac"]
+    pedagogy_tags: ["methodologie"]
+
+    email_pro: "Marion.Cochet1@ac-versailles.fr"
+    email_perso: "carlevaro73@hotmail.com"
+    phone: "0668121973"
+
+    status: approved
+    rgpd_consent: true
+
+
+  - id: lauranne-chetaneau
+    first_name: "Lauranne"
+    last_name: "Chetaneau"
+    display_name: "Lauranne Chetaneau"
+    gender: female
+    birth_year: 1998
+
+    career_status: certifie
+    diploma_name: "Master de mathématiques générales"
+    diploma_year: 2022
+    school_name: "Collège Georges Pompidou"
+    academy_name: "Versailles"
+
+    levels: ["college", "lycee"]
+    subjects: ["mathematiques"]
+    teaching_formats: ["at_student_home"]
+
+    pricing_text: "50 €"
+    target_students_range: one_to_two
+
+    base_city: "Paris"
+    base_zip_code: "75012"
+    radius_text: deux_a_5_km
+    service_areas_raw: "Paris"
+
+    support_text: "Cours particuliers collège/lycée, DNB, bac."
+    experience_text: "Professeure de maths depuis 4 ans, cours particuliers depuis les études."
+    special_skills_text: "Bienveillance et rigueur."
+    interest_text: "Meilleure rémunération, éviter négociations."
+    exams_raw_text: "Brevet, Bac"
+
+    exam_tags: ["brevet", "bac_general"]
+    pedagogy_tags: ["methodologie", "eleves_en_difficulte"]
+
+    email_pro: "lauranne.chetaneau@ac-versailles.fr"
+    email_perso: "lauranne.chetaneau@gmail.com"
+    phone: "0651289756"
+
+    status: approved
+    rgpd_consent: true
+
+
+  - id: antonio-barbosa
+    first_name: "Antonio"
+    last_name: "Barbosa"
+    display_name: "Antonio Barbosa"
+    gender: male
+    birth_year: 1979
+
+    career_status: certifie
+    diploma_name: "Capes d’espagnol"
+    diploma_year: 2002
+    school_name: "Collège Federico Garcia Lorca"
+    academy_name: "Montpellier"
+
+    levels: ["college", "lycee"]
+    subjects: ["espagnol"]
+    teaching_formats: ["at_student_home", "at_teacher_home", "online"]
+
+    pricing_text: "50 €"
+    target_students_range: three_to_five
+
+    base_city: "Nîmes"
+    base_zip_code: "30000"
+    radius_text: deux_a_5_km
+    service_areas_raw: "Nîmes"
+
+    support_text: "Soutien, reformulation, aide aux devoirs, méthodologie."
+    experience_text: "20 ans d’expérience, collège, lycée, fac d’Avignon."
+    special_skills_text: "À l’écoute, patient, structuré."
+    interest_text: "Plateforme sérieuse et compétente."
+    exams_raw_text: "BAC espagnol"
+
+    exam_tags: ["bac_general"]
+    pedagogy_tags: ["methodologie"]
+
+    email_pro: "antonio.barbosa@ac-montpellier.fr"
+    email_perso: "panoiense@hotmail.fr"
+    phone: "0618024842"
+
+    status: approved
+    rgpd_consent: true
+
+
+  - id: elodie-escoda
+    first_name: "Elodie"
+    last_name: "Escoda"
+    display_name: "Elodie Escoda"
+    gender: female
+    birth_year: 1979
+
+    career_status: certifie
+    diploma_name: "Capes HG"
+    diploma_year: 2003
+    school_name: "Collège Georges Pompidou, Courbevoie"
+    academy_name: "Versailles"
+
+    levels: ["college"]
+    subjects: ["histoire-geographie"]
+    teaching_formats: ["at_student_home", "online"]
+
+    pricing_text: "50–60 €"
+    target_students_range: three_to_five
+
+    base_city: "Paris"
+    base_zip_code: "75018"
+    radius_text: deux_a_5_km
+    service_areas_raw: "Paris, Banlieue"
+
+    support_text: "Préparation DNB, méthodologie, orientation."
+    experience_text: "20 ans d’enseignement, 15 ans prof principale 3e."
+    special_skills_text: "Aide organisation, compréhension attendus DNB."
+    interest_text: "Plateforme valorisant les compétences des enseignants."
+    exams_raw_text: "Brevet"
+
+    exam_tags: ["brevet"]
+    pedagogy_tags: ["methodologie", "orientation"]
+
+    email_pro: "Elodie.Escoda@ac-versailles.fr"
+    email_perso: null
+    phone: "0620984167"
+
+    status: approved
+    rgpd_consent: true
+
+
+  - id: sarah-roy
+    first_name: "Sarah"
+    last_name: "Roy"
+    display_name: "Sarah Roy"
+    gender: female
+    birth_year: 1975
+
+    career_status: certifie
+    diploma_name: "Licence"
+    diploma_year: 2004
+    school_name: "Collège Cantelande"
+    academy_name: "Bordeaux"
+
+    levels: ["college"]
+    subjects: ["anglais"]
+    teaching_formats: ["at_student_home"]
+
+    pricing_text: "50 €"
+    target_students_range: six_to_ten
+
+    base_city: "Cestas"
+    base_zip_code: "33610"
+    radius_text: cinq_a_10_km
+    service_areas_raw: "Cestas, Léognan"
+
+    support_text: "Pédagogie par le jeu, méthodologie, différenciation."
+    experience_text: "Prof anglais depuis 2001, SEGPA, lycée."
+    special_skills_text: "Transmission via culture, jeu, rigueur bienveillante."
+    interest_text: "Confiance dans la co-fondatrice."
+    exams_raw_text: "Bac"
+
+    exam_tags: ["bac_general"]
+    pedagogy_tags: ["pedagogie_par_le_jeu", "methodologie"]
+
+    email_pro: "Sarah.Roy@ac-bordeaux.fr"
+    email_perso: "englishteacherfrombordeaux@yahoo.fr"
+    phone: "0629713381"
+
+    status: approved
+    rgpd_consent: true
+
+
+  - id: virginie-chaleur-launay
+    first_name: "Virginie"
+    last_name: "Chaleur-Launay"
+    display_name: "Virginie Chaleur-Launay"
+    gender: female
+    birth_year: 1977
+
+    career_status: agrege
+    diploma_name: "Doctorat"
+    diploma_year: 2001
+    school_name: "Lycée Français Charles de Gaulle (Londres)"
+    academy_name: "AEFE"
+
+    levels: ["college", "lycee"]
+    subjects: ["histoire-geographie", "hggsp", "emc"]
+    teaching_formats: ["online"]
+
+    pricing_text: "50 €"
+    target_students_range: one_to_two
+
+    base_city: "Londres"
+    base_zip_code: "00000"
+    radius_text: null
+    service_areas_raw: "Toutes villes (en ligne uniquement)"
+
+    support_text: "Soutien HG, HGGSP, méthodologie, préparation examens."
+    experience_text: "25 ans d’enseignement, prof agrégée, docteure."
+    special_skills_text: "Pédagogie positive, écoute."
+    interest_text: ""
+    exams_raw_text: "Brevet, Bac"
+
+    exam_tags: ["brevet", "bac_general"]
+    pedagogy_tags: ["methodologie"]
+
+    email_pro: "Vchaleur-launay@lyceefrancais.org.uk"
+    email_perso: "virginie.chaleur@gmail.com"
+    phone: null
+
+    status: approved
+    rgpd_consent: true
+
+
+  - id: jennifer-ghislain
+    first_name: "Jennifer"
+    last_name: "Ghislain"
+    display_name: "Jennifer Ghislain"
+    gender: female
+    birth_year: 1984
+
+    career_status: certifie
+    diploma_name: "Master Recherche Histoire"
+    diploma_year: 2013
+    school_name: "Lycée Innovant de Paris"
+    academy_name: "Paris"
+
+    levels: ["lycee"]
+    subjects: ["histoire-geographie", "emc", "hggsp"]
+    teaching_formats: ["online", "at_student_home"]
+
+    pricing_text: "50 €"
+    target_students_range: three_to_five
+
+    base_city: "Paris"
+    base_zip_code: "78000"
+    radius_text: moins_de_1_km
+    service_areas_raw: "Paris, Banlieue"
+
+    support_text: "Méthode, préparation HGGSP, accompagnement Parcoursup."
+    experience_text: "Professeure HG et HGGSP, prof principale, Parcoursup."
+    special_skills_text: "Expérience Tle, référente niveau."
+    interest_text: "Plateforme réservée EN."
+    exams_raw_text: "Baccalauréat"
+
+    exam_tags: ["bac_general"]
+    pedagogy_tags: ["methodologie", "parcoursup"]
+
+    email_pro: "jennifer.ghislain@ac-paris.fr"
+    email_perso: null
+    phone: "0615700225"
+
+    status: approved
+    rgpd_consent: true
+
+
+  - id: virginie-lintanf
+    first_name: "Virginie"
+    last_name: "Lintanf"
+    display_name: "Virginie Lintanf"
+    gender: female
+    birth_year: 1990
+
+    career_status: agrege
+    diploma_name: "Agrégation de géographie"
+    diploma_year: 2014
+    school_name: "Collège Modigliani"
+    academy_name: "Paris"
+
+    levels: ["college"]
+    subjects: ["histoire-geographie", "emc"]
+    teaching_formats: ["online"]
+
+    pricing_text: "60 €"
+    target_students_range: three_to_five
+
+    base_city: "Paris"
+    base_zip_code: "92190"
+    radius_text: deux_a_5_km
+    service_areas_raw: "Banlieue, Paris"
+
+    support_text: "Préparation DNB, méthodologie."
+    experience_text: "10 ans d'expérience, collège et lycée, formatrice académique."
+    special_skills_text: "Méthodo rédaction, préparation examens."
+    interest_text: "Plateforme respectueuse enseignants."
+    exams_raw_text: "Brevet, Bac candidat libre 1re"
+
+    exam_tags: ["brevet", "bac_general"]
+    pedagogy_tags: ["methodologie"]
+
+    email_pro: "virginie.lintanf@ac-paris.fr"
+    email_perso: null
+    phone: "0607106676"
+
+    status: approved
+    rgpd_consent: true
+
+
+  - id: celine-bigot
+    first_name: "Céline"
+    last_name: "Bigot"
+    display_name: "Céline Bigot"
+    gender: female
+    birth_year: 1976
+
+    career_status: certifie
+    diploma_name: "IUFM"
+    diploma_year: 2001
+    school_name: "Lycée Decour"
+    academy_name: "Paris"
+
+    levels: ["lycee", "college"]
+    subjects: ["anglais"]
+    teaching_formats: ["online", "at_student_home"]
+
+    pricing_text: "50 €"
+    target_students_range: one_to_two
+
+    base_city: "Paris"
+    base_zip_code: "75018"
+    radius_text: deux_a_5_km
+    service_areas_raw: "Paris"
+
+    support_text: "Cours anglais collège + lycée."
+    experience_text: "Prof d'anglais depuis 24 ans."
+    special_skills_text: "A l'écoute des besoins."
+    interest_text: ""
+    exams_raw_text: "Bac"
+
+    exam_tags: ["bac_general"]
+    pedagogy_tags: []
+
+    email_pro: "céeine.bigot1@ac-paris.fr"
+    email_perso: null
+    phone: "0620465544"
+
+    status: approved
+    rgpd_consent: true
+
+
+  - id: cecile-addabbo
+    first_name: "Cécile"
+    last_name: "Addabbo"
+    display_name: "Cécile Addabbo"
+    gender: female
+    birth_year: 1978
+
+    career_status: certifie
+    diploma_name: "Capes"
+    diploma_year: 2002
+    school_name: "Collège"
+    academy_name: "Versailles"
+
+    levels: ["college"]
+    subjects: ["education-musicale"]
+    teaching_formats: ["online"]
+
+    pricing_text: "40 €"
+    target_students_range: one_to_two
+
+    base_city: "Versailles"
+    base_zip_code: "92150"
+    radius_text: null
+    service_areas_raw: "Banlieue 92-95"
+
+    support_text: "Éducation musicale, 10 ans conservatoire."
+    experience_text: "23 ans en collège."
+    special_skills_text: ""
+    interest_text: "Plateforme sérieuse dédiée EN."
+    exams_raw_text: "DNB (oral)"
+
+    exam_tags: ["brevet"]
+    pedagogy_tags: []
+
+    email_pro: "Cecile-Marie-Th.Addabbo@ac-versailles.fr"
+    email_perso: null
+    phone: "0675695241"
+
+    status: approved
+    rgpd_consent: true
+
+
+  - id: dominique-thonon
+    first_name: "Dominique"
+    last_name: "Thonon"
+    display_name: "Dominique Thonon"
+    gender: male
+    birth_year: 1974
+
+    career_status: agrege
+    diploma_name: "Agrégation"
+    diploma_year: 2002
+    school_name: "Lycée"
+    academy_name: "Versailles"
+
+    levels: ["lycee"]
+    subjects: ["mathematiques"]
+    teaching_formats: ["online"]
+
+    pricing_text: "50 €"
+    target_students_range: one_to_two
+
+    base_city: "Versailles"
+    base_zip_code: "92150"
+    radius_text: null
+    service_areas_raw: "Banlieue, Paris"
+
+    support_text: "Préparation examen, méthodologie."
+    experience_text: "20 ans EN, spécialiste analyse/géométrie."
+    special_skills_text: ""
+    interest_text: ""
+    exams_raw_text: ""
+
+    exam_tags: []
+    pedagogy_tags: ["methodologie"]
+
+    email_pro: "dominique.thonon@ac-versailles.fr"
+    email_perso: null
+    phone: null
+
+    status: approved
+    rgpd_consent: true
+
+
+  - id: veronique-perrin-widemann
+    first_name: "Véronique"
+    last_name: "Perrin-Widemann"
+    display_name: "Véronique Perrin-Widemann"
+    gender: female
+    birth_year: 1974
+
+    career_status: prof_des_ecoles
+    diploma_name: "Licence sciences de l’éducation"
+    diploma_year: 2003
+    school_name: "En disponibilité"
+    academy_name: "Creteil"
+
+    levels: ["primaire"]
+    subjects: ["toutes-matieres-primaire"]
+    teaching_formats: ["online"]
+
+    pricing_text: "50 €"
+    target_students_range: one_to_two
+
+    base_city: "Département 68"
+    base_zip_code: "68190"
+    radius_text: null
+    service_areas_raw: "Département 68"
+
+    support_text: "Professeur des écoles, diplômée EJE."
+    experience_text: "Professeur des écoles, éducatrice de jeunes enfants."
+    special_skills_text: ""
+    interest_text: "Plateforme de qualité."
+    exams_raw_text: ""
+
+    exam_tags: []
+    pedagogy_tags: ["besoins_particuliers"]
+
+    email_pro: "V.perrin@ac-creteil.fr"
+    email_perso: "veronique.perrin-widemann@laposte.net"
+    phone: "0622981310"
+
+    status: approved
+    rgpd_consent: true
+
+
+  - id: bertrand-bernheim
+    first_name: "Bertrand"
+    last_name: "Bernheim"
+    display_name: "Bertrand Bernheim"
+    gender: male
+    birth_year: 1962
+
+    career_status: certifie
+    diploma_name: "Capes"
+    diploma_year: 1984
+    school_name: "Lycée Molière"
+    academy_name: "Paris"
+
+    levels: ["college", "lycee"]
+    subjects: ["anglais", "snt"]
+    teaching_formats: ["online", "at_student_home"]
+
+    pricing_text: "50 €"
+    target_students_range: one_to_two
+
+    base_city: "Paris"
+    base_zip_code: "75116"
+    radius_text: null
+    service_areas_raw: "Paris"
+
+    support_text: "LLCE, grammaire."
+    experience_text: "Toute ma carrière dans l’enseignement public."
+    special_skills_text: "Rigueur, exigence."
+    interest_text: ""
+    exams_raw_text: ""
+
+    exam_tags: []
+    pedagogy_tags: ["methodologie"]
+
+    email_pro: "Bertrand.Bernheim@ac-paris.fr"
+    email_perso: "albertrand.bernheim@hotmail.com"
+    phone: "0613534181"
+
+    status: approved
+    rgpd_consent: true
+
+
+  - id: lidwine-warchol
+    first_name: "Lidwine"
+    last_name: "Warchol"
+    display_name: "Lidwine Warchol"
+    gender: female
+    birth_year: 1973
+
+    career_status: agrege
+    diploma_name: "Doctorat"
+    diploma_year: 1998
+    school_name: "Lycée Buffon"
+    academy_name: "Paris"
+
+    levels: ["college", "lycee"]
+    subjects: ["histoire-geographie", "geopolitique"]
+    teaching_formats: ["at_student_home", "at_teacher_home", "online"]
+
+    pricing_text: "30 à 50 €"
+    target_students_range: six_to_ten
+
+    base_city: "Paris"
+    base_zip_code: "75014"
+    radius_text: deux_a_5_km
+    service_areas_raw: "Paris"
+
+    support_text: "Spécialités, orientation, coaching, concours."
+    experience_text: "25 ans, TZR Paris, TD Sorbonne."
+    special_skills_text: "Gentille mais exigeante, très impliquée."
+    interest_text: "Voulait créer ce type de plateforme."
+    exams_raw_text: "Tous concours"
+
+    exam_tags: ["autre_examen"]
+    pedagogy_tags: ["coaching", "orientation", "eleves_en_difficulte"]
+
+    email_pro: "lidwine.warchol@ac-paris.fr"
+    email_perso: "lidwine.warchol@gmail.com"
+    phone: "0661176887"
+
+    status: approved
+    rgpd_consent: true
+
+
+  - id: sophie-hobbs
+    first_name: "Sophie"
+    last_name: "Hobbs"
+    display_name: "Sophie Hobbs"
+    gender: female
+    birth_year: 2025   # donnée source erronée mais conservée telle quelle
+
+    career_status: certifie
+    diploma_name: "Capes master 2"
+    diploma_year: 2021
+    school_name: "Rabelais"
+    academy_name: "Creteil"
+
+    levels: ["college"]
+    subjects: ["anglais"]
+    teaching_formats: ["online", "at_teacher_home"]
+
+    pricing_text: "50 €"
+    target_students_range: three_to_five
+
+    base_city: "94"
+    base_zip_code: "94510"
+    radius_text: null
+    service_areas_raw: "Banlieue 92-95"
+
+    support_text: "Préparation bac, conversation."
+    experience_text: "Thèmes favoris cinéma, histoire."
+    special_skills_text: ""
+    interest_text: ""
+    exams_raw_text: "Bac"
+
+    exam_tags: ["bac_general"]
+    pedagogy_tags: []
+
+    email_pro: "sophiehobbs@gmail.com"
+    email_perso: "sophiehobbs@gmail.com"
+    phone: "0677390764"
+
+    status: approved
+    rgpd_consent: true
+
+
+  - id: gaelle-quentric
+    first_name: "Gaëlle"
+    last_name: "Quentric"
+    display_name: "Gaëlle Quentric"
+    gender: female
+    birth_year: 1978
+
+    career_status: agrege
+    diploma_name: "Agrégation SVTU"
+    diploma_year: 2009
+    school_name: "Lycée Molière"
+    academy_name: "Paris"
+
+    levels: ["lycee"]
+    subjects: ["svt"]
+    teaching_formats: ["online", "at_teacher_home"]
+
+    pricing_text: "80 à 100 €"
+    target_students_range: ten_plus
+
+    base_city: "Paris"
+    base_zip_code: "75015"
+    radius_text: null
+    service_areas_raw: "Paris, Banlieue, en ligne"
+
+    support_text: "SVT 6e-Terminale spé + enseignement scientifique."
+    experience_text: "20 ans, auteure, PFA, CAFFA, sciences cognitives."
+    special_skills_text: "Pédagogie basée sur sciences cognitives."
+    interest_text: "Plateforme sérieuse dédiée EN."
+    exams_raw_text: ""
+
+    exam_tags: []
+    pedagogy_tags: ["sciences_cognitives"]
+
+    email_pro: "gaelle.quentric@ac-paris.fr"
+    email_perso: "gaelle.quentric@ac-paris.fr"
+    phone: "0661368976"
+
+    status: approved
+    rgpd_consent: true
+
+
+  - id: nadege-lefevre
+    first_name: "Nadège"
+    last_name: "Lefèvre"
+    display_name: "Nadège Lefèvre"
+    gender: female
+    birth_year: 1985
+
+    career_status: certifie
+    diploma_name: "Master de recherche"
+    diploma_year: 2011
+    school_name: "Lycée Emile Littré"
+    academy_name: "Normandie"
+
+    levels: ["lycee", "bts"]
+    subjects: ["biotechnologies", "biologie", "biologie-medicale"]
+    teaching_formats: ["online"]
+
+    pricing_text: "40 €"
+    target_students_range: one_to_two
+
+    base_city: "Avranches"
+    base_zip_code: "50300"
+    radius_text: null
+    service_areas_raw: "Avranches"
+
+    support_text: "Biochimie, génie biologique, prépa infirmière, BTS, rédaction de sujets."
+    experience_text: "15 ans en lycée, prépa infirmière, BTS."
+    special_skills_text: ""
+    interest_text: "Plateforme sérieuse avec enseignants expérimentés."
+    exams_raw_text: ""
+
+    exam_tags: []
+    pedagogy_tags: []
+
+    email_pro: "nadege.messaoudi@ac-normandie.fr"
+    email_perso: null
+    phone: "0619677251"
+
+    status: approved
+    rgpd_consent: true
+
+
+  - id: benjamin-algieri
+    first_name: "Benjamin"
+    last_name: "Algieri"
+    display_name: "Benjamin Algieri"
+    gender: male
+    birth_year: 1980
+
+    career_status: certifie
+    diploma_name: "Maîtrise"
+    diploma_year: 2005
+    school_name: "Collège François Couperin"
+    academy_name: "Paris"
+
+    levels: ["college"]
+    subjects: ["svt"]
+    teaching_formats: ["at_student_home", "online"]
+
+    pricing_text: "35 €"
+    target_students_range: three_to_five
+
+    base_city: "Paris"
+    base_zip_code: "93260"
+    radius_text: moins_de_1_km
+    service_areas_raw: "Paris, Banlieue 92-95"
+
+    support_text: "Cours, devoirs, méthodologie, préparation contrôles, coaching, orientation."
+    experience_text: "Prof de SVT depuis 20 ans, collège et lycée."
+    special_skills_text: "Très bonne connaissance du terrain en collège, bienveillance."
+    interest_text: "Aider les élèves en difficulté ou qui veulent aller plus loin."
+    exams_raw_text: "Brevet"
+
+    exam_tags: ["brevet"]
+    pedagogy_tags: ["methodologie", "coaching", "orientation", "eleves_en_difficulte", "eleves_excellents"]
+
+    email_pro: "benjamin.algieri@ac-paris.fr"
+    email_perso: "ben34jamin@hotmail.com"
+    phone: null
+
+    status: approved
+    rgpd_consent: true
+
+
+  - id: eddy-chevalier
+    first_name: "Eddy"
+    last_name: "Chevalier"
+    display_name: "Eddy Chevalier"
+    gender: male
+    birth_year: 1982
+
+    career_status: agrege
+    diploma_name: "Doctorat"
+    diploma_year: 2007
+    school_name: "Lycée Molière"
+    academy_name: "Paris"
+
+    levels: ["prepa"]
+    subjects: ["anglais"]
+    teaching_formats: ["online", "at_student_home"]
+
+    pricing_text: "75 €"
+    target_students_range: three_to_five
+
+    base_city: "Paris"
+    base_zip_code: "92110"
+    radius_text: deux_a_5_km
+    service_areas_raw: "Paris, Partout, Banlieue 92-95"
+
+    support_text: "Cours adaptés aux besoins, préparation concours et examens."
+    experience_text: "Prof agrégé d’anglais depuis 18 ans, 13 ans en classes préparatoires."
+    special_skills_text: "Agrégé, docteur, écrivain (6 livres)."
+    interest_text: "Envie d’aider des élèves."
+    exams_raw_text: "CAPES, Agrégation, Sciences Po"
+
+    exam_tags: ["capes", "agreg", "sciences_po"]
+    pedagogy_tags: ["methodologie", "eleves_excellents"]
+
+    email_pro: "Eddy.chevalier@ac-paris.fr"
+    email_perso: "eddy_chevalier@hotmail.com"
+    phone: "0660447756"
+
+    status: approved
+    rgpd_consent: true
+
+
+  - id: lucile-barberon
+    first_name: "Lucile"
+    last_name: "Barberon"
+    display_name: "Lucile Barberon"
+    gender: female
+    birth_year: 1975
+
+    career_status: agrege
+    diploma_name: "Doctorat d'histoire"
+    diploma_year: 1998
+    school_name: "Lycée Victor Duruy"
+    academy_name: "Paris"
+
+    levels: ["lycee"]
+    subjects: ["histoire-geographie", "hggsp"]
+    teaching_formats: ["at_student_home", "online"]
+
+    pricing_text: "50 €"
+    target_students_range: one_to_two
+
+    base_city: "Paris"
+    base_zip_code: "93200"
+    radius_text: deux_a_5_km
+    service_areas_raw: "Paris, Banlieue 92-95"
+
+    support_text: "Spécialités, méthodologie."
+    experience_text: "Longue expérience collège et lycée (général et techno)."
+    special_skills_text: "Habituée aux élèves avec troubles d’apprentissage."
+    interest_text: "Initiative pertinente avec vrai fondement professionnel."
+    exams_raw_text: "Brevet, Bac"
+
+    exam_tags: ["brevet", "bac_general"]
+    pedagogy_tags: ["methodologie", "besoins_particuliers"]
+
+    email_pro: "lucile.barberon@ac-paris.fr"
+    email_perso: "lucile.barberon@orange.fr"
+    phone: "0609733128"
+
+    status: approved
+    rgpd_consent: true
+
+
+  - id: camille-sabathe
+    first_name: "Camille"
+    last_name: "Sabathé"
+    display_name: "Camille Sabathé"
+    gender: female
+    birth_year: 1976
+
+    career_status: certifie
+    diploma_name: "Licence"
+    diploma_year: 2003
+    school_name: "Collège Jean Rostand"
+    academy_name: "Bordeaux"
+
+    levels: ["college"]
+    subjects: ["histoire-geographie"]
+    teaching_formats: ["at_student_home", "online"]
+
+    pricing_text: "50 €"
+    target_students_range: one_to_two
+
+    base_city: "Dax"
+    base_zip_code: "40100"
+    radius_text: null
+    service_areas_raw: "Dax"
+
+    support_text: "Cours d’histoire-géographie et orientation."
+    experience_text: "Orientation post 3e."
+    special_skills_text: ""
+    interest_text: ""
+    exams_raw_text: ""
+
+    exam_tags: []
+    pedagogy_tags: ["orientation"]
+
+    email_pro: "Camille.Sabathe1@ac-bordeaux.fr"
+    email_perso: null
+    phone: null
+
+    status: approved
+    rgpd_consent: true
+
+
+  - id: sophie-jankowski
+    first_name: "Sophie"
+    last_name: "Jankowski"
+    display_name: "Sophie Jankowski"
+    gender: female
+    birth_year: 1968
+
+    career_status: agrege
+    diploma_name: "Doctorat"
+    diploma_year: 1990
+    school_name: "Lycée Molière"
+    academy_name: "Paris"
+
+    levels: ["college", "lycee"]
+    subjects: ["lettres-modernes", "hlp"]
+    teaching_formats: ["at_student_home", "at_teacher_home"]
+
+    pricing_text: "80 €"
+    target_students_range: three_to_five
+
+    base_city: "Paris"
+    base_zip_code: "78000"
+    radius_text: deux_a_5_km
+    service_areas_raw: "Paris, Banlieue"
+
+    support_text: "Accompagnement tous niveaux, excellence comme difficultés."
+    experience_text: >
+      Professeure de lettres en province puis Paris, établissements variés,
+      expérience 6e à BTS, bienveillance garantie.
+    special_skills_text: ""
+    interest_text: "Plateforme valorisant expertise professionnelle."
+    exams_raw_text: "Brevet, Bac, BTS"
+
+    exam_tags: ["brevet", "bac_general", "bts"]
+    pedagogy_tags: ["methodologie", "eleves_excellents", "eleves_en_difficulte"]
+
+    email_pro: "sophie.jankowski@ac-paris.fr"
+    email_perso: "sophiejankowski705@gmail.com"
+    phone: "0662438240"
+
+    status: approved
+    rgpd_consent: true
+
+
+  - id: ilana-seror
+    first_name: "Ilana"
+    last_name: "Seror"
+    display_name: "Ilana Seror"
+    gender: female
+    birth_year: 1977
+
+    career_status: certifie
+    diploma_name: "Master"
+    diploma_year: 2005
+    school_name: "Collège Henri Wallon"
+    academy_name: "Versailles"
+
+    levels: ["college"]
+    subjects: ["francais"]
+    teaching_formats: ["online", "at_teacher_home"]
+
+    pricing_text: "50 €"
+    target_students_range: ten_plus
+
+    base_city: "Paris"
+    base_zip_code: "92170"
+    radius_text: null
+    service_areas_raw: "Paris, Banlieue"
+
+    support_text: "Pédagogie différenciée, brevet, bac français."
+    experience_text: "20 ans de lettres, passionnée."
+    special_skills_text: ""
+    interest_text: "Plateforme dédiée EN."
+    exams_raw_text: "Brevet, Bac français"
+
+    exam_tags: ["brevet", "bac_francais"]
+    pedagogy_tags: ["methodologie"]
+
+    email_pro: "Ilana.Seror@ac-versailles.fr"
+    email_perso: "iseror@yahoo.fr"
+    phone: "0660955183"
+
+    status: approved
+    rgpd_consent: true
+
+
+  - id: valerie-segarra
+    first_name: "Valérie"
+    last_name: "Ségarra"
+    display_name: "Valérie Ségarra"
+    gender: female
+    birth_year: 1971
+
+    career_status: certifie
+    diploma_name: "Maîtrise (équivalent master)"
+    diploma_year: 2013
+    school_name: "Collège Jean Rostand (Tartas)"
+    academy_name: "Bordeaux"
+
+    levels: ["college"]
+    subjects: ["francais", "fle"]
+    teaching_formats: ["at_student_home", "online"]
+
+    pricing_text: "50 €"
+    target_students_range: three_to_five
+
+    base_city: "Dax"
+    base_zip_code: "40100"
+    radius_text: deux_a_5_km
+    service_areas_raw: "Dax"
+
+    support_text: >
+      Préparation bac français, DNB, soutien collège, soutien primaire,
+      FLE tous niveaux.
+    experience_text: >
+      CAPES lettres modernes, CRPE, maîtrise FLE, licence lettres modernes,
+      10 ans primaire, 15 ans collège/lycée.
+    special_skills_text: "Patiente, bienveillante, exigeante."
+    interest_text: >
+      Plateforme sûre pour proposer enseignement de manière directe et efficace.
+    exams_raw_text: "Brevet, Bac français, CLOE FLE"
+
+    exam_tags: ["brevet", "bac_francais", "cloe_fle"]
+    pedagogy_tags: ["fle", "methodologie", "eleves_en_difficulte"]
+
+    email_pro: "valerie.segarra@ac-bordeaux.fr"
+    email_perso: null
+    phone: "0786353938"
+
+    status: approved
+    rgpd_consent: true

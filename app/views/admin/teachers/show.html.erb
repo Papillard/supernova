@@ -1,0 +1,86 @@
+<div class="container mx-auto max-w-4xl px-4 py-12">
+  <div class="space-y-6">
+    <%= link_to "← Retour à la liste", admin_teachers_path, class: "link link-primary" %>
+
+    <div class="card bg-white shadow-lg">
+      <div class="card-body">
+        <div class="flex justify-between items-start mb-6">
+          <div>
+            <h1 class="text-3xl font-bold text-gray-900"><%= @teacher.display_name %></h1>
+            <p class="text-gray-600"><%= @teacher.email_pro %></p>
+            <% if @teacher.pending? %>
+              <span class="badge badge-warning mt-2">En attente</span>
+            <% elsif @teacher.approved? %>
+              <span class="badge bg-blue-600 text-white mt-2">Approuvé</span>
+            <% elsif @teacher.rejected? %>
+              <span class="badge badge-error mt-2">Refusé</span>
+            <% end %>
+          </div>
+          <div class="flex gap-2">
+            <% unless @teacher.approved? %>
+              <%= button_to "Approuver", approve_admin_teacher_path(@teacher), method: :patch, class: "btn btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white rounded-lg" %>
+            <% end %>
+            <% unless @teacher.rejected? %>
+              <%= button_to "Refuser", reject_admin_teacher_path(@teacher), method: :patch, class: "btn bg-white border border-stone-300 text-gray-900 hover:bg-stone-50 rounded-lg" %>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Toutes les informations, y compris sensibles -->
+        <div class="grid gap-6 md:grid-cols-2">
+          <div>
+            <h3 class="font-semibold text-gray-900 mb-2">Identité</h3>
+            <p><strong>Prénom:</strong> <%= @teacher.first_name %></p>
+            <p><strong>Nom:</strong> <%= @teacher.last_name %></p>
+            <p><strong>Genre:</strong> <%= @teacher.gender == "female" ? "Féminin" : "Masculin" %></p>
+            <p><strong>Statut:</strong> <%= @teacher.career_status %></p>
+          </div>
+
+          <div>
+            <h3 class="font-semibold text-gray-900 mb-2">Établissement</h3>
+            <p><strong>Académie:</strong> <%= @teacher.academy_name || "-" %></p>
+            <p><strong>École:</strong> <%= @teacher.school_name || "-" %></p>
+          </div>
+
+          <div>
+            <h3 class="font-semibold text-gray-900 mb-2">Contact (SENSIBLE)</h3>
+            <p><strong>Email pro:</strong> <%= @teacher.email_pro %></p>
+            <p><strong>Email perso:</strong> <%= @teacher.email_perso || "-" %></p>
+            <p><strong>Téléphone:</strong> <%= @teacher.phone || "-" %></p>
+          </div>
+
+          <div>
+            <h3 class="font-semibold text-gray-900 mb-2">Localisation</h3>
+            <p><strong>Ville:</strong> <%= @teacher.base_city || "-" %></p>
+            <p><strong>Code postal:</strong> <%= @teacher.base_zip_code || "-" %></p>
+            <p><strong>Rayon:</strong> <%= @teacher.radius_text || "-" %></p>
+          </div>
+        </div>
+
+        <% if @teacher.subjects_tags.present? %>
+          <div class="mt-6">
+            <h3 class="font-semibold text-gray-900 mb-2">Matières</h3>
+            <div class="flex flex-wrap gap-2">
+              <% @teacher.subjects_tags.each do |tag| %>
+                <span class="badge badge-ghost"><%= tag %></span>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <% if @teacher.support_text.present? %>
+          <div class="mt-6">
+            <h3 class="font-semibold text-gray-900 mb-2">Texte de soutien</h3>
+            <p class="text-gray-600 whitespace-pre-line"><%= @teacher.support_text %></p>
+          </div>
+        <% end %>
+
+        <div class="mt-6">
+          <p><strong>RGPD consent:</strong> <%= @teacher.rgpd_consent ? "✅ Oui" : "❌ Non" %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
