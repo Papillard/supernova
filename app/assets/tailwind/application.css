@@ -31,6 +31,13 @@
 }
 
 @layer components {
+  /* Fix input focus - avoid thick black borders */
+  .input.input-bordered:focus {
+    outline: none;
+    border-color: rgb(59 130 246);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  }
+
   .hero-section-pattern {
     position: relative;
     overflow: hidden;

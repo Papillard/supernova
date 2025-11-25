@@ -1,15 +1,33 @@
 Rails.application.routes.draw do
-  get "pages/home"
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
-  # get "up" => "rails/health#show", as: :rails_health_check
-
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")
   root "pages#home"
+
+  # Devise routes with custom controllers
+  devise_for :users, controllers: {
+    sessions: 'sessions',
+    passwords: 'devise/passwords'
+  }
+
+  # Parent signup
+  devise_scope :user do
+    get 'parents/sign_up', to: 'parents/registrations#new', as: :new_parent_registration
+    post 'parents/sign_up', to: 'parents/registrations#create', as: :parent_registration
+  end
+
+  # Teacher signup
+  devise_scope :user do
+    get 'teachers/sign_up', to: 'teachers/registrations#new', as: :new_teacher_registration
+    post 'teachers/sign_up', to: 'teachers/registrations#create', as: :teacher_registration
+  end
+
+  # Pages
+  get "pages/home"
+
+  # Teachers listing (placeholder)
+  get "teachers", to: "teachers#index", as: :teachers
+
+  # Teacher dashboard (placeholder)
+  get "dashboard/teacher", to: "dashboard/teachers#show", as: :dashboard_teacher
+
 end

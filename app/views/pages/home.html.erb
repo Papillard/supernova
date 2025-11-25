@@ -12,7 +12,7 @@
         <%= link_to "Parents", "/parents", class: "text-sm font-medium text-gray-600 hover:text-gray-900" %>
         <%= link_to "Professeurs", "/profs", class: "text-sm font-medium text-gray-600 hover:text-gray-900" %>
         <%= link_to "FAQ", "/faq", class: "text-sm font-medium text-gray-600 hover:text-gray-900" %>
-        <%= link_to "/teachers",
+        <%= link_to (user_signed_in? ? teachers_path : new_user_session_path),
             class: "btn btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white rounded-lg",
             "aria-label": "Voir les professeurs certifiés" do %>
           Voir les professeurs
@@ -30,7 +30,7 @@
             <li><%= link_to "Professeurs", "/profs", class: "text-sm text-gray-700 hover:text-blue-600" %></li>
             <li><%= link_to "FAQ", "/faq", class: "text-sm text-gray-700 hover:text-blue-600" %></li>
             <li class="pt-2 border-t border-stone-200">
-              <%= link_to "/teachers",
+              <%= link_to (user_signed_in? ? teachers_path : new_user_session_path),
                   class: "btn btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white rounded-lg w-full",
                   "aria-label": "Voir les professeurs certifiés" do %>
                 Voir les professeurs
@@ -44,7 +44,7 @@
 
   <main>
     <!-- Hero -->
-    <section class="py-20 md:py-24 bg-white hero-section-pattern">
+    <section id="hero" class="py-12 md:py-16 bg-white hero-section-pattern">
       <div class="container mx-auto max-w-6xl px-6">
         <div class="grid gap-12 md:grid-cols-2 md:items-center">
           <div class="space-y-6">
@@ -58,12 +58,12 @@
             <p class="text-lg text-gray-600 leading-relaxed">Le sérieux de l’école, la proximité du cours particulier.</p>
             <p class="text-sm text-gray-500">Plus de 500 professeurs certifiés, partout en France.</p>
             <div class="flex flex-wrap gap-3">
-              <%= link_to "/parents",
+              <%= link_to new_parent_registration_path,
                   class: "btn btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white rounded-lg",
                   "aria-label": "Découvrir ProfConnect pour les parents" do %>
                 Je suis parent
               <% end %>
-              <%= link_to "/profs",
+              <%= link_to new_teacher_registration_path,
                   class: "btn bg-white border border-stone-300 text-gray-900 hover:bg-stone-50 rounded-lg",
                   "aria-label": "Rejoindre ProfConnect en tant que professeur" do %>
                 Je suis professeur
@@ -263,7 +263,7 @@
               "aria-label": "Voir la liste des professeurs disponibles" do %>
             Voir les professeurs
           <% end %>
-          <%= link_to "/profs",
+          <%= link_to new_teacher_registration_path,
               class: "btn bg-white border border-white/70 text-blue-600 hover:bg-white rounded-lg",
               "aria-label": "Je suis professeur, rejoindre ProfConnect" do %>
             Je suis professeur

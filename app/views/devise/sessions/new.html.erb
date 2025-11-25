@@ -1,0 +1,58 @@
+<div class="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full space-y-8">
+    <div class="text-center">
+      <h1 class="text-3xl font-bold text-gray-900">ProfConnect</h1>
+      <h2 class="mt-2 text-xl text-gray-600">Connexion</h2>
+    </div>
+
+    <div class="card bg-white shadow-lg">
+      <div class="card-body">
+        <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "space-y-6" }) do |f| %>
+          <%= render "devise/shared/error_messages", resource: resource %>
+
+          <div class="form-control">
+            <%= f.label :email, class: "label" do %>
+              <span class="label-text">Email</span>
+            <% end %>
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "input input-bordered w-full", placeholder: "votre@email.com" %>
+          </div>
+
+          <div class="form-control">
+            <%= f.label :password, class: "label" do %>
+              <span class="label-text">Mot de passe</span>
+            <% end %>
+            <%= f.password_field :password, autocomplete: "current-password", class: "input input-bordered w-full", placeholder: "••••••••" %>
+          </div>
+
+          <% if devise_mapping.rememberable? %>
+            <div class="form-control">
+              <label class="label cursor-pointer justify-start gap-2">
+                <%= f.check_box :remember_me, class: "checkbox checkbox-primary" %>
+                <span class="label-text">Se souvenir de moi</span>
+              </label>
+            </div>
+          <% end %>
+
+          <div class="form-control mt-6">
+            <%= f.submit "Se connecter", class: "btn btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white rounded-lg w-full" %>
+          </div>
+        <% end %>
+
+        <div class="divider">OU</div>
+
+        <div class="text-center space-y-2">
+          <p class="text-sm text-gray-600">
+            <%= link_to "Mot de passe oublié ?", new_password_path(resource_name), class: "link link-primary" %>
+          </p>
+          <p class="text-sm text-gray-600">
+            Pas encore de compte ?
+          </p>
+          <div class="flex flex-col gap-2 mt-2">
+            <%= link_to "Créer un compte parent", new_parent_registration_path, class: "btn btn-outline btn-sm" %>
+            <%= link_to "Créer un compte professeur", new_teacher_registration_path, class: "btn btn-outline btn-sm" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
