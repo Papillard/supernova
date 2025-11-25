@@ -21,45 +21,56 @@
   <body class="bg-base-100 text-base-content">
     <div class="min-h-screen flex flex-col">
       <!-- Navbar -->
-      <header class="navbar bg-white border-b border-stone-200 shadow-sm">
-        <div class="flex-1">
-          <%= link_to root_path, class: "btn btn-ghost text-xl font-bold text-blue-600" do %>
-            ProfConnect
-          <% end %>
-        </div>
-        <div class="flex-none gap-4 items-center">
-          <% if user_signed_in? %>
-            <%= link_to teachers_path, class: "btn btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white rounded-lg" do %>
-              Voir les professeurs
+      <header class="border-b border-stone-200">
+        <div class="navbar max-w-6xl mx-auto px-4 md:px-6">
+          <div class="flex-1">
+            <%= link_to root_path, class: "flex items-center space-x-2" do %>
+              <%= image_tag "logo.png", alt: "ProfConnect", style: "height: 32px; width: auto;" %>
             <% end %>
-            <div class="dropdown dropdown-end">
-              <label tabindex="0" class="btn btn-ghost">
-                <span class="text-sm text-gray-700">
-                  <%= current_user.first_name.presence || current_user.email %>
-                  <% if current_user.teacher? %>
-                    <span class="badge bg-blue-600 text-white badge-sm ml-2">Professeur</span>
-                  <% else %>
-                    <span class="badge badge-ghost badge-sm ml-2">Parent</span>
-                  <% end %>
-                </span>
-              </label>
-              <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-white rounded-box w-52 border border-stone-200">
-                <% if current_user.teacher? %>
-                  <li>
-                    <%= link_to "Mon profil", teacher_profile_path, class: "text-gray-700" %>
+          </div>
+          <div class="flex-none gap-6 items-center">
+            <% if user_signed_in? %>
+              <%= link_to "Annuaire", teachers_path, class: "text-sm font-medium text-gray-600 hover:text-gray-900 px-4" %>
+              <div class="dropdown dropdown-end">
+                <label tabindex="0" class="btn btn-ghost btn-circle">
+                  <div class="rounded-full overflow-hidden flex-shrink-0" style="width: 40px; height: 40px; background-color: #e5e7eb;">
+                    <% if current_user.first_name.present? || current_user.last_name.present? %>
+                      <div class="flex items-center justify-center text-gray-600 font-semibold text-sm" style="width: 40px; height: 40px; background-color: #e5e7eb;">
+                        <%= "#{current_user.first_name&.first || ''}#{current_user.last_name&.first || ''}".upcase %>
+                      </div>
+                    <% else %>
+                      <div class="flex items-center justify-center text-gray-600 font-semibold text-sm" style="width: 40px; height: 40px; background-color: #e5e7eb;">
+                        <%= current_user.email[0].upcase %>
+                      </div>
+                    <% end %>
+                  </div>
+                </label>
+                <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-white rounded-box w-52 border border-stone-200">
+                  <li class="px-2 py-1 text-xs text-gray-500">
+                    <%= current_user.first_name.presence || current_user.email %>
+                    <% if current_user.teacher? %>
+                      <span class="badge bg-blue-600 text-white badge-sm ml-2">Professeur</span>
+                    <% else %>
+                      <span class="badge badge-ghost badge-sm ml-2">Parent</span>
+                    <% end %>
                   </li>
-                <% end %>
-                <li>
-                  <%= button_to "Déconnexion", destroy_user_session_path, method: :delete, class: "text-red-600" %>
-                </li>
-              </ul>
-            </div>
-          <% else %>
-            <%= link_to new_user_session_path, class: "btn btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white rounded-lg" do %>
-              Voir les professeurs
+                  <% if current_user.teacher? %>
+                    <li>
+                      <%= link_to "Mon profil", teacher_profile_path, class: "text-gray-700" %>
+                    </li>
+                  <% end %>
+                  <li>
+                    <%= button_to "Déconnexion", destroy_user_session_path, method: :delete, class: "text-red-600" %>
+                  </li>
+                </ul>
+              </div>
+            <% else %>
+              <%= link_to new_user_session_path, class: "btn btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white rounded-lg" do %>
+                Voir les professeurs
+              <% end %>
+              <%= link_to "Se connecter", new_user_session_path, class: "btn btn-ghost" %>
             <% end %>
-            <%= link_to "Se connecter", new_user_session_path, class: "btn btn-ghost" %>
-          <% end %>
+          </div>
         </div>
       </header>
 

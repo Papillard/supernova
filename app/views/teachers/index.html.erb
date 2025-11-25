@@ -1,21 +1,25 @@
 <div class="container mx-auto max-w-6xl px-4 py-12">
   <div class="space-y-6">
-    <h1 class="text-4xl font-bold text-gray-900">Annuaire des professeurs</h1>
+    <h1 class="text-2xl font-bold text-gray-900 text-center">Annuaire des professeurs</h1>
 
     <!-- Filtres -->
     <div class="card bg-white shadow-sm">
       <div class="card-body">
-        <%= form_with url: teachers_path, method: :get, local: true, class: "flex flex-wrap gap-4" do |f| %>
+        <%= form_with url: teachers_path, method: :get, local: true, class: "flex flex-wrap gap-4", id: "filter-form" do |f| %>
           <div class="form-control">
-            <%= f.text_field :city, value: params[:city], placeholder: "Ville", class: "input input-bordered" %>
+            <%= f.label :level, "Niveau", class: "label" %>
+            <%= f.select :level, options_for_select([["Tous les niveaux", ""]] + TeachersHelper::LEVELS_OPTIONS, params[:level]), {}, { class: "select select-bordered", id: "level-select" } %>
           </div>
           <div class="form-control">
-            <%= f.text_field :level, value: params[:level], placeholder: "Niveau", class: "input input-bordered" %>
+            <%= f.label :subject, "Matière", class: "label" %>
+            <%= f.select :subject, options_for_select([["Toutes les matières", ""]], params[:subject]), {}, { class: "select select-bordered", id: "subject-select" } %>
           </div>
           <div class="form-control">
-            <%= f.text_field :subject, value: params[:subject], placeholder: "Matière", class: "input input-bordered" %>
+            <%= f.label :arrondissement, "Arrondissement", class: "label" %>
+            <%= f.select :arrondissement, options_for_select([["Tous les arrondissements", ""]] + (1..20).map { |n| ["#{n}ème", n] }, params[:arrondissement]), {}, { class: "select select-bordered" } %>
           </div>
           <div class="form-control">
+            <label class="label">&nbsp;</label>
             <%= f.submit "Filtrer", class: "btn btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white rounded-lg" %>
           </div>
         <% end %>
@@ -41,7 +45,7 @@
                 <% end %>
               </div>
               <div class="flex-1">
-                <h3 class="card-title text-xl"><%= teacher.display_name %></h3>
+                <h3 class="card-title text-xl"><%= teacher_short_name(teacher) %></h3>
                 <% if teacher.academy_name.present? %>
                   <p class="text-sm text-gray-600"><%= teacher.academy_name %></p>
                 <% end %>
@@ -101,3 +105,71 @@
     <% end %>
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const levelSelect = document.getElementById('level-select');
+    const subjectSelect = document.getElementById('subject-select');
+
+    // Mapping des niveaux vers les groupes de matières
+    const levelToSubjectGroups = {
+      'primaire': ['Primaire'],
+      'college': ['Tronc commun collège / lycée'],
+      'lycee': ['Tronc commun collège / lycée', 'Prépa et Supérieur'],
+      'prepa': ['Prépa et Supérieur'],
+      'autre': ['Langues et FLE']
+    };
+
+    // Toutes les matières groupées
+    const allSubjects = {
+      'Primaire': [['Toutes matières primaire', 'toutes_matieres_primaire'], ['Lecture / Écriture', 'lecture_ecriture'], ['Maths primaire', 'maths_primaire']],
+      'Tronc commun collège / lycée': [['Mathématiques', 'mathematiques'], ['Français', 'francais'], ['Anglais', 'anglais'], ['Espagnol', 'espagnol'], ['Allemand', 'allemand'], ['Italien', 'italien'], ['Physique-Chimie', 'physique-chimie'], ['SVT', 'svt'], ['Histoire-Géographie', 'histoire-geographie'], ['SES', 'ses'], ['EMC', 'emc'], ['Technologie', 'technologie'], ['SNT', 'snt'], ['NSI', 'nsi']],
+      'Prépa et Supérieur': [['Maths expertes', 'maths_expertes'], ['Maths complémentaires', 'maths_complementaires'], ['Philosophie', 'philosophie'], ['Littérature', 'litterature'], ['Géopolitique', 'geopolitique'], ['HGGSP', 'hggsp'], ['HLP', 'hlp'], ['Économie', 'economie'], ['Sciences politiques', 'sciences_politiques'], ['Droit', 'droit'], ['Comptabilité', 'comptabilite'], ['Gestion', 'gestion'], ['Finance', 'finance'], ['Marketing', 'marketing'], ['Psychologie', 'psychologie'], ['Informatique', 'informatique']],
+      'Langues et FLE': [['FLE', 'fle'], ['Anglais professionnel', 'anglais_professionnel'], ['Anglais conversation', 'anglais_conversation']]
+    };
+
+    const currentSubject = '<%= params[:subject] %>';
+
+    function updateSubjectOptions() {
+      const selectedLevel = levelSelect.value;
+      subjectSelect.innerHTML = '<option value="">Toutes les matières</option>';
+
+      if (!selectedLevel) {
+        // Si aucun niveau sélectionné, afficher toutes les matières
+        Object.values(allSubjects).flat().forEach(([label, value]) => {
+          const option = document.createElement('option');
+          option.value = value;
+          option.textContent = label;
+          if (value === currentSubject) {
+            option.selected = true;
+          }
+          subjectSelect.appendChild(option);
+        });
+        return;
+      }
+
+      // Afficher uniquement les matières correspondant au niveau
+      const groups = levelToSubjectGroups[selectedLevel] || [];
+      groups.forEach(groupName => {
+        if (allSubjects[groupName]) {
+          allSubjects[groupName].forEach(([label, value]) => {
+            const option = document.createElement('option');
+            option.value = value;
+            option.textContent = label;
+            if (value === currentSubject) {
+              option.selected = true;
+            }
+            subjectSelect.appendChild(option);
+          });
+        }
+      });
+    }
+
+    levelSelect.addEventListener('change', function() {
+      updateSubjectOptions();
+    });
+
+    // Initialiser les options au chargement
+    updateSubjectOptions();
+  });
+</script>

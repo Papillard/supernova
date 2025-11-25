@@ -94,4 +94,17 @@ module TeachersHelper
     last_initial = teacher.last_name.present? ? teacher.last_name[0].upcase : ""
     "#{first_initial}#{last_initial}"
   end
+
+  # Helper pour obtenir le nom d'affichage court (Prénom Initiale)
+  def teacher_short_name(teacher)
+    if teacher.first_name.present? && teacher.last_name.present?
+      "#{teacher.first_name} #{teacher.last_name[0].upcase}"
+    elsif teacher.first_name.present?
+      teacher.first_name
+    elsif teacher.display_name.present?
+      teacher.display_name
+    else
+      "Professeur"
+    end
+  end
 end

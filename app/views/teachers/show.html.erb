@@ -5,20 +5,20 @@
     <div class="card bg-white shadow-lg">
       <div class="card-body">
         <div class="flex items-start gap-6 mb-6">
-          <div class="w-24 h-24 rounded-full overflow-hidden flex-shrink-0" style="background-color: #e5e7eb;">
+          <div class="rounded-full overflow-hidden flex-shrink-0" style="width: 96px; height: 96px; background-color: #e5e7eb;">
             <% if @teacher.profile_image_url.present? %>
-              <%= image_tag @teacher.profile_image_url, alt: @teacher.display_name, class: "w-full h-full object-cover", style: "min-width: 96px; min-height: 96px; max-width: 96px; max-height: 96px;", onerror: "this.style.display='none'; this.nextElementSibling.style.display='flex';" %>
-              <div class="hidden w-24 h-24 flex items-center justify-center text-gray-600 font-semibold text-2xl" style="background-color: #e5e7eb;">
+              <%= image_tag @teacher.profile_image_url, alt: @teacher.display_name, class: "object-cover", style: "width: 96px; height: 96px;", onerror: "this.style.display='none'; this.nextElementSibling.style.display='flex';" %>
+              <div class="hidden flex items-center justify-center text-gray-600 font-semibold text-2xl" style="width: 96px; height: 96px; background-color: #e5e7eb;">
                 <%= teacher_initials(@teacher) %>
               </div>
             <% else %>
-              <div class="w-24 h-24 flex items-center justify-center text-gray-600 font-semibold text-2xl" style="background-color: #e5e7eb;">
+              <div class="flex items-center justify-center text-gray-600 font-semibold text-2xl" style="width: 96px; height: 96px; background-color: #e5e7eb;">
                 <%= teacher_initials(@teacher) %>
               </div>
             <% end %>
           </div>
           <div class="flex-1">
-            <h1 class="text-3xl font-bold text-gray-900"><%= @teacher.display_name %></h1>
+            <h1 class="text-3xl font-bold text-gray-900"><%= teacher_short_name(@teacher) %></h1>
             <% if @teacher.academy_name.present? %>
               <p class="text-lg text-gray-600 mt-1"><%= @teacher.academy_name %></p>
             <% end %>
