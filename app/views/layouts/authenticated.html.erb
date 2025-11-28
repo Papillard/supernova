@@ -22,7 +22,7 @@
     <div class="min-h-screen flex flex-col">
       <!-- Navbar -->
       <header class="border-b border-stone-200">
-        <div class="navbar max-w-6xl mx-auto px-4 md:px-6">
+        <div class="navbar max-w-7xl mx-auto px-4 md:px-6">
           <div class="flex-1">
             <%= link_to root_path, class: "flex items-center space-x-2" do %>
               <%= image_tag "logo.png", alt: "ProfConnect", style: "height: 32px; width: auto;" %>
@@ -42,7 +42,7 @@
       </header>
 
       <!-- Main content -->
-      <main class="flex-1">
+      <main class="flex-1" style="<%= content_for(:main_background) %>">
         <%= yield %>
       </main>
     </div>

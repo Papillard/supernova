@@ -1,0 +1,117 @@
+<% messages = request.messages.order(created_at: :asc) %>
+
+<div class="card bg-white shadow-lg h-full flex flex-col">
+  <div class="flex flex-col h-full">
+    <!-- Header du chat (fixe) -->
+    <div class="border-b border-gray-200 px-6 py-4 flex-shrink-0">
+      <h2 class="text-xl font-bold text-gray-900">Messages</h2>
+    </div>
+
+    <!-- Zone de messages (scrollable) -->
+    <div id="messages-container-<%= request.id %>" class="flex-1 overflow-y-auto px-6 py-6 space-y-6" style="height: 0;">
+      <% messages.each do |message| %>
+        <%= render "messages/message", message: message %>
+      <% end %>
+    </div>
+
+    <!-- Formulaire de message (fixe en bas) -->
+    <% if request.status == "accepted" || request.status == "pending" %>
+      <div class="border-t border-gray-200 px-6 py-4 bg-white flex-shrink-0">
+        <%= form_with model: [request, Message.new], url: request_messages_path(request), local: false, data: { turbo_frame: "messages_frame_#{request.id}" }, id: "message-form-#{request.id}", class: "flex gap-3" do |f| %>
+          <%= f.text_area :body, id: "message-body-#{request.id}", class: "flex-1 resize-none border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent", placeholder: "Tapez votre message...", rows: 2, required: true %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+  (function() {
+    function initMessageForm() {
+      const requestId = <%= request.id %>;
+      const textarea = document.getElementById('message-body-' + requestId);
+      const form = document.getElementById('message-form-' + requestId);
+      const messagesContainer = document.getElementById('messages-container-' + requestId);
+
+      // Auto-scroll initial
+      if (messagesContainer) {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+
+      // Gestion de l'envoi au clavier
+      if (textarea && form) {
+        // Retirer les anciens listeners pour éviter les doublons
+        const newTextarea = textarea.cloneNode(true);
+        textarea.parentNode.replaceChild(newTextarea, textarea);
+
+        newTextarea.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            if (newTextarea.value.trim()) {
+              form.requestSubmit();
+            }
+          }
+        });
+      }
+    }
+
+    // Initialisation au chargement et après les navigations Turbo
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initMessageForm);
+    } else {
+      initMessageForm();
+    }
+
+    document.addEventListener('turbo:load', initMessageForm);
+    document.addEventListener('turbo:frame-load', initMessageForm);
+
+    // Event listener global pour auto-scroll après ajout de message
+    document.addEventListener('turbo:before-stream-render', function(event) {
+      const detail = event.detail;
+      if (detail.render && detail.render.method === 'append') {
+        const target = detail.render.target;
+        if (target && target.id && target.id.startsWith('messages-container-')) {
+          const requestId = target.id.replace('messages-container-', '');
+          setTimeout(function() {
+            const messagesContainer = document.getElementById('messages-container-' + requestId);
+            if (messagesContainer) {
+              messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+            const textarea = document.getElementById('message-body-' + requestId);
+            if (textarea) {
+              textarea.value = '';
+              textarea.style.height = 'auto';
+            }
+          }, 10);
+        }
+      }
+    });
+
+    // Alternative: écouter les changements DOM
+    const observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.nodeType === 1 && node.hasAttribute && node.hasAttribute('data-message-sent')) {
+            const requestId = node.getAttribute('data-request-id');
+            if (requestId) {
+              setTimeout(function() {
+                const messagesContainer = document.getElementById('messages-container-' + requestId);
+                if (messagesContainer) {
+                  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                }
+                const textarea = document.getElementById('message-body-' + requestId);
+                if (textarea) {
+                  textarea.value = '';
+                  textarea.style.height = 'auto';
+                }
+                node.remove();
+              }, 10);
+            }
+          }
+        });
+      });
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+  })();
+</script>

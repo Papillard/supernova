@@ -3,7 +3,7 @@
   <% if user_signed_in? %>
     <!-- Navbar version loggé (utilise le layout authenticated) -->
     <header class="border-b border-stone-200">
-      <div class="navbar max-w-6xl mx-auto px-4 md:px-6">
+      <div class="navbar max-w-7xl mx-auto px-4 md:px-6">
         <div class="flex-1">
           <%= link_to root_path, class: "flex items-center space-x-2" do %>
             <%= image_tag "logo.png", alt: "ProfConnect", style: "height: 32px; width: auto;" %>
@@ -17,7 +17,7 @@
   <% else %>
     <!-- Navbar version non loggé -->
     <header class="border-b border-stone-200">
-      <div class="navbar max-w-6xl mx-auto px-4 md:px-6">
+      <div class="navbar max-w-7xl mx-auto px-4 md:px-6">
         <div class="flex-1">
           <%= link_to root_path, class: "flex items-center space-x-2" do %>
             <%= image_tag "logo.png", alt: "ProfConnect", style: "height: 32px; width: auto;" %>

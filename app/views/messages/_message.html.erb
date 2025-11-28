@@ -1,0 +1,59 @@
+<div id="message-<%= message.id %>">
+  <% if message.system || message.user.teacher? %>
+    <!-- Messages système ou du prof (à gauche) -->
+    <div class="flex items-start gap-3">
+      <!-- Avatar -->
+      <div class="flex-shrink-0 rounded-full overflow-hidden" style="width: 32px; height: 32px; background-color: #e5e7eb;">
+        <% if message.system %>
+          <div class="flex items-center justify-center text-gray-600 font-semibold text-xs" style="width: 32px; height: 32px; background-color: #e5e7eb;">
+            PC
+          </div>
+        <% else %>
+          <div class="flex items-center justify-center text-gray-600 font-semibold text-xs" style="width: 32px; height: 32px; background-color: #e5e7eb;">
+            <%= teacher_initials(message.user.teacher) %>
+          </div>
+        <% end %>
+      </div>
+      <!-- Message -->
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="text-sm font-semibold text-gray-900">
+            <% if message.system %>
+              ProfConnect
+            <% else %>
+              <%= message.user.teacher.display_name %>
+            <% end %>
+          </span>
+          <span class="text-xs text-gray-500"><%= message.created_at.strftime("%d/%m/%Y à %H:%M") %></span>
+        </div>
+        <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 inline-block max-w-[80%]">
+          <p class="text-gray-900 whitespace-pre-line text-sm leading-relaxed"><%= message.body %></p>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <!-- Messages du parent (à droite) -->
+    <div class="flex items-start gap-3 justify-end">
+      <!-- Message -->
+      <div class="flex-1 min-w-0 flex flex-col items-end">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="text-xs text-gray-500"><%= message.created_at.strftime("%d/%m/%Y à %H:%M") %></span>
+          <span class="text-sm font-semibold text-gray-900">Vous</span>
+        </div>
+        <div class="rounded-2xl rounded-tr-sm px-4 py-3 inline-block max-w-[80%]" style="background-color: #3F3F3F;">
+          <p class="text-white whitespace-pre-line text-sm leading-relaxed"><%= message.body %></p>
+        </div>
+      </div>
+      <!-- Avatar -->
+      <div class="flex-shrink-0 rounded-full overflow-hidden" style="width: 32px; height: 32px; background-color: #e5e7eb;">
+        <div class="flex items-center justify-center text-gray-600 font-semibold text-xs" style="width: 32px; height: 32px; background-color: #e5e7eb;">
+          <% if current_user.first_name.present? || current_user.last_name.present? %>
+            <%= "#{current_user.first_name&.first || ''}#{current_user.last_name&.first || ''}".upcase %>
+          <% else %>
+            <%= current_user.email[0].upcase %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

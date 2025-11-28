@@ -1,3 +1,5 @@
+<% content_for :main_background, "background-color: var(--color-stone-50);" %>
+
 <div class="container mx-auto max-w-4xl px-4 py-12">
   <div class="space-y-6">
     <%= link_to "← Retour à l'annuaire", teachers_path, class: "link link-primary" %>
@@ -93,12 +95,56 @@
 
         <div class="text-center mt-6">
           <p class="text-gray-600 mb-4">Intéressé(e) par ce professeur ?</p>
-          <button class="btn btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white rounded-lg" disabled>
-            Demander une mise en relation
-          </button>
-          <p class="text-sm text-gray-500 mt-2">Cette fonctionnalité sera disponible prochainement</p>
+          <% if user_signed_in? && current_user.parent? %>
+            <button onclick="request_modal.showModal()" class="btn btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white rounded-lg">
+              Demander une mise en relation
+            </button>
+          <% else %>
+            <%= link_to "Se connecter pour demander une mise en relation", new_user_session_path, class: "btn btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white rounded-lg" %>
+          <% end %>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<% if user_signed_in? && current_user.parent? %>
+  <!-- Modal pour créer une demande -->
+  <dialog id="request_modal" class="modal">
+    <div class="modal-box">
+      <h3 class="font-bold text-lg mb-4">Demander une mise en relation</h3>
+      <%= form_with url: requests_path, local: true, class: "space-y-4" do |f| %>
+        <%= hidden_field_tag :teacher_id, @teacher.id %>
+
+        <div class="form-control">
+          <%= f.label :subject, class: "label" do %>
+            <span class="label-text">Matière principale</span>
+          <% end %>
+          <%= select_tag "request[subject]", options_for_select(TeachersHelper::SUBJECTS_OPTIONS), { prompt: "Sélectionnez une matière", class: "select select-bordered w-full", required: true } %>
+        </div>
+
+        <div class="form-control">
+          <%= label_tag "request[level]", "Niveau", class: "label" do %>
+            <span class="label-text">Niveau</span>
+          <% end %>
+          <%= select_tag "request[level]", options_for_select(RequestsHelper::LEVELS_OPTIONS), { prompt: "Sélectionnez un niveau", class: "select select-bordered w-full", required: true } %>
+        </div>
+
+        <div class="form-control">
+          <%= label_tag "request[request_text]", "Description de votre besoin", class: "label" do %>
+            <span class="label-text">Description de votre besoin</span>
+          <% end %>
+          <%= text_area_tag "request[request_text]", nil, class: "textarea textarea-bordered w-full h-24", placeholder: "Décrivez brièvement votre besoin...", required: true %>
+        </div>
+
+        <div class="modal-action">
+          <button type="button" onclick="request_modal.close()" class="btn btn-ghost">Annuler</button>
+          <%= f.submit "Envoyer la demande", class: "btn btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white" %>
+        </div>
+      <% end %>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+      <button>close</button>
+    </form>
+  </dialog>
+<% end %>

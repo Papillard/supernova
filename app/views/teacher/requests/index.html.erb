@@ -1,0 +1,53 @@
+<div class="container mx-auto max-w-6xl px-4 py-8">
+  <div class="mb-6">
+    <h1 class="text-3xl font-bold text-gray-900">Demandes de mise en relation</h1>
+    <p class="text-gray-600 mt-2">Les demandes que vous avez reçues</p>
+  </div>
+
+  <% if @requests.any? %>
+    <div class="grid gap-4">
+      <% @requests.each do |request| %>
+        <div class="card bg-white shadow-md">
+          <div class="card-body">
+            <div class="flex items-start justify-between">
+              <div class="flex-1">
+                <div class="flex items-center gap-3 mb-2">
+                  <h2 class="text-xl font-semibold text-gray-900">
+                    <%= link_to "Demande ##{request.id}", teacher_request_path(request), class: "hover:text-blue-600" %>
+                  </h2>
+                  <span class="badge <%= request_status_badge_class(request.status) %>">
+                    <%= format_request_status(request.status) %>
+                  </span>
+                </div>
+                <div class="flex flex-wrap gap-2 mb-2">
+                  <span class="badge badge-sm bg-blue-100 text-blue-700 border-blue-200">
+                    <%= format_subject_tag(request.subject) %>
+                  </span>
+                  <span class="badge badge-sm bg-orange-100 text-orange-700 border-orange-200">
+                    <%= format_request_level(request.level) %>
+                  </span>
+                </div>
+                <p class="text-sm text-gray-600 line-clamp-2"><%= request.request_text %></p>
+                <div class="flex items-center gap-4 mt-3 text-xs text-gray-500">
+                  <span>Reçue le <%= request.requested_at.strftime("%d/%m/%Y à %H:%M") %></span>
+                  <% if request.last_message_at.present? %>
+                    <span>Dernier message le <%= request.last_message_at.strftime("%d/%m/%Y à %H:%M") %></span>
+                  <% end %>
+                </div>
+              </div>
+              <div class="ml-4">
+                <%= link_to "Voir", teacher_request_path(request), class: "btn btn-sm btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white" %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="card bg-white shadow-md">
+      <div class="card-body text-center py-12">
+        <p class="text-gray-600 text-lg">Vous n'avez pas encore reçu de demandes.</p>
+      </div>
+    </div>
+  <% end %>
+</div>

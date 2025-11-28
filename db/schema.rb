@@ -10,9 +10,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_25_123703) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_28_123028) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "messages", force: :cascade do |t|
+    t.bigint "request_id", null: false
+    t.bigint "user_id", null: false
+    t.text "body", null: false
+    t.boolean "system", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["request_id"], name: "index_messages_on_request_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
+  end
+
+  create_table "requests", force: :cascade do |t|
+    t.bigint "parent_id", null: false
+    t.bigint "teacher_id", null: false
+    t.string "status", default: "pending", null: false
+    t.string "subject", null: false
+    t.string "level", null: false
+    t.string "request_text", null: false
+    t.datetime "requested_at", null: false
+    t.datetime "responded_at"
+    t.datetime "last_message_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["parent_id"], name: "index_requests_on_parent_id"
+    t.index ["teacher_id"], name: "index_requests_on_teacher_id"
+  end
 
   create_table "teachers", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -67,5 +94,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_25_123703) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "messages", "requests"
+  add_foreign_key "messages", "users"
+  add_foreign_key "requests", "teachers"
+  add_foreign_key "requests", "users", column: "parent_id"
   add_foreign_key "teachers", "users"
 end

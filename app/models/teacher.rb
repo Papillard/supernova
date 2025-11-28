@@ -28,6 +28,9 @@ class Teacher < ApplicationRecord
   validates :status, presence: true
   validates :user_id, uniqueness: true
 
+  # Associations
+  has_many :requests, dependent: :destroy
+
   # Scopes
   scope :approved, -> { where(status: :approved) }
   scope :with_rgpd_consent, -> { where(rgpd_consent: true) }

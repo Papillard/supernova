@@ -1,0 +1,147 @@
+<div class="container mx-auto max-w-7xl px-4 py-8">
+  <%= link_to "← Retour aux demandes", teacher_requests_path, class: "link link-primary mb-6 inline-block" %>
+
+  <div class="flex gap-6 h-[calc(100vh-12rem)]">
+    <!-- Colonne gauche (60%) - Chat -->
+    <div class="flex-1 flex flex-col min-w-0" style="flex: 0 0 60%;">
+      <div class="card bg-white shadow-lg flex-1 flex flex-col min-h-0">
+        <div class="card-body flex-1 flex flex-col min-h-0 p-0">
+          <!-- Header du chat -->
+          <div class="border-b border-gray-200 px-6 py-4">
+            <h2 class="text-xl font-bold text-gray-900">Messages</h2>
+          </div>
+
+          <!-- Zone de messages (scrollable) -->
+          <div class="flex-1 overflow-y-auto px-6 py-6 space-y-6">
+            <% @messages.each do |message| %>
+              <% if message.system || message.user.teacher? %>
+                <!-- Messages système ou du prof (à droite) -->
+                <div class="flex items-start gap-3 justify-end">
+                  <!-- Message -->
+                  <div class="flex-1 min-w-0 flex flex-col items-end">
+                    <div class="flex items-center gap-2 mb-1">
+                      <span class="text-xs text-gray-500"><%= message.created_at.strftime("%d/%m/%Y à %H:%M") %></span>
+                      <span class="text-sm font-semibold text-gray-900">
+                        <% if message.system %>
+                          ProfConnect
+                        <% else %>
+                          Vous
+                        <% end %>
+                      </span>
+                    </div>
+                    <div class="rounded-2xl rounded-tr-sm px-4 py-3 inline-block max-w-[80%]" style="background-color: #3F3F3F;">
+                      <p class="text-white whitespace-pre-line text-sm leading-relaxed"><%= message.body %></p>
+                    </div>
+                  </div>
+                  <!-- Avatar -->
+                  <div class="flex-shrink-0 rounded-full overflow-hidden" style="width: 32px; height: 32px; background-color: #e5e7eb;">
+                    <div class="flex items-center justify-center text-gray-600 font-semibold text-xs" style="width: 32px; height: 32px; background-color: #e5e7eb;">
+                      <% if message.system %>
+                        PC
+                      <% else %>
+                        <% if current_user.first_name.present? || current_user.last_name.present? %>
+                          <%= "#{current_user.first_name&.first || ''}#{current_user.last_name&.first || ''}".upcase %>
+                        <% else %>
+                          <%= current_user.email[0].upcase %>
+                        <% end %>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+              <% else %>
+                <!-- Messages du parent (à gauche) -->
+                <div class="flex items-start gap-3">
+                  <!-- Avatar -->
+                  <div class="flex-shrink-0 rounded-full overflow-hidden" style="width: 32px; height: 32px; background-color: #e5e7eb;">
+                    <div class="flex items-center justify-center text-gray-600 font-semibold text-xs" style="width: 32px; height: 32px; background-color: #e5e7eb;">
+                      <% if message.user.first_name.present? || message.user.last_name.present? %>
+                        <%= "#{message.user.first_name&.first || ''}#{message.user.last_name&.first || ''}".upcase %>
+                      <% else %>
+                        <%= message.user.email[0].upcase %>
+                      <% end %>
+                    </div>
+                  </div>
+                  <!-- Message -->
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-1">
+                      <span class="text-sm font-semibold text-gray-900">Parent</span>
+                      <span class="text-xs text-gray-500"><%= message.created_at.strftime("%d/%m/%Y à %H:%M") %></span>
+                    </div>
+                    <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 inline-block max-w-[80%]">
+                      <p class="text-gray-900 whitespace-pre-line text-sm leading-relaxed"><%= message.body %></p>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+
+          <!-- Formulaire de message (sticky en bas) -->
+          <% if @request.status == "accepted" || @request.status == "pending" %>
+            <div class="border-t border-gray-200 px-6 py-4 bg-white sticky bottom-0">
+              <%= form_with model: [@request, Message.new], url: teacher_request_messages_path(@request), local: true, class: "flex gap-3" do |f| %>
+                <%= f.text_area :body, class: "flex-1 resize-none border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent", placeholder: "Tapez votre message...", rows: 2, required: true %>
+                <%= f.submit "Envoyer", class: "px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors self-end" %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Colonne droite (40%) - Résumé de la demande -->
+    <div class="flex-shrink-0" style="flex: 0 0 40%;">
+      <div class="card bg-white shadow-lg h-full">
+        <div class="card-body">
+          <div class="flex items-center justify-between mb-6">
+            <h1 class="text-2xl font-bold text-gray-900">Demande de mise en relation</h1>
+            <span class="badge <%= request_status_badge_class(@request.status) %> badge-lg">
+              <%= format_request_status(@request.status) %>
+            </span>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="space-y-6">
+            <div>
+              <h3 class="text-sm font-semibold text-gray-500 uppercase mb-2">Matière</h3>
+              <p class="text-lg text-gray-900"><%= format_subject_tag(@request.subject) %></p>
+            </div>
+
+            <div>
+              <h3 class="text-sm font-semibold text-gray-500 uppercase mb-2">Niveau</h3>
+              <p class="text-lg text-gray-900"><%= format_request_level(@request.level) %></p>
+            </div>
+
+            <div>
+              <h3 class="text-sm font-semibold text-gray-500 uppercase mb-2">Demande du parent</h3>
+              <p class="text-gray-700 whitespace-pre-line leading-relaxed"><%= @request.request_text %></p>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="text-sm text-gray-500 space-y-1">
+              <p><strong>Reçue le</strong> <%= @request.requested_at.strftime("%d/%m/%Y à %H:%M") %></p>
+              <% if @request.responded_at.present? %>
+                <p><strong>Répondu le</strong> <%= @request.responded_at.strftime("%d/%m/%Y à %H:%M") %></p>
+              <% end %>
+            </div>
+
+            <!-- Actions (uniquement si pending) -->
+            <% if @request.status == "pending" %>
+              <div class="divider"></div>
+              <div class="flex flex-col gap-3">
+                <%= form_with url: accept_teacher_request_path(@request), method: :patch, local: true, class: "w-full" do |f| %>
+                  <%= f.submit "Accepter la demande", class: "btn btn-success bg-green-600 hover:bg-green-700 border-green-600 text-white w-full" %>
+                <% end %>
+                <%= form_with url: decline_teacher_request_path(@request), method: :patch, local: true, class: "w-full" do |f| %>
+                  <%= f.submit "Refuser la demande", class: "btn btn-error bg-red-600 hover:bg-red-700 border-red-600 text-white w-full" %>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

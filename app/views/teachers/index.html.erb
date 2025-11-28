@@ -1,9 +1,11 @@
+<% content_for :main_background, "background-color: var(--color-stone-50);" %>
+
 <div class="container mx-auto max-w-6xl px-4 py-12">
   <div class="space-y-6">
     <!-- Filtres -->
     <div class="card bg-white shadow-sm">
       <div class="card-body">
-        <h1 class="text-xl font-bold text-gray-900 mb-4">Trouvez le bon professeur</h1>
+        <h1 class="text-2xl font-bold text-gray-900 mb-4">Trouvez le bon professeur</h1>
         <%= form_with url: teachers_path, method: :get, local: true,
             data: { controller: "form", turbo_frame: "teachers_list", turbo_action: "replace" },
             class: "flex flex-wrap gap-4 items-end" do |f| %>

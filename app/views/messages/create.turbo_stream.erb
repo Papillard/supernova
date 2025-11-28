@@ -1,0 +1,5 @@
+<%= turbo_stream.append "messages-container-#{@request.id}", partial: "messages/message", locals: { message: @message } %>
+
+<%= turbo_stream.append "messages-container-#{@request.id}" do %>
+  <div data-message-sent="true" data-request-id="<%= @request.id %>" style="display: none;"></div>
+<% end %>
