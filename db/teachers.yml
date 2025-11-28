@@ -13,7 +13,7 @@ teachers:
     academy_name: "Paris"
 
     levels: ["college", "lycee"]
-    subjects: ["histoire-geographie", "emc", "hggsp"]
+    subjects: ["histoire-geographie", "hggsp", "emc"]
     teaching_formats: ["at_student_home", "at_teacher_home", "online"]
 
     pricing_text: "50 € si déplacement au domicile de l’élève"
@@ -101,7 +101,7 @@ teachers:
     academy_name: "Paris"
 
     levels: ["lycee"]
-    subjects: ["histoire-geographie", "geopolitique", "sciences-politiques"]
+    subjects: ["histoire-geographie", "hggsp", "geopolitique", "sciences_politiques"]
     teaching_formats: ["at_student_home", "at_teacher_home"]
 
     pricing_text: "45–60 €"
@@ -143,7 +143,7 @@ teachers:
     academy_name: "Paris"
 
     levels: ["college", "lycee"]
-    subjects: ["portugais", "histoire-geographie"]
+    subjects: ["histoire-geographie", "hggsp"]
     teaching_formats: ["online"]
 
     pricing_text: "50 €"
@@ -311,7 +311,7 @@ teachers:
     academy_name: "Versailles"
 
     levels: ["college"]
-    subjects: ["histoire-geographie"]
+    subjects: ["histoire-geographie", "hggsp"]
     teaching_formats: ["at_student_home", "online"]
 
     pricing_text: "50–60 €"
@@ -437,7 +437,7 @@ teachers:
     academy_name: "Paris"
 
     levels: ["lycee"]
-    subjects: ["histoire-geographie", "emc", "hggsp"]
+    subjects: ["histoire-geographie", "hggsp", "emc"]
     teaching_formats: ["online", "at_student_home"]
 
     pricing_text: "50 €"
@@ -479,7 +479,7 @@ teachers:
     academy_name: "Paris"
 
     levels: ["college"]
-    subjects: ["histoire-geographie", "emc"]
+    subjects: ["histoire-geographie", "hggsp", "emc"]
     teaching_formats: ["online"]
 
     pricing_text: "60 €"
@@ -563,7 +563,7 @@ teachers:
     academy_name: "Versailles"
 
     levels: ["college"]
-    subjects: ["education-musicale"]
+    subjects: []
     teaching_formats: ["online"]
 
     pricing_text: "40 €"
@@ -647,7 +647,7 @@ teachers:
     academy_name: "Creteil"
 
     levels: ["primaire"]
-    subjects: ["toutes-matieres-primaire"]
+    subjects: ["lecture_ecriture"]
     teaching_formats: ["online"]
 
     pricing_text: "50 €"
@@ -731,7 +731,7 @@ teachers:
     academy_name: "Paris"
 
     levels: ["college", "lycee"]
-    subjects: ["histoire-geographie", "geopolitique"]
+    subjects: ["histoire-geographie", "hggsp", "geopolitique"]
     teaching_formats: ["at_student_home", "at_teacher_home", "online"]
 
     pricing_text: "30 à 50 €"
@@ -857,7 +857,7 @@ teachers:
     academy_name: "Normandie"
 
     levels: ["lycee", "bts"]
-    subjects: ["biotechnologies", "biologie", "biologie-medicale"]
+    subjects: []
     teaching_formats: ["online"]
 
     pricing_text: "40 €"
@@ -1025,7 +1025,7 @@ teachers:
     academy_name: "Bordeaux"
 
     levels: ["college"]
-    subjects: ["histoire-geographie"]
+    subjects: ["histoire-geographie", "hggsp"]
     teaching_formats: ["at_student_home", "online"]
 
     pricing_text: "50 €"
@@ -1067,7 +1067,7 @@ teachers:
     academy_name: "Paris"
 
     levels: ["college", "lycee"]
-    subjects: ["lettres-modernes", "hlp"]
+    subjects: ["litterature", "hlp"]
     teaching_formats: ["at_student_home", "at_teacher_home"]
 
     pricing_text: "80 €"
@@ -1153,7 +1153,7 @@ teachers:
     academy_name: "Bordeaux"
 
     levels: ["college"]
-    subjects: ["francais", "fle"]
+    subjects: ["francais"]
     teaching_formats: ["at_student_home", "online"]
 
     pricing_text: "50 €"

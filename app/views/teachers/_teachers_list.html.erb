@@ -1,0 +1,81 @@
+<div class="text-sm text-gray-400 mb-4">
+  <%= @teachers.count %> professeur<%= @teachers.count > 1 ? "s" : "" %> trouvé<%= @teachers.count > 1 ? "s" : "" %>
+</div>
+
+<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+  <% @teachers.each do |teacher| %>
+    <div class="card bg-white shadow-sm hover:shadow-md transition">
+      <div class="card-body">
+        <div class="flex items-start gap-4 mb-4">
+          <div class="rounded-full overflow-hidden flex-shrink-0" style="width: 64px; height: 64px; background-color: #e5e7eb;">
+            <% if teacher.profile_image_url.present? %>
+              <%= image_tag teacher.profile_image_url, alt: teacher.display_name, class: "object-cover", style: "width: 64px; height: 64px;", onerror: "this.style.display='none'; this.nextElementSibling.style.display='flex';" %>
+              <div class="hidden flex items-center justify-center text-gray-600 font-semibold text-lg" style="width: 64px; height: 64px; background-color: #e5e7eb;">
+                <%= teacher_initials(teacher) %>
+              </div>
+            <% else %>
+              <div class="flex items-center justify-center text-gray-600 font-semibold text-lg" style="width: 64px; height: 64px; background-color: #e5e7eb;">
+                <%= teacher_initials(teacher) %>
+              </div>
+            <% end %>
+          </div>
+          <div class="flex-1">
+            <h3 class="card-title text-xl"><%= teacher_short_name(teacher) %></h3>
+            <% if teacher.academy_name.present? %>
+              <p class="text-sm text-gray-600"><%= teacher.academy_name %></p>
+            <% end %>
+            <% if teacher.career_status.present? %>
+              <p class="text-xs text-gray-500 mt-1"><%= teacher.career_status.humanize %></p>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap gap-2 mt-2">
+          <% if teacher.levels.present? %>
+            <% teacher.levels.each do |level| %>
+              <span class="badge badge-sm bg-orange-100 text-orange-700 border-orange-200"><%= format_level_tag(level) %></span>
+            <% end %>
+          <% end %>
+          <% if teacher.subjects_tags.present? %>
+            <% teacher.subjects_tags.first(4).each do |tag| %>
+              <span class="badge badge-sm bg-blue-100 text-blue-700 border-blue-200"><%= format_subject_tag(tag) %></span>
+            <% end %>
+            <% if teacher.subjects_tags.length > 4 %>
+              <span class="badge badge-sm bg-blue-100 text-blue-700 border-blue-200">+<%= teacher.subjects_tags.length - 4 %></span>
+            <% end %>
+          <% end %>
+        </div>
+
+        <div class="mt-4 space-y-2">
+          <% if teacher.base_city.present? %>
+            <p class="text-sm text-gray-600">
+              <span class="font-semibold">📍</span> <%= teacher.base_city %>
+              <% if teacher.base_zip_code.present? %>
+                (<%= teacher.base_zip_code %>)
+              <% end %>
+            </p>
+          <% end %>
+          <% if teacher.pricing_text.present? %>
+            <p class="text-sm font-semibold text-blue-600"><%= teacher.pricing_text %></p>
+          <% end %>
+        </div>
+
+        <% if teacher.support_text.present? %>
+          <p class="text-gray-600 mt-4 line-clamp-3 text-sm"><%= truncate(teacher.support_text, length: 120) %></p>
+        <% end %>
+
+        <div class="card-actions justify-end mt-4">
+          <%= link_to "Voir le profil", teacher_path(teacher),
+              class: "btn btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white rounded-lg btn-sm",
+              data: { turbo_frame: "_top" } %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<% if @teachers.empty? %>
+  <div class="text-center py-12">
+    <p class="text-gray-600">Aucun professeur disponible pour le moment.</p>
+  </div>
+<% end %>

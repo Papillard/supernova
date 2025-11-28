@@ -97,3 +97,4 @@ class TeacherProfileTest < ApplicationSystemTestCase
     assert_current_path teacher_profile_path
   end
 end
+

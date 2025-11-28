@@ -95,7 +95,7 @@
                 <span class="label-text">Niveaux</span>
               <% end %>
               <div class="grid grid-cols-2 md:grid-cols-4 gap-2 p-4 border border-stone-300 rounded-lg bg-base-100">
-                <% TeachersHelper::LEVELS_OPTIONS.each do |label, value| %>
+                <% TeachersHelper::LEVELS_OPTIONS.reject { |_, value| value == "autre" }.each do |label, value| %>
                   <label class="flex items-center gap-2 cursor-pointer p-2 rounded hover:bg-base-200 transition">
                     <%= check_box_tag "teacher[levels][]", value, @teacher.levels&.include?(value), { id: "teacher_levels_#{value.parameterize}", class: "checkbox checkbox-primary checkbox-sm level-checkbox", data: { level: value } } %>
                     <span class="text-sm"><%= label %></span>
@@ -108,27 +108,12 @@
               <%= f.label :subjects_tags, class: "label" do %>
                 <span class="label-text">Matières</span>
               <% end %>
-              <div class="space-y-4 p-4 border border-stone-300 rounded-lg bg-base-100 max-h-96 overflow-y-auto" id="subjects-container">
-                <% TeachersHelper::SUBJECTS_OPTIONS_GROUPED.each do |section_name, options| %>
-                  <% section_id = section_name.parameterize %>
-                  <% visible_for = case section_name
-                    when "Primaire" then ["primaire"]
-                    when "Tronc commun collège / lycée" then ["college", "lycee"]
-                    when "Prépa et Supérieur" then ["lycee", "prepa"]
-                    when "Langues et FLE" then ["autre"] # Sera géré spécialement en JS
-                    else []
-                  end %>
-                  <div class="space-y-2 subject-section" data-section="<%= section_id %>" data-visible-for="<%= visible_for.join(',') %>">
-                    <h4 class="text-sm font-semibold text-gray-700 border-b border-stone-200 pb-1"><%= section_name %></h4>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
-                      <% options.each do |label, value| %>
-                        <label class="flex items-center gap-2 cursor-pointer p-2 rounded hover:bg-base-200 transition">
-                          <%= check_box_tag "teacher[subjects_tags][]", value, @teacher.subjects_tags&.include?(value), { id: "teacher_subjects_tags_#{value.parameterize}", class: "checkbox checkbox-primary checkbox-sm" } %>
-                          <span class="text-sm"><%= label %></span>
-                        </label>
-                      <% end %>
-                    </div>
-                  </div>
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-2 p-4 border border-stone-300 rounded-lg bg-base-100 max-h-96 overflow-y-auto" id="subjects-container">
+                <% TeachersHelper::SUBJECTS_OPTIONS.each do |label, value| %>
+                  <label class="flex items-center gap-2 cursor-pointer p-2 rounded hover:bg-base-200 transition">
+                    <%= check_box_tag "teacher[subjects_tags][]", value, @teacher.subjects_tags&.include?(value), { id: "teacher_subjects_tags_#{value.parameterize}", class: "checkbox checkbox-primary checkbox-sm" } %>
+                    <span class="text-sm"><%= label %></span>
+                  </label>
                 <% end %>
               </div>
               <%= hidden_field_tag "teacher[subjects_tags][]", "" %>
@@ -315,44 +300,3 @@
     <% end %>
   </div>
 </div>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const levelCheckboxes = document.querySelectorAll('.level-checkbox');
-    const subjectSections = document.querySelectorAll('.subject-section');
-
-    function updateVisibleSubjects() {
-      const selectedLevels = Array.from(levelCheckboxes)
-        .filter(cb => cb.checked)
-        .map(cb => cb.dataset.level);
-
-      const hasOther = selectedLevels.includes('autre');
-      const hasNoSelection = selectedLevels.length === 0;
-
-      subjectSections.forEach(section => {
-        const sectionId = section.dataset.section;
-        const visibleFor = section.dataset.visibleFor.split(',').filter(v => v);
-
-        let shouldShow;
-
-        // Cas spécial pour "Langues et FLE"
-        if (sectionId === 'langues-et-fle') {
-          shouldShow = hasNoSelection || hasOther;
-        } else {
-          // Pour les autres sections : afficher si aucun niveau sélectionné ou si le niveau correspond
-          shouldShow = hasNoSelection ||
-                       selectedLevels.some(level => visibleFor.includes(level));
-        }
-
-        section.style.display = shouldShow ? 'block' : 'none';
-      });
-    }
-
-    levelCheckboxes.forEach(checkbox => {
-      checkbox.addEventListener('change', updateVisibleSubjects);
-    });
-
-    // Initial update
-    updateVisibleSubjects();
-  });
-</script>

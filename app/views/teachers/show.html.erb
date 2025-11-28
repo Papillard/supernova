@@ -31,22 +31,20 @@
           </div>
         </div>
 
-        <% if @teacher.subjects_tags.present? %>
-          <div class="flex flex-wrap gap-2 mb-6">
-            <% @teacher.subjects_tags.each do |tag| %>
-              <span class="badge badge-ghost"><%= tag.humanize %></span>
+        <div class="flex flex-wrap gap-2 mb-6">
+          <% if @teacher.levels.present? %>
+            <% @teacher.levels.each do |level| %>
+              <span class="badge badge-sm bg-orange-100 text-orange-700 border-orange-200"><%= format_level_tag(level) %></span>
             <% end %>
-          </div>
-        <% end %>
+          <% end %>
+          <% if @teacher.subjects_tags.present? %>
+            <% @teacher.subjects_tags.each do |tag| %>
+              <span class="badge badge-sm bg-blue-100 text-blue-700 border-blue-200"><%= format_subject_tag(tag) %></span>
+            <% end %>
+          <% end %>
+        </div>
 
         <div class="divider"></div>
-
-        <% if @teacher.levels.present? %>
-          <div class="mb-4">
-            <h3 class="font-semibold text-gray-900 mb-2">Niveaux enseignés</h3>
-            <p class="text-gray-600"><%= @teacher.levels.join(", ") %></p>
-          </div>
-        <% end %>
 
         <% if @teacher.teaching_formats.present? %>
           <div class="mb-4">

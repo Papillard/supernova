@@ -113,3 +113,4 @@ class TeachersAnnuaireTest < ApplicationSystemTestCase
     assert_no_text "0612345678"
   end
 end
+

@@ -10,40 +10,7 @@
           <% end %>
         </div>
         <div class="flex-none gap-6 items-center">
-          <%= link_to "Annuaire", teachers_path, class: "text-sm font-medium text-gray-600 hover:text-gray-900 px-4" %>
-          <div class="dropdown dropdown-end">
-            <label tabindex="0" class="btn btn-ghost btn-circle">
-              <div class="rounded-full overflow-hidden flex-shrink-0" style="width: 40px; height: 40px; background-color: #e5e7eb;">
-                <% if current_user.first_name.present? || current_user.last_name.present? %>
-                  <div class="flex items-center justify-center text-gray-600 font-semibold text-sm" style="width: 40px; height: 40px; background-color: #e5e7eb;">
-                    <%= "#{current_user.first_name&.first || ''}#{current_user.last_name&.first || ''}".upcase %>
-                  </div>
-                <% else %>
-                  <div class="flex items-center justify-center text-gray-600 font-semibold text-sm" style="width: 40px; height: 40px; background-color: #e5e7eb;">
-                    <%= current_user.email[0].upcase %>
-                  </div>
-                <% end %>
-              </div>
-            </label>
-            <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-white rounded-box w-52 border border-stone-200">
-              <li class="px-2 py-1 text-xs text-gray-500">
-                <%= current_user.first_name.presence || current_user.email %>
-                <% if current_user.teacher? %>
-                  <span class="badge bg-blue-600 text-white badge-sm ml-2">Professeur</span>
-                <% else %>
-                  <span class="badge badge-ghost badge-sm ml-2">Parent</span>
-                <% end %>
-              </li>
-              <% if current_user.teacher? %>
-                <li>
-                  <%= link_to "Mon profil", teacher_profile_path, class: "text-gray-700" %>
-                </li>
-              <% end %>
-              <li>
-                <%= button_to "Déconnexion", destroy_user_session_path, method: :delete, class: "text-red-600" %>
-              </li>
-            </ul>
-          </div>
+          <%= render "shared/navbar_logged_in" %>
         </div>
       </div>
     </header>

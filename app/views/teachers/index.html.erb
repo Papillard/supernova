@@ -1,175 +1,48 @@
 <div class="container mx-auto max-w-6xl px-4 py-12">
   <div class="space-y-6">
-    <h1 class="text-2xl font-bold text-gray-900 text-center">Annuaire des professeurs</h1>
-
     <!-- Filtres -->
     <div class="card bg-white shadow-sm">
       <div class="card-body">
-        <%= form_with url: teachers_path, method: :get, local: true, class: "flex flex-wrap gap-4", id: "filter-form" do |f| %>
-          <div class="form-control">
+        <h1 class="text-xl font-bold text-gray-900 mb-4">Trouvez le bon professeur</h1>
+        <%= form_with url: teachers_path, method: :get, local: true,
+            data: { controller: "form", turbo_frame: "teachers_list", turbo_action: "replace" },
+            class: "flex flex-wrap gap-4 items-end" do |f| %>
+          <div class="form-control flex-1 min-w-[200px]">
             <%= f.label :level, "Niveau", class: "label" %>
-            <%= f.select :level, options_for_select([["Tous les niveaux", ""]] + TeachersHelper::LEVELS_OPTIONS, params[:level]), {}, { class: "select select-bordered", id: "level-select" } %>
+            <%= f.select :level, options_for_select([["Tous les niveaux", ""]] + TeachersHelper::LEVELS_OPTIONS, params[:level]), {},
+                { class: "select select-bordered w-full",
+                  data: { action: "change->form#submit" } } %>
           </div>
-          <div class="form-control">
+          <div class="form-control flex-1 min-w-[200px]">
             <%= f.label :subject, "Matière", class: "label" %>
-            <%= f.select :subject, options_for_select([["Toutes les matières", ""]], params[:subject]), {}, { class: "select select-bordered", id: "subject-select" } %>
+            <%= f.select :subject, options_for_select([["Toutes les matières", ""]] + TeachersHelper::SUBJECTS_OPTIONS, params[:subject]), {},
+                { class: "select select-bordered w-full",
+                  data: { action: "change->form#submit" } } %>
           </div>
-          <div class="form-control">
-            <%= f.label :arrondissement, "Arrondissement", class: "label" %>
-            <%= f.select :arrondissement, options_for_select([["Tous les arrondissements", ""]] + (1..20).map { |n| ["#{n}ème", n] }, params[:arrondissement]), {}, { class: "select select-bordered" } %>
+          <div class="form-control flex-1 min-w-[200px]">
+            <%= f.label :city, "Ville", class: "label" %>
+            <%= f.select :city, options_for_select(TeachersHelper::CITIES_OPTIONS, params[:city]), {},
+                { class: "select select-bordered w-full",
+                  data: { action: "change->form#submit" } } %>
           </div>
-          <div class="form-control">
-            <label class="label">&nbsp;</label>
-            <%= f.submit "Filtrer", class: "btn btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white rounded-lg" %>
+          <div class="form-control flex-1 min-w-[200px]">
+            <%= f.label :format, "Format", class: "label" %>
+            <%= f.select :format, options_for_select([
+              ["Tous les formats", ""],
+              ["Au domicile de l'élève", "at_student_home"],
+              ["Au domicile du professeur", "at_teacher_home"],
+              ["Online", "online"]
+            ], params[:format]), {},
+                { class: "select select-bordered w-full",
+                  data: { action: "change->form#submit" } } %>
           </div>
         <% end %>
       </div>
     </div>
 
-    <!-- Liste des professeurs -->
-    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      <% @teachers.each do |teacher| %>
-        <div class="card bg-white shadow-sm hover:shadow-md transition">
-          <div class="card-body">
-            <div class="flex items-start gap-4 mb-4">
-              <div class="rounded-full overflow-hidden flex-shrink-0" style="width: 64px; height: 64px; background-color: #e5e7eb;">
-                <% if teacher.profile_image_url.present? %>
-                  <%= image_tag teacher.profile_image_url, alt: teacher.display_name, class: "object-cover", style: "width: 64px; height: 64px;", onerror: "this.style.display='none'; this.nextElementSibling.style.display='flex';" %>
-                  <div class="hidden flex items-center justify-center text-gray-600 font-semibold text-lg" style="width: 64px; height: 64px; background-color: #e5e7eb;">
-                    <%= teacher_initials(teacher) %>
-                  </div>
-                <% else %>
-                  <div class="flex items-center justify-center text-gray-600 font-semibold text-lg" style="width: 64px; height: 64px; background-color: #e5e7eb;">
-                    <%= teacher_initials(teacher) %>
-                  </div>
-                <% end %>
-              </div>
-              <div class="flex-1">
-                <h3 class="card-title text-xl"><%= teacher_short_name(teacher) %></h3>
-                <% if teacher.academy_name.present? %>
-                  <p class="text-sm text-gray-600"><%= teacher.academy_name %></p>
-                <% end %>
-                <% if teacher.career_status.present? %>
-                  <p class="text-xs text-gray-500 mt-1"><%= teacher.career_status.humanize %></p>
-                <% end %>
-              </div>
-            </div>
-
-            <% if teacher.subjects_tags.present? %>
-              <div class="flex flex-wrap gap-2 mt-2">
-                <% teacher.subjects_tags.first(4).each do |tag| %>
-                  <span class="badge badge-ghost badge-sm"><%= tag.humanize %></span>
-                <% end %>
-                <% if teacher.subjects_tags.length > 4 %>
-                  <span class="badge badge-ghost badge-sm">+<%= teacher.subjects_tags.length - 4 %></span>
-                <% end %>
-              </div>
-            <% end %>
-
-            <div class="mt-4 space-y-2">
-              <% if teacher.levels.present? %>
-                <p class="text-sm text-gray-600">
-                  <span class="font-semibold">Niveaux:</span>
-                  <%= teacher.levels.map { |l| l.humanize }.join(", ") %>
-                </p>
-              <% end %>
-              <% if teacher.base_city.present? %>
-                <p class="text-sm text-gray-600">
-                  <span class="font-semibold">📍</span> <%= teacher.base_city %>
-                  <% if teacher.base_zip_code.present? %>
-                    (<%= teacher.base_zip_code %>)
-                  <% end %>
-                </p>
-              <% end %>
-              <% if teacher.pricing_text.present? %>
-                <p class="text-sm font-semibold text-blue-600"><%= teacher.pricing_text %></p>
-              <% end %>
-            </div>
-
-            <% if teacher.support_text.present? %>
-              <p class="text-gray-600 mt-4 line-clamp-3 text-sm"><%= truncate(teacher.support_text, length: 120) %></p>
-            <% end %>
-
-            <div class="card-actions justify-end mt-4">
-              <%= link_to "Voir le profil", teacher_path(teacher), class: "btn btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white rounded-lg btn-sm" %>
-            </div>
-          </div>
-        </div>
-      <% end %>
-    </div>
-
-    <% if @teachers.empty? %>
-      <div class="text-center py-12">
-        <p class="text-gray-600">Aucun professeur disponible pour le moment.</p>
-      </div>
+    <!-- Liste des professeurs dans un Turbo Frame -->
+    <%= turbo_frame_tag "teachers_list" do %>
+      <%= render "teachers_list" %>
     <% end %>
   </div>
 </div>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const levelSelect = document.getElementById('level-select');
-    const subjectSelect = document.getElementById('subject-select');
-
-    // Mapping des niveaux vers les groupes de matières
-    const levelToSubjectGroups = {
-      'primaire': ['Primaire'],
-      'college': ['Tronc commun collège / lycée'],
-      'lycee': ['Tronc commun collège / lycée', 'Prépa et Supérieur'],
-      'prepa': ['Prépa et Supérieur'],
-      'autre': ['Langues et FLE']
-    };
-
-    // Toutes les matières groupées
-    const allSubjects = {
-      'Primaire': [['Toutes matières primaire', 'toutes_matieres_primaire'], ['Lecture / Écriture', 'lecture_ecriture'], ['Maths primaire', 'maths_primaire']],
-      'Tronc commun collège / lycée': [['Mathématiques', 'mathematiques'], ['Français', 'francais'], ['Anglais', 'anglais'], ['Espagnol', 'espagnol'], ['Allemand', 'allemand'], ['Italien', 'italien'], ['Physique-Chimie', 'physique-chimie'], ['SVT', 'svt'], ['Histoire-Géographie', 'histoire-geographie'], ['SES', 'ses'], ['EMC', 'emc'], ['Technologie', 'technologie'], ['SNT', 'snt'], ['NSI', 'nsi']],
-      'Prépa et Supérieur': [['Maths expertes', 'maths_expertes'], ['Maths complémentaires', 'maths_complementaires'], ['Philosophie', 'philosophie'], ['Littérature', 'litterature'], ['Géopolitique', 'geopolitique'], ['HGGSP', 'hggsp'], ['HLP', 'hlp'], ['Économie', 'economie'], ['Sciences politiques', 'sciences_politiques'], ['Droit', 'droit'], ['Comptabilité', 'comptabilite'], ['Gestion', 'gestion'], ['Finance', 'finance'], ['Marketing', 'marketing'], ['Psychologie', 'psychologie'], ['Informatique', 'informatique']],
-      'Langues et FLE': [['FLE', 'fle'], ['Anglais professionnel', 'anglais_professionnel'], ['Anglais conversation', 'anglais_conversation']]
-    };
-
-    const currentSubject = '<%= params[:subject] %>';
-
-    function updateSubjectOptions() {
-      const selectedLevel = levelSelect.value;
-      subjectSelect.innerHTML = '<option value="">Toutes les matières</option>';
-
-      if (!selectedLevel) {
-        // Si aucun niveau sélectionné, afficher toutes les matières
-        Object.values(allSubjects).flat().forEach(([label, value]) => {
-          const option = document.createElement('option');
-          option.value = value;
-          option.textContent = label;
-          if (value === currentSubject) {
-            option.selected = true;
-          }
-          subjectSelect.appendChild(option);
-        });
-        return;
-      }
-
-      // Afficher uniquement les matières correspondant au niveau
-      const groups = levelToSubjectGroups[selectedLevel] || [];
-      groups.forEach(groupName => {
-        if (allSubjects[groupName]) {
-          allSubjects[groupName].forEach(([label, value]) => {
-            const option = document.createElement('option');
-            option.value = value;
-            option.textContent = label;
-            if (value === currentSubject) {
-              option.selected = true;
-            }
-            subjectSelect.appendChild(option);
-          });
-        }
-      });
-    }
-
-    levelSelect.addEventListener('change', function() {
-      updateSubjectOptions();
-    });
-
-    // Initialiser les options au chargement
-    updateSubjectOptions();
-  });
-</script>

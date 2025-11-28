@@ -14,10 +14,14 @@ class TeachersController < ApplicationController
       @teachers = @teachers.where("? = ANY(subjects_tags)", params[:subject])
     end
 
-    # Filtre par arrondissement (code postal commence par 75xxx pour Paris)
-    if params[:arrondissement].present?
-      arrondissement_code = params[:arrondissement].to_s.rjust(2, '0')
-      @teachers = @teachers.where("base_zip_code LIKE ?", "75#{arrondissement_code}%")
+    # Filtre par ville
+    if params[:city].present?
+      @teachers = @teachers.where("LOWER(base_city) LIKE ?", "%#{params[:city].downcase}%")
+    end
+
+    # Filtre par format d'enseignement
+    if params[:format].present?
+      @teachers = @teachers.where("? = ANY(teaching_formats)", params[:format])
     end
 
     @teachers = @teachers.order(:display_name)

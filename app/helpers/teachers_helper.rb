@@ -8,56 +8,46 @@ module TeachersHelper
     ["Autre", "autre"]
   ].freeze
 
-  # Matières disponibles groupées par section
-  SUBJECTS_OPTIONS_GROUPED = {
-    "Tronc commun collège / lycée" => [
-      ["Mathématiques", "mathematiques"],
-      ["Français", "francais"],
-      ["Anglais", "anglais"],
-      ["Espagnol", "espagnol"],
-      ["Allemand", "allemand"],
-      ["Italien", "italien"],
-      ["Physique-Chimie", "physique-chimie"],
-      ["SVT", "svt"],
-      ["Histoire-Géographie", "histoire-geographie"],
-      ["SES", "ses"],
-      ["EMC", "emc"],
-      ["Technologie", "technologie"],
-      ["SNT", "snt"],
-      ["NSI", "nsi"]
-    ],
-    "Primaire" => [
-      ["Toutes matières primaire", "toutes_matieres_primaire"],
-      ["Lecture / Écriture", "lecture_ecriture"],
-      ["Maths primaire", "maths_primaire"]
-    ],
-    "Prépa et Supérieur" => [
-      ["Maths expertes", "maths_expertes"],
-      ["Maths complémentaires", "maths_complementaires"],
-      ["Philosophie", "philosophie"],
-      ["Littérature", "litterature"],
-      ["Géopolitique", "geopolitique"],
-      ["HGGSP", "hggsp"],
-      ["HLP", "hlp"],
-      ["Économie", "economie"],
-      ["Sciences politiques", "sciences_politiques"],
-      ["Droit", "droit"],
-      ["Comptabilité", "comptabilite"],
-      ["Gestion", "gestion"],
-      ["Finance", "finance"],
-      ["Marketing", "marketing"],
-      ["Psychologie", "psychologie"],
-      ["Informatique", "informatique"]
-    ],
-    "Langues et FLE" => [
-      ["FLE", "fle"],
-      ["Anglais professionnel", "anglais_professionnel"],
-      ["Anglais conversation", "anglais_conversation"]
-    ]
-  }.freeze
+  # Villes disponibles
+  CITIES_OPTIONS = [
+    ["Toutes les villes", ""],
+    ["Paris", "Paris"],
+    ["Versailles", "Versailles"],
+    ["Nîmes", "Nîmes"],
+    ["Dax", "Dax"]
+  ].freeze
 
-  # Liste plate pour compatibilité (toutes les matières dans l'ordre)
-  SUBJECTS_OPTIONS = SUBJECTS_OPTIONS_GROUPED.values.flatten(1).freeze
+  # Matières disponibles (liste unique sans groupement)
+  SUBJECTS_OPTIONS = [
+    ["Mathématiques", "mathematiques"],
+    ["Français", "francais"],
+    ["Anglais", "anglais"],
+    ["Espagnol", "espagnol"],
+    ["Allemand", "allemand"],
+    ["Italien", "italien"],
+    ["Physique-Chimie", "physique-chimie"],
+    ["SVT", "svt"],
+    ["Histoire-Géographie", "histoire-geographie"],
+    ["HGGSP", "hggsp"],
+    ["SES", "ses"],
+    ["EMC", "emc"],
+    ["Technologie", "technologie"],
+    ["SNT", "snt"],
+    ["NSI", "nsi"],
+    ["Lecture / Écriture", "lecture_ecriture"],
+    ["Philosophie", "philosophie"],
+    ["Littérature", "litterature"],
+    ["Géopolitique", "geopolitique"],
+    ["HLP", "hlp"],
+    ["Économie", "economie"],
+    ["Sciences politiques", "sciences_politiques"],
+    ["Droit", "droit"],
+    ["Comptabilité & Gestion", "comptabilite_gestion"],
+    ["Finance", "finance"],
+    ["Marketing", "marketing"],
+    ["Psychologie", "psychologie"],
+    ["Informatique", "informatique"]
+  ].freeze
 
   # Tags examens disponibles (par ordre d'importance)
   EXAM_TAGS_OPTIONS = [
@@ -105,6 +95,28 @@ module TeachersHelper
       teacher.display_name
     else
       "Professeur"
+    end
+  end
+
+  # Helper pour formater l'affichage d'une matière (acronymes en majuscule)
+  def format_subject_tag(tag)
+    # Chercher le label correspondant dans SUBJECTS_OPTIONS
+    subject_option = SUBJECTS_OPTIONS.find { |_, value| value == tag }
+    if subject_option
+      subject_option[0] # Retourner le label (déjà formaté avec majuscules pour acronymes)
+    else
+      tag.humanize # Fallback si la matière n'est pas trouvée
+    end
+  end
+
+  # Helper pour formater l'affichage d'un niveau
+  def format_level_tag(level)
+    # Chercher le label correspondant dans LEVELS_OPTIONS
+    level_option = LEVELS_OPTIONS.find { |_, value| value == level }
+    if level_option
+      level_option[0] # Retourner le label
+    else
+      level.humanize # Fallback si le niveau n'est pas trouvé
     end
   end
 end
