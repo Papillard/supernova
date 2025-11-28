@@ -14,7 +14,13 @@
           <%= link_to requests_path(id: request.id), class: "block" do %>
             <div class="p-4 rounded-lg border transition-colors <%= @active_request&.id == request.id ? 'bg-blue-50 border-blue-300' : 'bg-white border-gray-200 hover:bg-gray-50' %>">
               <div class="flex items-start justify-between mb-2">
-                <h3 class="font-semibold text-gray-900 text-sm"><%= request.teacher.display_name %></h3>
+                <h3 class="font-semibold text-gray-900 text-sm">
+                  <% if request.status == "accepted" %>
+                    <%= "#{request.teacher.first_name} #{request.teacher.last_name}" %>
+                  <% else %>
+                    <%= teacher_short_name(request.teacher) %>
+                  <% end %>
+                </h3>
                 <span class="badge <%= request_status_badge_class(request.status) %> badge-sm">
                   <%= format_request_status(request.status) %>
                 </span>

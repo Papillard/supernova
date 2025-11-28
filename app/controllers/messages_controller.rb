@@ -17,7 +17,7 @@ class MessagesController < ApplicationController
           if current_user.parent? && @request.parent_id == current_user.id
             redirect_to requests_path(id: @request.id), notice: "Message envoyé."
           elsif current_user.teacher? && @request.teacher_id == current_user.teacher.id
-            redirect_to teacher_request_path(@request), notice: "Message envoyé."
+            redirect_to teacher_requests_path(id: @request.id), notice: "Message envoyé."
           else
             redirect_to root_path, alert: "Erreur de redirection."
           end
@@ -28,7 +28,7 @@ class MessagesController < ApplicationController
           if current_user.parent? && @request.parent_id == current_user.id
             redirect_to requests_path(id: @request.id), alert: "Erreur lors de l'envoi du message."
           elsif current_user.teacher? && @request.teacher_id == current_user.teacher.id
-            redirect_to teacher_request_path(@request), alert: "Erreur lors de l'envoi du message."
+            redirect_to teacher_requests_path(id: @request.id), alert: "Erreur lors de l'envoi du message."
           else
             redirect_to root_path, alert: "Erreur lors de l'envoi du message."
           end

@@ -25,7 +25,7 @@
         <tbody>
           <% @teachers.each do |teacher| %>
             <tr>
-              <td><%= link_to teacher.display_name, admin_teacher_path(teacher), class: "link link-primary" %></td>
+              <td><%= link_to teacher_short_name(teacher), admin_teacher_path(teacher), class: "link link-primary" %></td>
               <td><%= teacher.academy_name || "-" %></td>
               <td>
                 <% if teacher.subjects_tags.present? %>
@@ -53,4 +53,3 @@
     </div>
   </div>
 </div>
-

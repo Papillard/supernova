@@ -3,28 +3,46 @@ class Teacher::RequestsController < ApplicationController
   before_action :authenticate_user!
   before_action :ensure_teacher_role
   before_action :set_teacher
-  before_action :set_request, only: [:show, :accept, :decline]
-  before_action :authorize_request_access, only: [:show, :accept, :decline]
+  before_action :set_request, only: [:accept, :decline]
+  before_action :authorize_request_access, only: [:accept, :decline]
 
   def index
-    @requests = @teacher.requests.recent
+    @requests = @teacher.requests.order(last_message_at: :desc)
+
+    # Déterminer la request active
+    if params[:id].present?
+      @active_request = @requests.find_by(id: params[:id])
+    else
+      @active_request = @requests.first
+    end
   end
 
   def show
-    @messages = @request.messages.order(created_at: :asc)
+    redirect_to teacher_requests_path(id: params[:id])
   end
 
   def accept
     if @request.update(status: :accepted, responded_at: Time.current)
+      teacher = @request.teacher
+      full_name = "#{teacher.first_name} #{teacher.last_name}"
+
+      phone_text = if teacher.phone.present?
+        teacher.phone
+      else
+        "Préfère échanger sur ProfConnect ou par mail"
+      end
+
+      message_body = "#{full_name} a accepté votre demande de connexion !\n\nNous vous partageons ses informations pour continuer à échanger et vous organiser ensemble:\n\n- Email: #{teacher.email_pro}\n- Telephone: #{phone_text}\n\nBon échange !"
+
       Message.create!(
         request: @request,
         user: current_user,
-        body: "Le professeur a accepté la demande.",
+        body: message_body,
         system: true
       )
-      redirect_to teacher_request_path(@request), notice: "Demande acceptée."
+      redirect_to teacher_requests_path(id: @request.id), notice: "Demande acceptée."
     else
-      redirect_to teacher_request_path(@request), alert: "Erreur lors de l'acceptation."
+      redirect_to teacher_requests_path(id: @request.id), alert: "Erreur lors de l'acceptation."
     end
   end
 
@@ -36,9 +54,9 @@ class Teacher::RequestsController < ApplicationController
         body: "Le professeur a refusé la demande.",
         system: true
       )
-      redirect_to teacher_request_path(@request), notice: "Demande refusée."
+      redirect_to teacher_requests_path(id: @request.id), notice: "Demande refusée."
     else
-      redirect_to teacher_request_path(@request), alert: "Erreur lors du refus."
+      redirect_to teacher_requests_path(id: @request.id), alert: "Erreur lors du refus."
     end
   end
 

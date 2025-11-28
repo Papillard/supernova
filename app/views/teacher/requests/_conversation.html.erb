@@ -1,0 +1,196 @@
+<% messages = request.messages.order(created_at: :asc) %>
+
+<div class="card bg-white shadow-lg h-full flex flex-col">
+  <div class="flex flex-col h-full">
+    <!-- Header du chat (fixe) -->
+    <div class="border-b border-gray-200 px-6 py-4 flex-shrink-0">
+      <div class="flex items-center justify-between mb-2">
+        <div>
+          <h2 class="text-xl font-bold text-gray-900">
+            <%= format_subject_tag(request.subject) %> – <%= format_request_level(request.level) %>
+          </h2>
+          <p class="text-sm text-gray-500 mt-1">
+            <% if request.status == "pending" %>
+              Demande en attente
+            <% elsif request.status == "accepted" %>
+              Demande acceptée
+            <% else %>
+              Demande refusée
+            <% end %>
+          </p>
+        </div>
+        <div class="flex items-center gap-2">
+          <% if request.status == "pending" %>
+            <button onclick="decline_modal_<%= request.id %>.showModal()" class="px-4 py-2 text-sm font-medium text-red-600 border border-red-300 rounded-lg">
+              Refuser
+            </button>
+            <button onclick="accept_modal_<%= request.id %>.showModal()" class="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg">
+              Accepter
+            </button>
+          <% else %>
+            <span class="badge <%= request_status_badge_class(request.status) %> badge-lg">
+              <%= format_request_status(request.status) %>
+            </span>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Zone de messages (scrollable) -->
+    <div id="messages-container-<%= request.id %>" class="flex-1 overflow-y-auto px-6 py-6 space-y-6" style="height: 0;">
+      <% messages.each do |message| %>
+        <%= render "messages/message_teacher", message: message, current_user: current_user %>
+      <% end %>
+    </div>
+
+    <!-- Formulaire de message (fixe en bas) -->
+    <% if request.status == "accepted" || request.status == "pending" %>
+      <div class="border-t border-gray-200 px-6 py-4 bg-white flex-shrink-0">
+        <%= form_with model: [request, Message.new], url: teacher_request_messages_path(request), local: false, data: { turbo_frame: "messages_frame_#{request.id}" }, id: "message-form-#{request.id}", class: "flex gap-3" do |f| %>
+          <%= f.text_area :body, id: "message-body-#{request.id}", class: "flex-1 resize-none border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent", placeholder: "Tapez votre message...", rows: 2, required: true %>
+        <% end %>
+      </div>
+    <% elsif request.status == "declined" %>
+      <div class="border-t border-gray-200 px-6 py-4 bg-gray-50 flex-shrink-0">
+        <p class="text-sm text-gray-500 text-center">Cette demande a été refusée, vous ne pouvez plus répondre.</p>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<!-- Modal de confirmation pour accepter -->
+<dialog id="accept_modal_<%= request.id %>" class="modal">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg mb-4">Confirmer l'acceptation de la demande</h3>
+    <div class="space-y-4 mb-6">
+      <p class="text-sm text-gray-700 leading-relaxed">
+        En acceptant cette demande, certaines de vos informations personnelles seront automatiquement partagées avec le parent afin de faciliter la mise en relation : photo de profil, prénom, email professionnel et numéro de téléphone.
+      </p>
+      <p class="text-sm text-gray-700 leading-relaxed">
+        ProfConnect ne vérifie pas l'identité des parents et ne peut garantir leurs intentions.
+        Avant d'accepter, assurez-vous d'avoir échangé suffisamment dans la messagerie pour confirmer la légitimité de la demande et le sérieux de l'interlocuteur.
+      </p>
+      <p class="text-sm text-gray-700 leading-relaxed">
+        En continuant, vous reconnaissez agir en toute autonomie et comprendre que ProfConnect n'est pas responsable des échanges, décisions ou actions prises entre vous et le parent après mise en relation.
+      </p>
+    </div>
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn btn-ghost">Annuler</button>
+      </form>
+      <%= form_with url: accept_teacher_request_path(request), method: :patch, local: true, class: "inline" do |f| %>
+        <%= f.submit "Accepter la demande", class: "btn bg-green-600 hover:bg-green-700 text-white border-green-600" %>
+      <% end %>
+    </div>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>
+
+<!-- Modal de confirmation pour refuser -->
+<dialog id="decline_modal_<%= request.id %>" class="modal">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg mb-4">Refuser la demande</h3>
+    <p class="text-sm text-gray-700 mb-6">Êtes-vous sûr de vouloir refuser cette demande ? Cette action est irréversible.</p>
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn btn-ghost">Annuler</button>
+      </form>
+      <%= form_with url: decline_teacher_request_path(request), method: :patch, local: true, class: "inline" do |f| %>
+        <%= f.submit "Refuser", class: "btn bg-red-600 hover:bg-red-700 text-white border-red-600" %>
+      <% end %>
+    </div>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>
+
+<script>
+  (function() {
+    function initMessageForm() {
+      const requestId = <%= request.id %>;
+      const textarea = document.getElementById('message-body-' + requestId);
+      const form = document.getElementById('message-form-' + requestId);
+      const messagesContainer = document.getElementById('messages-container-' + requestId);
+
+      // Auto-scroll initial
+      if (messagesContainer) {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+
+      // Gestion de l'envoi au clavier
+      if (textarea && form) {
+        const newTextarea = textarea.cloneNode(true);
+        textarea.parentNode.replaceChild(newTextarea, textarea);
+
+        newTextarea.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            if (newTextarea.value.trim()) {
+              form.requestSubmit();
+            }
+          }
+        });
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initMessageForm);
+    } else {
+      initMessageForm();
+    }
+
+    document.addEventListener('turbo:load', initMessageForm);
+    document.addEventListener('turbo:frame-load', initMessageForm);
+
+    // Event listener global pour auto-scroll après ajout de message
+    document.addEventListener('turbo:before-stream-render', function(event) {
+      const detail = event.detail;
+      if (detail.render && detail.render.method === 'append') {
+        const target = detail.render.target;
+        if (target && target.id && target.id.startsWith('messages-container-')) {
+          const requestId = target.id.replace('messages-container-', '');
+          setTimeout(function() {
+            const messagesContainer = document.getElementById('messages-container-' + requestId);
+            if (messagesContainer) {
+              messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+            const textarea = document.getElementById('message-body-' + requestId);
+            if (textarea) {
+              textarea.value = '';
+              textarea.style.height = 'auto';
+            }
+          }, 10);
+        }
+      }
+    });
+
+    const observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.nodeType === 1 && node.hasAttribute && node.hasAttribute('data-message-sent')) {
+            const requestId = node.getAttribute('data-request-id');
+            if (requestId) {
+              setTimeout(function() {
+                const messagesContainer = document.getElementById('messages-container-' + requestId);
+                if (messagesContainer) {
+                  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                }
+                const textarea = document.getElementById('message-body-' + requestId);
+                if (textarea) {
+                  textarea.value = '';
+                  textarea.style.height = 'auto';
+                }
+                node.remove();
+              }, 10);
+            }
+          }
+        });
+      });
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+  })();
+</script>

@@ -9,9 +9,18 @@
             PC
           </div>
         <% else %>
-          <div class="flex items-center justify-center text-gray-600 font-semibold text-xs" style="width: 32px; height: 32px; background-color: #e5e7eb;">
-            <%= teacher_initials(message.user.teacher) %>
-          </div>
+          <% request = message.request %>
+          <% teacher = message.user.teacher %>
+          <% if request && request.status == "accepted" && teacher.profile_image_url.present? && teacher.picture_visible %>
+            <%= image_tag teacher.profile_image_url, alt: "#{teacher.first_name} #{teacher.last_name}", class: "object-cover", style: "width: 32px; height: 32px;", onerror: "this.style.display='none'; this.nextElementSibling.style.display='flex';" %>
+            <div class="hidden flex items-center justify-center text-gray-600 font-semibold text-xs" style="width: 32px; height: 32px; background-color: #e5e7eb;">
+              <%= teacher_initials(teacher) %>
+            </div>
+          <% else %>
+            <div class="flex items-center justify-center text-gray-600 font-semibold text-xs" style="width: 32px; height: 32px; background-color: #e5e7eb;">
+              <%= teacher_initials(teacher) %>
+            </div>
+          <% end %>
         <% end %>
       </div>
       <!-- Message -->
@@ -21,7 +30,12 @@
             <% if message.system %>
               ProfConnect
             <% else %>
-              <%= message.user.teacher.display_name %>
+              <% request = message.request %>
+              <% if request && request.status == "accepted" %>
+                <%= "#{message.user.teacher.first_name} #{message.user.teacher.last_name}" %>
+              <% else %>
+                <%= teacher_short_name(message.user.teacher) %>
+              <% end %>
             <% end %>
           </span>
           <span class="text-xs text-gray-500"><%= message.created_at.strftime("%d/%m/%Y à %H:%M") %></span>

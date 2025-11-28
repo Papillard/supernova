@@ -91,8 +91,6 @@ module TeachersHelper
       "#{teacher.first_name} #{teacher.last_name[0].upcase}"
     elsif teacher.first_name.present?
       teacher.first_name
-    elsif teacher.display_name.present?
-      teacher.display_name
     else
       "Professeur"
     end

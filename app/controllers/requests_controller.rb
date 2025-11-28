@@ -36,7 +36,7 @@ class RequestsController < ApplicationController
 
     if @request.save
       # Récupérer les prénoms
-      teacher_first_name = @teacher.first_name.presence || @teacher.display_name.split.first
+      teacher_first_name = @teacher.first_name.presence || "Professeur"
       parent_first_name = current_user.first_name.presence || "Parent"
 
       # Formater la matière et le niveau
@@ -66,10 +66,15 @@ class RequestsController < ApplicationController
       )
 
       # Créer le message système après
+      # Utiliser le display_name généré automatiquement (Prénom + Initiale)
+      display_name = "#{@teacher.first_name} #{@teacher.last_name[0].upcase}" if @teacher.first_name.present? && @teacher.last_name.present?
+      display_name ||= @teacher.first_name if @teacher.first_name.present?
+      display_name ||= "Professeur"
+
       Message.create!(
         request: @request,
         user: current_user,
-        body: "Votre demande a été envoyée. Le professeur vous répondra ici.",
+        body: "Votre demande a été envoyée. #{display_name} vous répondra ici.",
         system: true
       )
 

@@ -192,7 +192,8 @@ teachers_data.each_with_index do |teacher_data, index|
     phone: teacher_data['phone'],
     profile_image_url: random_photo_url(teacher_data['gender'] || "female", index),
     status: teacher_data['status'] || "pending",
-    rgpd_consent: teacher_data['rgpd_consent'] || false
+    rgpd_consent: teacher_data['rgpd_consent'] || false,
+    picture_visible: teacher_data['picture_visible'] || false
   )
 
   teacher.save!

@@ -21,7 +21,6 @@ class Teacher < ApplicationRecord
   # Validations
   validates :first_name, presence: true
   validates :last_name, presence: true
-  validates :display_name, presence: true
   validates :gender, presence: true
   validates :career_status, presence: true
   validates :email_pro, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
@@ -38,6 +37,7 @@ class Teacher < ApplicationRecord
 
   # Callbacks
   before_validation :set_defaults, on: :create
+  before_validation :set_display_name, on: [:create, :update]
 
   private
 
@@ -45,10 +45,19 @@ class Teacher < ApplicationRecord
     self.status ||= :pending
     self.rgpd_consent ||= false
     self.profile_image_attached ||= false
+    self.picture_visible ||= false
     self.levels ||= []
     self.subjects_tags ||= []
     self.teaching_formats ||= []
     self.exam_tags ||= []
     self.pedagogy_tags ||= []
+  end
+
+  def set_display_name
+    if first_name.present? && last_name.present?
+      self.display_name = "#{first_name} #{last_name[0].upcase}"
+    elsif first_name.present?
+      self.display_name = first_name
+    end
   end
 end

@@ -8,8 +8,8 @@
       <div class="card-body">
         <div class="flex items-start gap-4 mb-4">
           <div class="rounded-full overflow-hidden flex-shrink-0" style="width: 64px; height: 64px; background-color: #e5e7eb;">
-            <% if teacher.profile_image_url.present? %>
-              <%= image_tag teacher.profile_image_url, alt: teacher.display_name, class: "object-cover", style: "width: 64px; height: 64px;", onerror: "this.style.display='none'; this.nextElementSibling.style.display='flex';" %>
+            <% if teacher.profile_image_url.present? && teacher.picture_visible %>
+              <%= image_tag teacher.profile_image_url, alt: teacher_short_name(teacher), class: "object-cover", style: "width: 64px; height: 64px;", onerror: "this.style.display='none'; this.nextElementSibling.style.display='flex';" %>
               <div class="hidden flex items-center justify-center text-gray-600 font-semibold text-lg" style="width: 64px; height: 64px; background-color: #e5e7eb;">
                 <%= teacher_initials(teacher) %>
               </div>

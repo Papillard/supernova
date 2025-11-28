@@ -43,6 +43,7 @@ teachers:
 
     status: approved
     rgpd_consent: true
+    picture_visible: true
 
 
   - id: laurence-rapidel
@@ -85,6 +86,7 @@ teachers:
 
     status: approved
     rgpd_consent: true
+    picture_visible: false
 
 
   - id: emmanuelle-jean-baptiste
@@ -127,6 +129,7 @@ teachers:
 
     status: approved
     rgpd_consent: true
+    picture_visible: true
 
 
   - id: chantal-da-silva
@@ -169,6 +172,7 @@ teachers:
 
     status: approved
     rgpd_consent: true
+    picture_visible: true
 
 
   - id: marion-cochet
@@ -211,6 +215,7 @@ teachers:
 
     status: approved
     rgpd_consent: true
+    picture_visible: true
 
 
   - id: lauranne-chetaneau
@@ -253,6 +258,7 @@ teachers:
 
     status: approved
     rgpd_consent: true
+    picture_visible: false
 
 
   - id: antonio-barbosa

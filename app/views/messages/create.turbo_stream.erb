@@ -1,4 +1,8 @@
-<%= turbo_stream.append "messages-container-#{@request.id}", partial: "messages/message", locals: { message: @message } %>
+<% if current_user.teacher? %>
+  <%= turbo_stream.append "messages-container-#{@request.id}", partial: "messages/message_teacher", locals: { message: @message, current_user: current_user } %>
+<% else %>
+  <%= turbo_stream.append "messages-container-#{@request.id}", partial: "messages/message", locals: { message: @message } %>
+<% end %>
 
 <%= turbo_stream.append "messages-container-#{@request.id}" do %>
   <div data-message-sent="true" data-request-id="<%= @request.id %>" style="display: none;"></div>

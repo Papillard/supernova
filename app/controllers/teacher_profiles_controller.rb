@@ -52,6 +52,7 @@ class TeacherProfilesController < ApplicationController
       first_name: current_user.first_name.presence || "Prénom",
       last_name: current_user.last_name.presence || "Nom",
       display_name: build_display_name.presence || "Prénom N.",
+      picture_visible: false,
       gender: :female, # Valeur par défaut, sera modifié dans le formulaire
       career_status: :certifie, # Valeur par défaut, sera modifié dans le formulaire
       email_pro: current_user.email,
@@ -83,14 +84,14 @@ class TeacherProfilesController < ApplicationController
 
   def teacher_params
     params.require(:teacher).permit(
-      :first_name, :last_name, :display_name, :gender,
+      :first_name, :last_name, :gender,
       :academy_name, :school_name, :career_status,
       :base_city, :base_zip_code, :radius_text,
       :support_text, :experience_text, :special_skills_text,
       :interest_text, :exams_raw_text,
       :pricing_text, :target_students_range,
       :email_pro, :email_perso, :phone,
-      :profile_image_url, :rgpd_consent,
+      :profile_image_url, :rgpd_consent, :picture_visible,
       subjects_tags: [], levels: [], exam_tags: [], pedagogy_tags: []
     )
   end

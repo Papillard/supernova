@@ -6,7 +6,7 @@
       <div class="card-body">
         <div class="flex justify-between items-start mb-6">
           <div>
-            <h1 class="text-3xl font-bold text-gray-900"><%= @teacher.display_name %></h1>
+            <h1 class="text-3xl font-bold text-gray-900"><%= teacher_short_name(@teacher) %></h1>
             <p class="text-gray-600"><%= @teacher.email_pro %></p>
             <% if @teacher.pending? %>
               <span class="badge badge-warning mt-2">En attente</span>
@@ -84,4 +84,3 @@
     </div>
   </div>
 </div>
-
