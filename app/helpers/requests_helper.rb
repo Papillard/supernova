@@ -40,3 +40,4 @@ module RequestsHelper
     level_option ? level_option[0] : level.humanize
   end
 end
+

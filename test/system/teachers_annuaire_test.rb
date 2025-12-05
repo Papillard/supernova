@@ -114,3 +114,4 @@ class TeachersAnnuaireTest < ApplicationSystemTestCase
   end
 end
 
+

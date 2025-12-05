@@ -14,3 +14,4 @@ class Message < ApplicationRecord
     request.update_column(:last_message_at, Time.current)
   end
 end
+
