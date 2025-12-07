@@ -19,18 +19,16 @@
         </div>
       </div>
       <!-- Avatar -->
-      <div class="flex-shrink-0 rounded-full overflow-hidden" style="width: 32px; height: 32px; background-color: #e5e7eb;">
-        <div class="flex items-center justify-center text-gray-600 font-semibold text-xs" style="width: 32px; height: 32px; background-color: #e5e7eb;">
-          <% if message.system %>
-            PC
-          <% else %>
-            <% if current_user.first_name.present? || current_user.last_name.present? %>
-              <%= "#{current_user.first_name&.first || ''}#{current_user.last_name&.first || ''}".upcase %>
-            <% else %>
-              <%= current_user.email[0].upcase %>
-            <% end %>
-          <% end %>
-        </div>
+      <div class="flex-shrink-0">
+        <% if message.system %>
+          <div class="rounded-full overflow-hidden flex-shrink-0 bg-gray-300 flex items-center justify-center w-10 h-10">
+            <div class="flex items-center justify-center text-gray-600 font-semibold text-xs w-10 h-10 bg-gray-300">
+              PC
+            </div>
+          </div>
+        <% else %>
+          <%= render "shared/teacher_avatar", teacher: current_user.teacher, size: :small, for_parent: false %>
+        <% end %>
       </div>
     </div>
   <% else %>

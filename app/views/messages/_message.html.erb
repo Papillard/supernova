@@ -3,24 +3,15 @@
     <!-- Messages système ou du prof (à gauche) -->
     <div class="flex items-start gap-3">
       <!-- Avatar -->
-      <div class="flex-shrink-0 rounded-full overflow-hidden" style="width: 32px; height: 32px; background-color: #e5e7eb;">
+      <div class="flex-shrink-0">
         <% if message.system %>
-          <div class="flex items-center justify-center text-gray-600 font-semibold text-xs" style="width: 32px; height: 32px; background-color: #e5e7eb;">
-            PC
+          <div class="rounded-full overflow-hidden flex-shrink-0 bg-gray-300 flex items-center justify-center w-10 h-10">
+            <div class="flex items-center justify-center text-gray-600 font-semibold text-xs w-10 h-10 bg-gray-300">
+              PC
+            </div>
           </div>
         <% else %>
-          <% request = message.request %>
-          <% teacher = message.user.teacher %>
-          <% if request && request.status == "accepted" && teacher.profile_image_url.present? && teacher.picture_visible %>
-            <%= image_tag teacher.profile_image_url, alt: "#{teacher.first_name} #{teacher.last_name}", class: "object-cover", style: "width: 32px; height: 32px;", onerror: "this.style.display='none'; this.nextElementSibling.style.display='flex';" %>
-            <div class="hidden flex items-center justify-center text-gray-600 font-semibold text-xs" style="width: 32px; height: 32px; background-color: #e5e7eb;">
-              <%= teacher_initials(teacher) %>
-            </div>
-          <% else %>
-            <div class="flex items-center justify-center text-gray-600 font-semibold text-xs" style="width: 32px; height: 32px; background-color: #e5e7eb;">
-              <%= teacher_initials(teacher) %>
-            </div>
-          <% end %>
+          <%= render "shared/teacher_avatar", teacher: message.user.teacher, size: :small, for_parent: true %>
         <% end %>
       </div>
       <!-- Message -->

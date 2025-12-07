@@ -2,6 +2,25 @@
   <div class="space-y-6">
     <h1 class="text-3xl font-bold text-gray-900">Mon profil professeur</h1>
 
+    <!-- Flash messages container -->
+    <div id="flash-messages"></div>
+    <% if flash[:notice] %>
+      <div class="alert alert-success">
+        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span><%= flash[:notice] %></span>
+      </div>
+    <% end %>
+    <% if flash[:alert] %>
+      <div class="alert alert-error">
+        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span><%= flash[:alert] %></span>
+      </div>
+    <% end %>
+
     <!-- Bannière statut -->
     <% if @teacher.pending? %>
       <div class="alert alert-warning">
@@ -26,7 +45,50 @@
       </div>
     <% end %>
 
-    <%= form_with model: @teacher, url: teacher_profile_path, method: :patch, local: true, class: "space-y-6" do |f| %>
+    <!-- Section Photo de profil (formulaire séparé) -->
+    <div class="card bg-white shadow-sm mb-6">
+      <div class="card-body">
+        <h2 class="card-title text-xl mb-4">Photo de profil</h2>
+        <div class="flex items-start gap-6" data-controller="avatar-upload">
+            <div class="flex-shrink-0" id="teacher-avatar-container">
+              <%= render "shared/teacher_avatar", teacher: @teacher, size: :large, for_parent: false %>
+              <div id="avatar-upload-loading" class="hidden mt-2 text-sm text-gray-500 text-center" data-avatar-upload-target="loadingIndicator">
+                Upload en cours...
+              </div>
+            </div>
+          <div class="flex-1 space-y-4">
+            <!-- Formulaire séparé pour l'upload d'avatar -->
+            <%= form_with model: @teacher, url: teacher_profile_path, method: :patch, local: false, multipart: true, data: { turbo: true, avatar_upload_target: "form" }, id: "avatar-upload-form", class: "space-y-4" do |avatar_form| %>
+              <div class="form-control">
+                <%= avatar_form.label :avatar, "Changer la photo", class: "label" do %>
+                  <span class="label-text">Photo de profil</span>
+                <% end %>
+                <%= avatar_form.file_field :avatar,
+                    accept: "image/jpeg,image/jpg,image/png",
+                    class: "file-input file-input-bordered w-full",
+                    data: { avatar_upload_target: "input" } %>
+                <label class="label">
+                  <span class="label-text-alt text-gray-500">Formats acceptés : JPEG, PNG</span>
+                </label>
+              </div>
+              <div class="form-control">
+                <label class="label cursor-pointer justify-start gap-2">
+                  <%= avatar_form.check_box :picture_visible, { checked: @teacher.picture_visible }, true, false %>
+                  <span class="label-text">Afficher ma photo aux parents (annuaire et profil public)</span>
+                </label>
+                <label class="label">
+                  <span class="label-text-alt text-gray-500">Si cette option est désactivée, seules vos initiales seront visibles pour les parents</span>
+                </label>
+              </div>
+              <!-- Champ caché pour indiquer que c'est un upload d'avatar -->
+              <%= hidden_field_tag "avatar_only", "1" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%= form_with model: @teacher, url: teacher_profile_path, method: :patch, local: false, multipart: true, data: { turbo: true }, class: "space-y-6" do |f| %>
       <%= render "devise/shared/error_messages", resource: @teacher %>
 
       <!-- Section Identité -->

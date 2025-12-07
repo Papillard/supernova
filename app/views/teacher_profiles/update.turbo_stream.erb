@@ -1,0 +1,19 @@
+<%= turbo_stream.replace "teacher-avatar-container" do %>
+  <div class="flex-shrink-0" id="teacher-avatar-container">
+    <%= render "shared/teacher_avatar", teacher: @teacher, size: :large, for_parent: false %>
+    <div id="avatar-upload-loading" class="hidden mt-2 text-sm text-gray-500 text-center" data-avatar-upload-target="loadingIndicator">
+      Upload en cours...
+    </div>
+  </div>
+<% end %>
+
+<%= turbo_stream.replace "flash-messages" do %>
+  <div id="flash-messages">
+    <div class="alert alert-success" data-controller="flash" data-flash-auto-hide-value="true" data-flash-delay-value="3000">
+      <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span>Photo de profil mise à jour avec succès.</span>
+    </div>
+  </div>
+<% end %>
