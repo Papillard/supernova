@@ -1,0 +1,28 @@
+<%= turbo_stream.remove "verification-document-#{@document.blob_id}" %>
+
+<%= turbo_stream.replace "verification-documents-list" do %>
+  <div id="verification-documents-list">
+    <%= render "teacher_verification_documents/list", teacher: @teacher %>
+  </div>
+<% end %>
+
+<%= turbo_stream.replace "flash-messages" do %>
+  <div id="flash-messages">
+    <% if flash[:notice] %>
+      <div class="alert alert-success" data-controller="flash" data-flash-auto-hide-value="true" data-flash-delay-value="3000">
+        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span><%= flash[:notice] %></span>
+      </div>
+    <% end %>
+    <% if flash[:alert] %>
+      <div class="alert alert-error" data-controller="flash" data-flash-auto-hide-value="true" data-flash-delay-value="5000">
+        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span><%= flash[:alert] %></span>
+      </div>
+    <% end %>
+  </div>
+<% end %>

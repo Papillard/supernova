@@ -88,6 +88,19 @@
       </div>
     </div>
 
+    <!-- Section Pièces justificatives (formulaire séparé) -->
+    <div class="card bg-white shadow-sm mb-6">
+      <div class="card-body">
+        <h2 class="card-title text-xl mb-4">Pièces justificatives</h2>
+        <div data-controller="verification-documents">
+          <div id="verification-documents-list" class="mb-4">
+            <%= render "teacher_verification_documents/list", teacher: @teacher %>
+          </div>
+          <%= render "teacher_verification_documents/form" %>
+        </div>
+      </div>
+    </div>
+
     <%= form_with model: @teacher, url: teacher_profile_path, method: :patch, local: false, multipart: true, data: { turbo: true }, class: "space-y-6" do |f| %>
       <%= render "devise/shared/error_messages", resource: @teacher %>
 

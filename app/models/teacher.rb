@@ -29,6 +29,7 @@ class Teacher < ApplicationRecord
 
   # Associations
   has_many :requests, dependent: :destroy
+  has_many_attached :verification_documents
 
   # Scopes
   scope :approved, -> { where(status: :approved) }

@@ -28,6 +28,9 @@ Rails.application.routes.draw do
   get "teacher/profile", to: "teacher_profiles#show", as: :teacher_profile
   patch "teacher/profile", to: "teacher_profiles#update"
 
+  # Teacher verification documents
+  resources :teacher_verification_documents, only: [:create, :destroy], path: "teacher/verification_documents"
+
   # Teachers listing (public annuaire)
   get "teachers", to: "teachers#index", as: :teachers
   get "teachers/:id", to: "teachers#show", as: :teacher
