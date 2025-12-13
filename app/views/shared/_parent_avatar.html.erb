@@ -1,41 +1,49 @@
 <%
   # Paramètres par défaut
   size = local_assigns.fetch(:size, :small)
-  for_parent = local_assigns.fetch(:for_parent, false)
-
-  # Déterminer si on doit afficher la photo
-  show_photo = false
-  if teacher.profile_image_attached && teacher.profile_image_url.present?
-    # Côté prof : toujours afficher la photo si elle existe
-    # Côté parent : afficher seulement si picture_visible == true
-    show_photo = !for_parent || teacher.picture_visible
-  end
+  parent_profile = local_assigns[:parent_profile]
 
   # Tailles
   size_classes = case size
   when :small
     { container: "w-10 h-10", text: "text-xs" }
-  when :medium
-    { container: "w-16 h-16", text: "text-lg" }
   when :large
     { container: "w-24 h-24", text: "text-2xl" }
   else
     { container: "w-10 h-10", text: "text-xs" }
   end
+
+  # Initiales
+  initials = if parent_profile.first_name.present? && parent_profile.last_name.present?
+    "#{parent_profile.first_name[0]}#{parent_profile.last_name[0]}".upcase
+  elsif parent_profile.first_name.present?
+    parent_profile.first_name[0].upcase
+  else
+    "P"
+  end
+
+  # Nom d'affichage
+  display_name = if parent_profile.first_name.present? && parent_profile.last_name.present?
+    "#{parent_profile.first_name} #{parent_profile.last_name}"
+  elsif parent_profile.first_name.present?
+    parent_profile.first_name
+  else
+    "Parent"
+  end
 %>
 
 <div class="rounded-full overflow-hidden flex-shrink-0 bg-gray-300 flex items-center justify-center <%= size_classes[:container] %>">
-  <% if show_photo %>
-    <%= image_tag teacher.profile_image_url,
-        alt: teacher_short_name(teacher),
+  <% if parent_profile.profile_image_url.present? %>
+    <%= image_tag parent_profile.profile_image_url,
+        alt: display_name,
         class: "object-cover #{size_classes[:container]}",
         onerror: "this.style.display='none'; this.nextElementSibling.style.display='flex';" %>
     <div class="hidden flex items-center justify-center text-gray-600 font-semibold <%= size_classes[:text] %> <%= size_classes[:container] %>">
-      <%= teacher_initials(teacher) %>
+      <%= initials %>
     </div>
   <% else %>
     <div class="flex items-center justify-center text-gray-600 font-semibold <%= size_classes[:text] %> <%= size_classes[:container] %>">
-      <%= teacher_initials(teacher) %>
+      <%= initials %>
     </div>
   <% end %>
 </div>

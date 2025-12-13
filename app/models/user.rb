@@ -13,6 +13,7 @@ class User < ApplicationRecord
 
   # Associations
   has_one :teacher, dependent: :destroy
+  has_one :parent_profile, dependent: :destroy
   has_many :requests_as_parent, class_name: "Request", foreign_key: "parent_id", dependent: :destroy
   has_many :messages, dependent: :destroy
 end

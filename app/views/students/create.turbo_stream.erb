@@ -1,0 +1,74 @@
+<% if @student.persisted? %>
+  <%= turbo_stream.append "students-list" do %>
+    <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg" id="student-<%= @student.id %>">
+      <div>
+        <p class="font-semibold"><%= @student.first_name %></p>
+        <p class="text-sm text-gray-600">
+          Né(e) en <%= @student.birth_year %>
+          <% if @student.age %>
+            (<%= @student.age %> ans - <%= format_level_for_student(@student.level) %>)
+          <% end %>
+        </p>
+      </div>
+      <%= button_to student_path(@student), method: :delete, class: "btn btn-ghost btn-sm text-red-600", data: { confirm: "Êtes-vous sûr de vouloir supprimer cet enfant ?" } do %>
+        Supprimer
+      <% end %>
+    </div>
+  <% end %>
+
+  <%= turbo_stream.replace "student-form" do %>
+    <%= form_with model: [@parent_profile, @parent_profile.students.build], url: students_path, local: false, data: { turbo: true }, class: "grid gap-4 md:grid-cols-3 items-end" do |student_form| %>
+      <div class="form-control">
+        <%= student_form.label :first_name, class: "label" do %>
+          <span class="label-text">Prénom</span>
+        <% end %>
+        <%= student_form.text_field :first_name,
+            class: "input input-bordered w-full",
+            required: true,
+            placeholder: "Prénom" %>
+      </div>
+      <div class="form-control">
+        <%= student_form.label :birth_year, class: "label" do %>
+          <span class="label-text">Année de naissance</span>
+        <% end %>
+        <%= student_form.number_field :birth_year,
+            class: "input input-bordered w-full",
+            min: 1900,
+            max: Date.current.year,
+            required: true,
+            placeholder: Date.current.year.to_s %>
+      </div>
+      <div class="form-control">
+        <%= student_form.submit "Ajouter", class: "btn border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white w-full" %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <%= turbo_stream.replace "flash-messages" do %>
+    <div id="flash-messages">
+      <div class="alert alert-success" data-controller="flash" data-flash-auto-hide-value="true" data-flash-delay-value="3000">
+        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>Enfant ajouté avec succès.</span>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @parent_profile.profile_completed? %>
+    <%= turbo_stream.replace "navbar-profile-completion-banner" do %>
+      <div id="navbar-profile-completion-banner"></div>
+    <% end %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.replace "flash-messages" do %>
+    <div id="flash-messages">
+      <div class="alert alert-error" data-controller="flash" data-flash-auto-hide-value="true" data-flash-delay-value="5000">
+        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>Erreur lors de l'ajout de l'enfant : <%= @student.errors.full_messages.join(', ') %></span>
+      </div>
+    </div>
+  <% end %>
+<% end %>

@@ -24,6 +24,6 @@ class Parents::RegistrationsController < Devise::RegistrationsController
   private
 
   def after_sign_up_path_for(resource)
-    teachers_path
+    parent_profile_complete_path
   end
 end

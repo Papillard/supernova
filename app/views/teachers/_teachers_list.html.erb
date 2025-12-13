@@ -7,7 +7,7 @@
     <div class="card bg-white shadow-sm hover:shadow-md transition">
       <div class="card-body">
         <div class="flex items-start gap-4 mb-4">
-          <%= render "shared/teacher_avatar", teacher: teacher, size: :small, for_parent: true %>
+          <%= render "shared/teacher_avatar", teacher: teacher, size: :medium, for_parent: true %>
           <div class="flex-1">
             <h3 class="card-title text-xl"><%= teacher_short_name(teacher) %></h3>
             <% if teacher.academy_name.present? %>
@@ -36,21 +36,25 @@
         </div>
 
         <div class="mt-4 space-y-2">
-          <% if teacher.base_city.present? %>
+          <% if teacher.teaching_formats.present? %>
             <p class="text-sm text-gray-600">
-              <span class="font-semibold">📍</span> <%= teacher.base_city %>
-              <% if teacher.base_zip_code.present? %>
-                (<%= teacher.base_zip_code %>)
-              <% end %>
+              <span class="font-semibold">Formats :</span> <%= format_teaching_formats(teacher.teaching_formats) %>
             </p>
           <% end %>
+
           <% if teacher.pricing_text.present? %>
-            <p class="text-sm font-semibold text-blue-600"><%= teacher.pricing_text %></p>
+            <p class="text-sm font-semibold text-blue-600"><%= format_pricing_text(teacher.pricing_text) %></p>
           <% end %>
         </div>
 
-        <% if teacher.support_text.present? %>
-          <p class="text-gray-600 mt-4 line-clamp-3 text-sm"><%= truncate(teacher.support_text, length: 120) %></p>
+        <% if teacher.experience_text.present? || teacher.support_text.present? %>
+          <p class="text-gray-600 mt-4 line-clamp-2 text-sm">
+            <% if teacher.experience_text.present? %>
+              <%= truncate(teacher.experience_text, length: 100) %>
+            <% elsif teacher.support_text.present? %>
+              <%= truncate(teacher.support_text, length: 100) %>
+            <% end %>
+          </p>
         <% end %>
 
         <div class="card-actions justify-end mt-4">

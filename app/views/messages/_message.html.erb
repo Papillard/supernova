@@ -38,26 +38,40 @@
     </div>
   <% else %>
     <!-- Messages du parent (à droite) -->
+    <% parent_profile = message.user.parent_profile %>
+    <% parent_name = if parent_profile&.first_name.present?
+        parent_profile.first_name
+      elsif current_user.first_name.present?
+        current_user.first_name
+      else
+        "Vous"
+      end %>
     <div class="flex items-start gap-3 justify-end">
       <!-- Message -->
       <div class="flex-1 min-w-0 flex flex-col items-end">
         <div class="flex items-center gap-2 mb-1">
           <span class="text-xs text-gray-500"><%= message.created_at.strftime("%d/%m/%Y à %H:%M") %></span>
-          <span class="text-sm font-semibold text-gray-900">Vous</span>
+          <span class="text-sm font-semibold text-gray-900"><%= parent_name %></span>
         </div>
         <div class="rounded-2xl rounded-tr-sm px-4 py-3 inline-block max-w-[80%]" style="background-color: #3F3F3F;">
           <p class="text-white whitespace-pre-line text-sm leading-relaxed"><%= message.body %></p>
         </div>
       </div>
       <!-- Avatar -->
-      <div class="flex-shrink-0 rounded-full overflow-hidden" style="width: 32px; height: 32px; background-color: #e5e7eb;">
-        <div class="flex items-center justify-center text-gray-600 font-semibold text-xs" style="width: 32px; height: 32px; background-color: #e5e7eb;">
-          <% if current_user.first_name.present? || current_user.last_name.present? %>
-            <%= "#{current_user.first_name&.first || ''}#{current_user.last_name&.first || ''}".upcase %>
-          <% else %>
-            <%= current_user.email[0].upcase %>
-          <% end %>
-        </div>
+      <div class="flex-shrink-0">
+        <% if parent_profile %>
+          <%= render "shared/parent_avatar", parent_profile: parent_profile, size: :small %>
+        <% else %>
+          <div class="rounded-full overflow-hidden flex-shrink-0 bg-gray-300 flex items-center justify-center w-10 h-10">
+            <div class="flex items-center justify-center text-gray-600 font-semibold text-xs w-10 h-10">
+              <% if current_user.first_name.present? || current_user.last_name.present? %>
+                <%= "#{current_user.first_name&.first || ''}#{current_user.last_name&.first || ''}".upcase %>
+              <% else %>
+                <%= current_user.email[0].upcase %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
       </div>
     </div>
   <% end %>

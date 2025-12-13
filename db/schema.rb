@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_08_155939) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_13_114054) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -53,6 +53,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_08_155939) do
     t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
+  create_table "parent_profiles", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "first_name"
+    t.string "last_name"
+    t.string "address"
+    t.string "zip_code"
+    t.string "city"
+    t.string "profile_image_url"
+    t.boolean "profile_completed", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_parent_profiles_on_user_id", unique: true
+  end
+
   create_table "requests", force: :cascade do |t|
     t.bigint "parent_id", null: false
     t.bigint "teacher_id", null: false
@@ -65,8 +79,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_08_155939) do
     t.datetime "last_message_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "student_id"
+    t.text "notes"
     t.index ["parent_id"], name: "index_requests_on_parent_id"
+    t.index ["student_id"], name: "index_requests_on_student_id"
     t.index ["teacher_id"], name: "index_requests_on_teacher_id"
+  end
+
+  create_table "students", force: :cascade do |t|
+    t.bigint "parent_profile_id", null: false
+    t.string "first_name"
+    t.integer "birth_year"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["parent_profile_id"], name: "index_students_on_parent_profile_id"
   end
 
   create_table "teacher_documents", force: :cascade do |t|
@@ -94,8 +120,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_08_155939) do
     t.text "levels", default: [], array: true
     t.text "subjects_tags", default: [], array: true
     t.text "teaching_formats", default: [], array: true
-    t.string "base_city"
-    t.string "base_zip_code"
     t.string "radius_text"
     t.text "support_text"
     t.text "experience_text"
@@ -116,6 +140,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_08_155939) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "picture_visible", default: false, null: false
+    t.string "address"
+    t.string "zip_code"
+    t.string "city"
     t.index ["user_id"], name: "index_teachers_on_user_id", unique: true
   end
 
@@ -140,8 +167,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_08_155939) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "messages", "requests"
   add_foreign_key "messages", "users"
+  add_foreign_key "parent_profiles", "users"
+  add_foreign_key "requests", "students"
   add_foreign_key "requests", "teachers"
   add_foreign_key "requests", "users", column: "parent_id"
+  add_foreign_key "students", "parent_profiles"
   add_foreign_key "teacher_documents", "teachers"
   add_foreign_key "teachers", "users"
 end

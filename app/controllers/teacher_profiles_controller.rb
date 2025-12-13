@@ -193,7 +193,7 @@ class TeacherProfilesController < ApplicationController
     params.require(:teacher).permit(
       :first_name, :last_name, :gender,
       :academy_name, :school_name, :career_status,
-      :base_city, :base_zip_code, :radius_text,
+      :address, :zip_code, :city, :radius_text,
       :support_text, :experience_text, :special_skills_text,
       :interest_text, :exams_raw_text,
       :pricing_text, :target_students_range,

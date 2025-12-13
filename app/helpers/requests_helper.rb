@@ -39,6 +39,8 @@ module RequestsHelper
     level_option = LEVELS_OPTIONS.find { |_, value| value == level }
     level_option ? level_option[0] : level.humanize
   end
+
+  def format_level_for_student(level)
+    format_request_level(level)
+  end
 end
-
-

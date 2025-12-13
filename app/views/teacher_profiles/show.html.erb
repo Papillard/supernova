@@ -220,18 +220,24 @@
       <div class="card bg-white shadow-sm">
         <div class="card-body">
           <h2 class="card-title text-xl mb-4">Localisation</h2>
-          <div class="grid gap-4 md:grid-cols-3">
+          <div class="grid gap-4 md:grid-cols-3" data-controller="google-places-autocomplete">
             <div class="form-control">
-              <%= f.label :base_city, class: "label" do %>
-                <span class="label-text">Ville</span>
+              <%= f.label :address, class: "label" do %>
+                <span class="label-text">Adresse</span>
               <% end %>
-              <%= f.text_field :base_city, class: "input input-bordered w-full", placeholder: "Paris" %>
+              <%= f.text_field :address, class: "input input-bordered w-full", placeholder: "123 rue de la République", data: { google_places_autocomplete_target: "address" } %>
             </div>
             <div class="form-control">
-              <%= f.label :base_zip_code, class: "label" do %>
+              <%= f.label :zip_code, class: "label" do %>
                 <span class="label-text">Code postal</span>
               <% end %>
-              <%= f.text_field :base_zip_code, class: "input input-bordered w-full", placeholder: "75014" %>
+              <%= f.text_field :zip_code, class: "input input-bordered w-full", placeholder: "75014", data: { google_places_autocomplete_target: "zipCode" } %>
+            </div>
+            <div class="form-control">
+              <%= f.label :city, class: "label" do %>
+                <span class="label-text">Ville</span>
+              <% end %>
+              <%= f.text_field :city, class: "input input-bordered w-full", placeholder: "Paris", data: { google_places_autocomplete_target: "city" } %>
             </div>
             <div class="form-control">
               <%= f.label :radius_text, class: "label" do %>

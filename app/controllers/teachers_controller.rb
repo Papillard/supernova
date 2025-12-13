@@ -17,7 +17,7 @@ class TeachersController < ApplicationController
 
     # Filtre par ville
     if params[:city].present?
-      @teachers = @teachers.where("LOWER(base_city) LIKE ?", "%#{params[:city].downcase}%")
+      @teachers = @teachers.where("LOWER(city) LIKE ?", "%#{params[:city].downcase}%")
     end
 
     # Filtre par format d'enseignement

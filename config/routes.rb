@@ -31,6 +31,16 @@ Rails.application.routes.draw do
   # Teacher verification documents
   resources :teacher_verification_documents, only: [:create, :destroy], path: "teacher/verification_documents"
 
+  # Parent profile
+  get "parent/profile", to: "parent_profiles#show", as: :parent_profile
+  patch "parent/profile", to: "parent_profiles#update"
+
+  # Students (nested under parent profile)
+  resources :students, only: [:create, :destroy]
+
+  # Profile completion page
+  get "parent/profile/complete", to: "parent_profiles#complete", as: :parent_profile_complete
+
   # Teachers listing (public annuaire)
   get "teachers", to: "teachers#index", as: :teachers
   get "teachers/:id", to: "teachers#show", as: :teacher

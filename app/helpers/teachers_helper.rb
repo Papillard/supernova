@@ -69,6 +69,8 @@ module TeachersHelper
     ["Aide aux devoirs", "aide_aux_devoirs"],
     ["Remise à niveau", "remise_a_niveau"],
     ["Méthodologie de travail", "methodologie_travail"],
+    ["Méthodologie", "methodologie"],
+    ["Besoins particuliers", "besoins_particuliers"],
     ["Organisation", "organisation"],
     ["Préparation examens", "preparation_examens"],
     ["Élèves en difficulté", "eleves_en_difficulte"],
@@ -116,5 +118,115 @@ module TeachersHelper
     else
       level.humanize # Fallback si le niveau n'est pas trouvé
     end
+  end
+
+  # Helper pour formater le rayon d'intervention de manière humaine
+  def format_radius_human(radius_text)
+    return "" if radius_text.blank?
+
+    # Mapping des valeurs courantes
+    radius_mapping = {
+      "deux_a_5_km" => "2 à 5 km",
+      "5_a_10_km" => "5 à 10 km",
+      "10_a_20_km" => "10 à 20 km",
+      "plus_de_20_km" => "Plus de 20 km"
+    }
+
+    # Vérifier si c'est une valeur mappée
+    if radius_mapping.key?(radius_text.downcase)
+      return radius_mapping[radius_text.downcase]
+    end
+
+    # Si le texte contient déjà "km", on le retourne tel quel
+    return radius_text if radius_text.downcase.include?("km")
+
+    # Sinon, on essaie d'extraire un nombre et on ajoute "km"
+    if radius_text.match?(/\d+/)
+      number = radius_text.scan(/\d+/).first
+      "#{number} km"
+    else
+      radius_text.humanize
+    end
+  end
+
+  # Helper pour formater les formats d'enseignement en français
+  def format_teaching_format(format)
+    format_mapping = {
+      "at_student_home" => "Au domicile de l'élève",
+      "at_teacher_home" => "Au domicile du professeur",
+      "online" => "En ligne"
+    }
+
+    format_mapping[format.to_s] || format.humanize
+  end
+
+  # Helper pour formater plusieurs formats d'enseignement
+  def format_teaching_formats(formats)
+    return "" if formats.blank?
+    formats.map { |f| format_teaching_format(f) }.join(", ")
+  end
+
+  # Helper pour formater un tag d'examen
+  def format_exam_tag(tag)
+    exam_option = EXAM_TAGS_OPTIONS.find { |_, value| value == tag }
+    if exam_option
+      exam_option[0]
+    else
+      tag.humanize
+    end
+  end
+
+  # Helper pour formater un tag pédagogique
+  def format_pedagogy_tag(tag)
+    pedagogy_option = PEDAGOGY_TAGS_OPTIONS.find { |_, value| value == tag }
+    if pedagogy_option
+      pedagogy_option[0]
+    else
+      tag.humanize
+    end
+  end
+
+  # Helper pour formater le texte des tarifs (ajoute "/ heure" si absent)
+  def format_pricing_text(pricing_text)
+    return "" if pricing_text.blank?
+
+    # Si le texte contient déjà "/ heure" ou "par heure" ou "heure", on le retourne tel quel
+    return pricing_text if pricing_text.downcase.match?(/(\/\s*heure|par\s+heure|heure)/)
+
+    # Sinon, on ajoute "/ heure" à la fin
+    "#{pricing_text} / heure"
+  end
+
+  # Helper pour formater la localisation de manière naturelle
+  def format_location_text(teacher)
+    parts = []
+
+    # Adresse complète
+    if teacher.city.present?
+      location_str = teacher.city
+      if teacher.zip_code.present?
+        location_str += " (#{teacher.zip_code})"
+      end
+      parts << "Habite à #{location_str}"
+    elsif teacher.address.present?
+      parts << "📍 #{teacher.address}"
+      if teacher.zip_code.present?
+        parts << "(#{teacher.zip_code})"
+      end
+    elsif teacher.zip_code.present?
+      parts << "📍 #{teacher.zip_code}"
+    end
+
+    # Rayon
+    if teacher.radius_text.present?
+      radius_formatted = format_radius_human(teacher.radius_text)
+      if parts.any?
+        parts << "peut donner cours dans un rayon de #{radius_formatted}"
+      else
+        parts << "Rayon d'intervention : #{radius_formatted}"
+      end
+    end
+
+    parts.join(", ")
   end
 end

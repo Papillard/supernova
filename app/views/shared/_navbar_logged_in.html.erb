@@ -6,27 +6,31 @@
   <% end %>
   <%= link_to "Annuaire des professeurs", teachers_path, class: "text-sm font-medium text-gray-600 hover:text-gray-900 px-4" %>
   <div class="dropdown dropdown-end">
-    <label tabindex="0" class="btn btn-ghost btn-circle cursor-pointer">
-      <div class="rounded-full overflow-hidden flex-shrink-0" style="width: 40px; height: 40px; background-color: #e5e7eb;">
-        <% if current_user.first_name.present? || current_user.last_name.present? %>
-          <div class="flex items-center justify-center text-gray-600 font-semibold text-sm" style="width: 40px; height: 40px; background-color: #e5e7eb;">
-            <%= "#{current_user.first_name&.first || ''}#{current_user.last_name&.first || ''}".upcase %>
+    <label tabindex="0" class="btn btn-ghost btn-circle cursor-pointer p-0">
+      <% if current_user.teacher? && current_user.teacher %>
+        <%= render "shared/teacher_avatar", teacher: current_user.teacher, size: :small, for_parent: false %>
+      <% elsif current_user.parent? && current_user.parent_profile %>
+        <%= render "shared/parent_avatar", parent_profile: current_user.parent_profile, size: :small %>
+      <% else %>
+        <div class="rounded-full overflow-hidden flex-shrink-0 bg-gray-300 flex items-center justify-center w-10 h-10">
+          <div class="flex items-center justify-center text-gray-600 font-semibold text-xs w-10 h-10">
+            <%= current_user.first_name&.first || current_user.email[0] || "U" %>
           </div>
-        <% else %>
-          <div class="flex items-center justify-center text-gray-600 font-semibold text-sm" style="width: 40px; height: 40px; background-color: #e5e7eb;">
-            <%= current_user.email[0].upcase %>
-          </div>
-        <% end %>
-      </div>
+        </div>
+      <% end %>
     </label>
-    <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[100] p-2 shadow-lg bg-white rounded-lg w-48 border border-gray-200">
+    <ul tabindex="0" class="dropdown-content p-0 mt-3 z-[100] shadow-lg bg-white rounded-lg w-48 border border-gray-200">
       <% if current_user.teacher? %>
         <li>
-          <%= link_to "See profile", teacher_profile_path, class: "text-gray-700 px-2 py-2" %>
+          <%= link_to "Mon profil", teacher_profile_path, class: "text-sm text-gray-700 px-3 py-2 block hover:bg-transparent" %>
+        </li>
+      <% elsif current_user.parent? %>
+        <li>
+          <%= link_to "Mon profil", parent_profile_path, class: "text-sm text-gray-700 px-3 py-2 block hover:bg-transparent" %>
         </li>
       <% end %>
       <li>
-        <%= button_to "Déconnexion", destroy_user_session_path, method: :delete, class: "text-red-600 px-2 py-2 text-left" %>
+        <%= link_to "Déconnexion", destroy_user_session_path, data: { turbo_method: :delete }, class: "text-sm text-red-600 px-3 py-2 block hover:bg-transparent" %>
       </li>
     </ul>
   </div>
