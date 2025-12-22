@@ -39,6 +39,7 @@ class Teacher < ApplicationRecord
   # Callbacks
   before_validation :set_defaults, on: :create
   before_validation :set_display_name, on: [:create, :update]
+  after_update_commit :send_welcome_email_if_approved
 
   private
 
@@ -59,6 +60,17 @@ class Teacher < ApplicationRecord
       self.display_name = "#{first_name} #{last_name[0].upcase}"
     elsif first_name.present?
       self.display_name = first_name
+    end
+  end
+
+  def send_welcome_email_if_approved
+    return unless saved_change_to_status?
+    return unless status == "approved"
+
+    # Envoyer l'email de bienvenue seulement si on passe à approved
+    previous_status = saved_change_to_status[0]
+    if previous_status != "approved"
+      Notifications::WelcomeNotifier.call(user)
     end
   end
 end

@@ -1,0 +1,9 @@
+<p>Bonjour <%= @parent_first_name %>,</p>
+
+<p>Nous vous informons que le professeur <strong><%= @teacher_first_name %></strong> a décliné votre demande de cours.</p>
+
+<p>Nous vous encourageons à continuer votre recherche sur notre plateforme pour trouver le professeur idéal pour <%= @request.student&.first_name || "votre enfant" %>.</p>
+
+<p>Vous pouvez consulter d'autres profils de professeurs diplômés : <a href="<%= teachers_url %>"><%= teachers_url %></a></p>
+
+<p>L'équipe ProfConnect</p>

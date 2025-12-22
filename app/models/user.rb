@@ -16,4 +16,13 @@ class User < ApplicationRecord
   has_one :parent_profile, dependent: :destroy
   has_many :requests_as_parent, class_name: "Request", foreign_key: "parent_id", dependent: :destroy
   has_many :messages, dependent: :destroy
+
+  # Callbacks
+  after_create_commit :send_welcome_email
+
+  private
+
+  def send_welcome_email
+    Notifications::WelcomeNotifier.call(self)
+  end
 end

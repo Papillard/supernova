@@ -1,0 +1,19 @@
+<p>Cher(chère) <%= @civility %> <%= @teacher.first_name %> <%= @teacher.last_name %>,</p>
+
+<p>Vous avez reçu une nouvelle demande de mise en relation de la part de la famille <strong><%= @family_name %></strong>. Le lien vers la demande est ici: <a href="<%= teacher_requests_url(id: @request.id) %>"><%= teacher_requests_url(id: @request.id) %></a></p>
+
+<p><strong>Détails de la demande :</strong></p>
+<ul>
+  <li>Élève : <%= @student_name %></li>
+  <li>Niveau : <%= @level %></li>
+  <li>Matière : <%= @subject %></li>
+  <li>Message initial : "<%= @request_text_preview %>"</li>
+</ul>
+
+<p><strong>Action requise :</strong><br>
+Veuillez accepter ou refuser la demande rapidement via votre espace personnel. En cas d'acceptation, vous pourrez commencer la discussion pour définir les modalités du cours.</p>
+
+<p>➡️ <a href="<%= teacher_requests_url(id: @request.id) %>">Voir la demande et répondre</a></p>
+
+<p>Cordialement,<br>
+L'équipe ProfConnect</p>

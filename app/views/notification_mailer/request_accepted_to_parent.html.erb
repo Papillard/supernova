@@ -1,0 +1,11 @@
+<p>Bonjour <%= @parent_first_name %>,</p>
+
+<p>Excellente nouvelle ! Le professeur <strong><%= @teacher_first_name %></strong> (<%= @subject %>) a bien pris connaissance de votre demande pour <%= @student_name %> et a répondu positivement pour vous accompagner.</p>
+
+<p>Vous pouvez dès maintenant échanger avec lui(elle) pour définir vos objectifs, convenir d'un tarif horaire et fixer un premier cours.</p>
+
+<p>💬 <a href="<%= request_url(@request) %>">Accéder à votre conversation privée</a></p>
+
+<p>Félicitations pour cette mise en relation !</p>
+
+<p>L'équipe ProfConnect</p>

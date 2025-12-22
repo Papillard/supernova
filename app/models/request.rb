@@ -26,6 +26,8 @@ class Request < ApplicationRecord
   # Callbacks
   before_validation :set_requested_at, on: :create
   after_create :set_initial_last_message_at
+  after_create_commit :notify_request_created
+  after_update_commit :notify_status_change
 
   # Scopes
   scope :recent, -> { order(last_message_at: :desc) }
@@ -38,5 +40,26 @@ class Request < ApplicationRecord
 
   def set_initial_last_message_at
     update_column(:last_message_at, Time.current)
+  end
+
+  def notify_request_created
+    Notifications::RequestNotifier.call(self, event: :created)
+  end
+
+  def notify_status_change
+    return unless saved_change_to_status?
+
+    previous_status = saved_change_to_status[0]
+    current_status = saved_change_to_status[1]
+
+    if previous_status == "pending" && current_status == "accepted"
+      # Mettre à jour responded_at si pas déjà fait (le contrôleur le fait normalement)
+      update_column(:responded_at, Time.current) if responded_at.nil?
+      Notifications::RequestNotifier.call(self, event: :accepted)
+    elsif previous_status == "pending" && current_status == "declined"
+      # Mettre à jour responded_at si pas déjà fait (le contrôleur le fait normalement)
+      update_column(:responded_at, Time.current) if responded_at.nil?
+      Notifications::RequestNotifier.call(self, event: :declined)
+    end
   end
 end

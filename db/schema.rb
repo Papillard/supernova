@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_22_115136) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_23_000002) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -40,6 +40,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_22_115136) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "email_events", force: :cascade do |t|
+    t.string "kind", null: false
+    t.bigint "request_id"
+    t.bigint "recipient_id", null: false
+    t.datetime "sent_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["kind", "request_id", "recipient_id", "sent_at"], name: "index_email_events_on_kind_request_recipient_sent_at"
   end
 
   create_table "good_job_batches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -250,12 +260,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_22_115136) do
     t.string "uid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "email_notifications_enabled", default: true, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "email_events", "requests"
+  add_foreign_key "email_events", "users", column: "recipient_id"
   add_foreign_key "messages", "requests"
   add_foreign_key "messages", "users"
   add_foreign_key "parent_profiles", "users"

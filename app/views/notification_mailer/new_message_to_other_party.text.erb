@@ -1,0 +1,27 @@
+<% if @is_parent_sender %>
+Cher(chère) <%= @civility %> <%= @request.teacher.first_name %> <%= @request.teacher.last_name %>,
+
+Vous avez reçu un nouveau message de la part de <%= @sender_name %>.
+Voici un aperçu de son message :
+"<%= @message_preview %>"
+
+Pour consulter l'intégralité du message et y répondre, cliquez sur le lien ci-dessous :
+
+💬 Accéder à votre conversation : <%= teacher_requests_url(id: @request.id) %>
+
+À bientôt,
+
+L'équipe ProfConnect
+<% else %>
+Bonjour <%= @recipient_profile&.first_name || @recipient.first_name || @recipient.email.split("@").first %>,
+
+Vous avez reçu un nouveau message de la part de <%= @sender_name %>. Voici un aperçu de son message :
+"<%= @message_preview %>"
+
+Pour consulter l'intégralité du message et y répondre immédiatement, cliquez sur le lien ci-dessous :
+💬 Accéder à votre conversation : <%= request_url(@request) %>
+
+À bientôt,
+
+L'équipe ProfConnect
+<% end %>
