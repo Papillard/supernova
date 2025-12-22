@@ -133,8 +133,10 @@ Message.destroy_all
 Request.destroy_all
 
 # 4. Supprimer les teacher_documents (dépend de teachers)
-# Pas de modèle, on supprime directement depuis la table
-ActiveRecord::Base.connection.execute("DELETE FROM teacher_documents")
+# Pas de modèle, on supprime directement depuis la table si elle existe
+if ActiveRecord::Base.connection.table_exists?("teacher_documents")
+  ActiveRecord::Base.connection.execute("DELETE FROM teacher_documents")
+end
 
 # 5. Supprimer les teachers (dépend de users)
 Teacher.destroy_all
