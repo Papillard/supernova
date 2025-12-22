@@ -120,8 +120,26 @@ def clean_teaching_formats(formats)
 end
 
 # Nettoyer les données existantes
+# Ordre important : supprimer d'abord les dépendances, puis les tables principales
 puts "Nettoyage des données existantes..."
+
+# 1. Supprimer les email_events (dépend de requests et users)
+EmailEvent.destroy_all if defined?(EmailEvent)
+
+# 2. Supprimer les messages (dépend de requests et users)
+Message.destroy_all
+
+# 3. Supprimer les requests (dépend de teachers, students, et users)
+Request.destroy_all
+
+# 4. Supprimer les teacher_documents (dépend de teachers)
+# Pas de modèle, on supprime directement depuis la table
+ActiveRecord::Base.connection.execute("DELETE FROM teacher_documents")
+
+# 5. Supprimer les teachers (dépend de users)
 Teacher.destroy_all
+
+# 6. Supprimer les users teachers
 User.where(role: "teacher").destroy_all
 
 puts "✅ Données nettoyées"
@@ -176,8 +194,9 @@ teachers_data.each_with_index do |teacher_data, index|
     levels: levels,
     subjects_tags: subjects,
     teaching_formats: teaching_formats,
-    base_city: teacher_data['base_city'],
-    base_zip_code: teacher_data['base_zip_code'],
+    address: teacher_data['address'] || teacher_data['base_address'],
+    zip_code: teacher_data['zip_code'] || teacher_data['base_zip_code'],
+    city: teacher_data['city'] || teacher_data['base_city'],
     radius_text: teacher_data['radius_text'],
     support_text: teacher_data['support_text'],
     experience_text: teacher_data['experience_text'],
