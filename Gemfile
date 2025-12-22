@@ -20,9 +20,9 @@ gem "cloudinary"
 gem "aws-sdk-s3", require: false   # ok à garder si tu penses l’utiliser plus tard
 
 # Cache / jobs / ActionCable
-gem "solid_cache"
-gem "solid_queue"
-gem "solid_cable"
+# gem "solid_cache"
+# gem "solid_queue"
+# gem "solid_cable"
 gem "good_job"
 
 gem "bootsnap", require: false
