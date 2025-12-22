@@ -20,3 +20,4 @@ class ParentProfile < ApplicationRecord
                              students.exists?
   end
 end
+

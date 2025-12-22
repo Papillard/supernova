@@ -43,3 +43,4 @@ class Student < ApplicationRecord
     parent_profile.save if parent_profile.persisted?
   end
 end
+
