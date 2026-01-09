@@ -1,7 +1,7 @@
 <% if teacher.verification_documents.attached? %>
   <div class="space-y-3">
     <% teacher.verification_documents.each do |document| %>
-      <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg" id="verification-document-<%= document.blob_id %>">
+      <div class="flex items-center gap-3 p-3 bg-white rounded-lg" id="verification-document-<%= document.blob_id %>">
         <% if document.image? %>
           <!-- Image preview -->
           <div class="flex-shrink-0">

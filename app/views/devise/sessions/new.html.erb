@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-white flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
   <div class="max-w-md w-full space-y-8">
     <div class="text-center">
       <h1 class="text-3xl font-bold text-gray-900">ProfConnect</h1>
@@ -34,7 +34,7 @@
           <% end %>
 
           <div class="form-control mt-6">
-            <%= f.submit "Se connecter", class: "btn btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white rounded-lg w-full" %>
+            <%= f.submit "Se connecter", class: "btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg w-full" %>
           </div>
         <% end %>
 
@@ -48,8 +48,8 @@
             Pas encore de compte ?
           </p>
           <div class="flex flex-col gap-2 mt-2">
-            <%= link_to "Créer un compte parent", new_parent_registration_path, class: "btn bg-white border border-stone-300 text-gray-900 hover:bg-stone-50 rounded-lg btn-sm" %>
-            <%= link_to "Créer un compte professeur", new_teacher_registration_path, class: "btn bg-white border border-stone-300 text-gray-900 hover:bg-stone-50 rounded-lg btn-sm" %>
+            <%= link_to "Créer un compte parent", new_parent_registration_path, class: "btn bg-white border border-stone-300 text-gray-900 hover:bg-white rounded-lg btn-sm" %>
+            <%= link_to "Créer un compte professeur", new_teacher_registration_path, class: "btn bg-white border border-stone-300 text-gray-900 hover:bg-white rounded-lg btn-sm" %>
           </div>
         </div>
       </div>

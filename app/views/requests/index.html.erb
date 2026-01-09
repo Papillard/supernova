@@ -12,7 +12,7 @@
       <div class="flex-1 overflow-y-auto space-y-2">
         <% @requests.each do |request| %>
           <%= link_to requests_path(id: request.id), class: "block" do %>
-            <div class="p-4 rounded-lg border transition-colors <%= @active_request&.id == request.id ? 'bg-blue-50 border-blue-300' : 'bg-white border-gray-200 hover:bg-gray-50' %>">
+            <div class="p-4 rounded-lg border transition-colors <%= @active_request&.id == request.id ? 'bg-[#fe6618]/5 border-[#fe6618]/30' : 'bg-white border-gray-200 hover:bg-white' %>">
               <div class="flex items-start justify-between mb-2">
                 <h3 class="font-semibold text-gray-900 text-sm">
                   <% if request.status == "accepted" %>
@@ -44,7 +44,7 @@
         <div class="card-body text-center py-12">
           <p class="text-gray-600 text-lg">Vous n'avez pas encore de demandes.</p>
           <p class="text-gray-500 mt-2 text-sm">Parcourez l'annuaire des professeurs pour en créer une.</p>
-          <%= link_to "Voir les professeurs", teachers_path, class: "btn btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white mt-4 btn-sm" %>
+          <%= link_to "Voir les professeurs", teachers_path, class: "btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white mt-4 btn-sm" %>
         </div>
       </div>
     <% end %>

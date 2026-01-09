@@ -11,17 +11,17 @@
             <% if @teacher.pending? %>
               <span class="badge badge-warning mt-2">En attente</span>
             <% elsif @teacher.approved? %>
-              <span class="badge bg-blue-600 text-white mt-2">Approuvé</span>
+              <span class="badge bg-[#fe6618] text-white mt-2">Approuvé</span>
             <% elsif @teacher.rejected? %>
               <span class="badge badge-error mt-2">Refusé</span>
             <% end %>
           </div>
           <div class="flex gap-2">
             <% unless @teacher.approved? %>
-              <%= button_to "Approuver", approve_admin_teacher_path(@teacher), method: :patch, class: "btn btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white rounded-lg" %>
+              <%= button_to "Approuver", approve_admin_teacher_path(@teacher), method: :patch, class: "btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg" %>
             <% end %>
             <% unless @teacher.rejected? %>
-              <%= button_to "Refuser", reject_admin_teacher_path(@teacher), method: :patch, class: "btn bg-white border border-stone-300 text-gray-900 hover:bg-stone-50 rounded-lg" %>
+              <%= button_to "Refuser", reject_admin_teacher_path(@teacher), method: :patch, class: "btn bg-white border border-stone-300 text-gray-900 hover:bg-white rounded-lg" %>
             <% end %>
           </div>
         </div>

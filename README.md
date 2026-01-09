@@ -1,6 +1,6 @@
 # ProfConnect
 
-ProfConnect met en relation des parents avec des professeurs de l'Éducation nationale. Différenciant majeur : uniquement des vrais enseignants, pas d'étudiants.
+ProfConnect met en relation des parents avec des professeurs de l'Éducation Nationale. Différenciant majeur : uniquement des vrais enseignants, pas d'étudiants.
 
 ## 🚀 Lancer l'application en local
 

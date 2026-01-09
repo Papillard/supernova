@@ -18,7 +18,7 @@
     <% if request.status == "accepted" || request.status == "pending" %>
       <div class="border-t border-gray-200 px-6 py-4 bg-white flex-shrink-0">
         <%= form_with model: [request, Message.new], url: request_messages_path(request), local: false, data: { turbo_frame: "messages_frame_#{request.id}" }, id: "message-form-#{request.id}", class: "flex gap-3" do |f| %>
-          <%= f.text_area :body, id: "message-body-#{request.id}", class: "flex-1 resize-none border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent", placeholder: "Tapez votre message...", rows: 2, required: true %>
+          <%= f.text_area :body, id: "message-body-#{request.id}", class: "flex-1 resize-none border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#fe6618] focus:border-transparent", placeholder: "Tapez votre message...", rows: 2, required: true %>
         <% end %>
       </div>
     <% end %>

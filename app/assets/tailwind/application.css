@@ -1,6 +1,11 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+@theme {
+  --color-gray-50: #fff9f5;
+  --color-stone-50: #fff9f5;
+}
+
 @layer base {
   :root {
     color-scheme: light;
@@ -27,6 +32,21 @@
     --color-warning-content: #793205;
     --color-error: #dc2626;
     --color-error-content: #ffffff;
+    --color-gray-50: #fff9f5;
+    --color-stone-50: #fff9f5;
+  }
+}
+
+@layer base {
+  h1, h2 {
+    font-family: "Nunito Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 900;
+    font-style: normal;
+  }
+
+  h2 {
+    font-size: 1.15em; /* Augmente légèrement la taille des h2 */
   }
 }
 
@@ -34,8 +54,8 @@
   /* Fix input focus - avoid thick black borders */
   .input.input-bordered:focus {
     outline: none;
-    border-color: rgb(59 130 246);
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+    border-color: #fe6618;
+    box-shadow: 0 0 0 2px rgba(254, 102, 24, 0.2);
   }
 
   .hero-section-pattern {
@@ -62,4 +82,18 @@
     mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.35) 65%, rgba(0, 0, 0, 0) 100%);
     -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.35) 65%, rgba(0, 0, 0, 0) 100%);
   }
+
+  /* Hero title animation */
+  #hero-title .hero-word {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+
+  #hero-title .hero-word.animate {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
 }

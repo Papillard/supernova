@@ -27,10 +27,10 @@
           <% end %>
           <% if teacher.subjects_tags.present? %>
             <% teacher.subjects_tags.first(4).each do |tag| %>
-              <span class="badge badge-sm bg-blue-100 text-blue-700 border-blue-200"><%= format_subject_tag(tag) %></span>
+              <span class="badge badge-sm bg-[#fe6618]/10 text-[#fe6618] border-[#fe6618]/20"><%= format_subject_tag(tag) %></span>
             <% end %>
             <% if teacher.subjects_tags.length > 4 %>
-              <span class="badge badge-sm bg-blue-100 text-blue-700 border-blue-200">+<%= teacher.subjects_tags.length - 4 %></span>
+              <span class="badge badge-sm bg-[#fe6618]/10 text-[#fe6618] border-[#fe6618]/20">+<%= teacher.subjects_tags.length - 4 %></span>
             <% end %>
           <% end %>
         </div>
@@ -43,7 +43,7 @@
           <% end %>
 
           <% if teacher.pricing_text.present? %>
-            <p class="text-sm font-semibold text-blue-600"><%= format_pricing_text(teacher.pricing_text) %></p>
+            <p class="text-sm font-semibold text-[#fe6618]"><%= format_pricing_text(teacher.pricing_text) %></p>
           <% end %>
         </div>
 
@@ -59,7 +59,7 @@
 
         <div class="card-actions justify-end mt-4">
           <%= link_to "Voir le profil", teacher_path(teacher),
-              class: "btn btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white rounded-lg btn-sm",
+              class: "btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg btn-sm",
               data: { turbo_frame: "_top" } %>
         </div>
       </div>

@@ -82,8 +82,8 @@
           <% if @request.status == "accepted" || @request.status == "pending" %>
             <div class="border-t border-gray-200 px-6 py-4 bg-white sticky bottom-0">
               <%= form_with model: [@request, Message.new], url: request_messages_path(@request), local: true, class: "flex gap-3" do |f| %>
-                <%= f.text_area :body, class: "flex-1 resize-none border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent", placeholder: "Tapez votre message...", rows: 2, required: true %>
-                <%= f.submit "Envoyer", class: "px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors self-end" %>
+                <%= f.text_area :body, class: "flex-1 resize-none border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#fe6618] focus:border-transparent", placeholder: "Tapez votre message...", rows: 2, required: true %>
+                <%= f.submit "Envoyer", class: "px-6 py-3 bg-[#fe6618] hover:bg-[#d85514] text-white font-medium rounded-lg transition-colors self-end" %>
               <% end %>
             </div>
           <% end %>

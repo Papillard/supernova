@@ -1,83 +1,100 @@
 <% content_for :main_background, "background-color: oklch(0.985 0.002 247.839);" %>
 
 <div class="container mx-auto max-w-7xl px-4 py-8">
+  <!-- Bandeau d'inscription pour les utilisateurs non connectés -->
+  <% unless user_signed_in? && current_user.parent? %>
+    <div class="mb-6 bg-gradient-to-r from-[#fe6618] to-[#d85514] text-white rounded-lg p-6 shadow-lg">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="flex-1 text-center md:text-left">
+          <h3 class="text-xl font-bold mb-2">S'inscrire gratuitement sur ProfConnect</h3>
+          <p class="text-white/90">Pour voir la fiche détaillée des professeurs et demander une mise en relation</p>
+        </div>
+        <div class="flex gap-3">
+          <%= link_to "S'inscrire", new_parent_registration_path, class: "btn bg-white text-[#fe6618] hover:bg-gray-100 border-white rounded-lg font-semibold" %>
+          <%= link_to "Se connecter", new_user_session_path, class: "btn bg-transparent border-2 border-white text-white hover:bg-white/10 rounded-lg" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
   <!-- Barre supérieure avec retour et CTA -->
   <div class="flex items-center justify-between mb-6">
     <%= link_to "← Retour à l'annuaire", teachers_path, class: "text-gray-500 hover:text-gray-700 no-underline text-sm" %>
     <% if user_signed_in? && current_user.parent? %>
       <% parent_profile = current_user.parent_profile %>
       <% if parent_profile %>
-        <button onclick="request_modal.showModal()" class="btn btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white rounded-lg">
+        <button onclick="request_modal.showModal()" class="btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg">
           Demander une mise en relation
         </button>
       <% else %>
-        <%= link_to "Compléter mon profil pour créer une demande", parent_profile_path, class: "btn btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white rounded-lg" %>
+        <%= link_to "Compléter mon profil pour créer une demande", parent_profile_path, class: "btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg" %>
       <% end %>
     <% else %>
-      <%= link_to "Se connecter pour demander une mise en relation", new_user_session_path, class: "btn btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white rounded-lg" %>
+      <%= link_to "Se connecter pour demander une mise en relation", new_user_session_path, class: "btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg" %>
     <% end %>
   </div>
 
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-    <!-- Colonne gauche (1/3) -->
-    <div class="lg:col-span-1">
-      <div class="card bg-white shadow-sm">
-        <div class="card-body">
-          <!-- Avatar -->
-          <div class="flex justify-center mb-6">
-            <%= render "shared/teacher_avatar", teacher: @teacher, size: :large, for_parent: true %>
-          </div>
+  <% if user_signed_in? && current_user.parent? %>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+      <!-- Colonne gauche (1/3) -->
+      <div class="lg:col-span-1">
+        <div class="card bg-white shadow-sm">
+          <div class="card-body">
+            <!-- Avatar -->
+            <div class="flex justify-center mb-6">
+              <%= render "shared/teacher_avatar", teacher: @teacher, size: :large, for_parent: true %>
+            </div>
 
-          <!-- Nom -->
-          <h1 class="text-2xl font-bold text-gray-900 text-center mb-4">
-            <%= teacher_short_name(@teacher) %>
-          </h1>
+            <!-- Nom -->
+            <h1 class="text-2xl font-bold text-gray-900 text-center mb-4">
+              <%= teacher_short_name(@teacher) %>
+            </h1>
 
-          <!-- Info basique -->
-          <div class="space-y-2 mb-6 text-center text-gray-600">
-            <% location_parts = [] %>
-            <% location_parts << @teacher.city if @teacher.city.present? %>
-            <% location_parts << @teacher.school_name if @teacher.school_name.present? %>
-            <% location_parts << @teacher.career_status.humanize if @teacher.career_status.present? %>
-            <% if location_parts.any? %>
-              <p class="text-sm"><%= location_parts.join(", ") %></p>
-            <% end %>
-          </div>
+            <!-- Info basique -->
+            <div class="space-y-2 mb-6 text-center text-gray-600">
+              <% location_parts = [] %>
+              <% location_parts << @teacher.city if @teacher.city.present? %>
+              <% location_parts << @teacher.school_name if @teacher.school_name.present? %>
+              <% location_parts << @teacher.career_status.humanize if @teacher.career_status.present? %>
+              <% if location_parts.any? %>
+                <p class="text-sm"><%= location_parts.join(", ") %></p>
+              <% end %>
+            </div>
 
-          <!-- Badges -->
-          <div class="space-y-4">
-            <% if @teacher.levels.present? %>
-              <div class="text-center">
-                <h3 class="text-xs font-semibold text-gray-500 uppercase mb-2">Niveaux</h3>
-                <div class="flex flex-wrap gap-2 justify-center">
-                  <% @teacher.levels.each do |level| %>
-                    <span class="badge bg-orange-100 text-orange-700 border-orange-200"><%= format_level_tag(level) %></span>
-                  <% end %>
+            <!-- Badges -->
+            <div class="space-y-4">
+              <% if @teacher.levels.present? %>
+                <div class="text-center">
+                  <h3 class="text-xs font-semibold text-gray-500 uppercase mb-2">Niveaux</h3>
+                  <div class="flex flex-wrap gap-2 justify-center">
+                    <% @teacher.levels.each do |level| %>
+                      <span class="badge bg-orange-100 text-orange-700 border-orange-200"><%= format_level_tag(level) %></span>
+                    <% end %>
+                  </div>
                 </div>
-              </div>
-            <% end %>
+              <% end %>
 
-            <% if @teacher.subjects_tags.present? %>
-              <div class="text-center">
-                <h3 class="text-xs font-semibold text-gray-500 uppercase mb-2">Matières</h3>
-                <div class="flex flex-wrap gap-2 justify-center">
-                  <% @teacher.subjects_tags.each do |tag| %>
-                    <span class="badge bg-blue-100 text-blue-700 border-blue-200"><%= format_subject_tag(tag) %></span>
-                  <% end %>
+              <% if @teacher.subjects_tags.present? %>
+                <div class="text-center">
+                  <h3 class="text-xs font-semibold text-gray-500 uppercase mb-2">Matières</h3>
+                  <div class="flex flex-wrap gap-2 justify-center">
+                    <% @teacher.subjects_tags.each do |tag| %>
+                      <span class="badge bg-[#fe6618]/10 text-[#fe6618] border-[#fe6618]/20"><%= format_subject_tag(tag) %></span>
+                    <% end %>
+                  </div>
                 </div>
-              </div>
-            <% end %>
+              <% end %>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Colonne droite (2/3) -->
-    <div class="lg:col-span-2">
-      <div class="card bg-white shadow-sm">
-        <div class="card-body">
-          <!-- Contenu -->
-          <div class="space-y-6">
+      <!-- Colonne droite (2/3) -->
+      <div class="lg:col-span-2">
+        <div class="card bg-white shadow-sm">
+          <div class="card-body">
+            <!-- Contenu -->
+            <div class="space-y-6">
             <% if @teacher.teaching_formats.present? %>
               <div>
                 <h3 class="text-xl font-semibold text-gray-900 mb-2">Formats d'enseignement</h3>
@@ -158,6 +175,20 @@
       </div>
     </div>
   </div>
+  <% else %>
+    <!-- Aperçu limité pour les utilisateurs non connectés -->
+    <div class="card bg-white shadow-sm">
+      <div class="card-body text-center py-12">
+        <div class="flex justify-center mb-6">
+          <%= render "shared/teacher_avatar", teacher: @teacher, size: :large, for_parent: true %>
+        </div>
+        <h1 class="text-2xl font-bold text-gray-900 mb-4">
+          <%= teacher_short_name(@teacher) %>
+        </h1>
+        <p class="text-gray-600 mb-6">Inscrivez-vous gratuitement pour voir la fiche complète de ce professeur et demander une mise en relation.</p>
+      </div>
+    </div>
+  <% end %>
 </div>
 
 <% if user_signed_in? && current_user.parent? %>
@@ -273,7 +304,7 @@
 
           <div class="modal-action">
             <button type="button" onclick="request_modal.close()" class="btn btn-ghost">Annuler</button>
-            <%= f.submit "Envoyer la demande", class: "btn btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white" %>
+            <%= f.submit "Envoyer la demande", class: "btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white" %>
           </div>
         <% end %>
       </div>

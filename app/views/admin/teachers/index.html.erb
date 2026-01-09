@@ -4,10 +4,10 @@
 
     <!-- Filtres -->
     <div class="flex gap-4">
-      <%= link_to "Tous", admin_teachers_path, class: "btn #{params[:status].blank? ? 'btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white rounded-lg' : 'btn-ghost'}" %>
-      <%= link_to "En attente", admin_teachers_path(status: "pending"), class: "btn #{params[:status] == 'pending' ? 'btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white rounded-lg' : 'btn-ghost'}" %>
-      <%= link_to "Approuvés", admin_teachers_path(status: "approved"), class: "btn #{params[:status] == 'approved' ? 'btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white rounded-lg' : 'btn-ghost'}" %>
-      <%= link_to "Refusés", admin_teachers_path(status: "rejected"), class: "btn #{params[:status] == 'rejected' ? 'btn-primary bg-blue-600 hover:bg-blue-700 border-blue-600 text-white rounded-lg' : 'btn-ghost'}" %>
+      <%= link_to "Tous", admin_teachers_path, class: "btn #{params[:status].blank? ? 'btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg' : 'btn-ghost'}" %>
+      <%= link_to "En attente", admin_teachers_path(status: "pending"), class: "btn #{params[:status] == 'pending' ? 'btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg' : 'btn-ghost'}" %>
+      <%= link_to "Approuvés", admin_teachers_path(status: "approved"), class: "btn #{params[:status] == 'approved' ? 'btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg' : 'btn-ghost'}" %>
+      <%= link_to "Refusés", admin_teachers_path(status: "rejected"), class: "btn #{params[:status] == 'rejected' ? 'btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg' : 'btn-ghost'}" %>
     </div>
 
     <!-- Table -->
@@ -38,7 +38,7 @@
                 <% if teacher.pending? %>
                   <span class="badge badge-warning">En attente</span>
                 <% elsif teacher.approved? %>
-                  <span class="badge bg-blue-600 text-white">Approuvé</span>
+                  <span class="badge bg-[#fe6618] text-white">Approuvé</span>
                 <% elsif teacher.rejected? %>
                   <span class="badge badge-error">Refusé</span>
                 <% end %>
