@@ -12,16 +12,7 @@ class Request < ApplicationRecord
   validates :level, presence: { message: "Le niveau est requis" }
   validates :requested_at, presence: true
   validates :student, presence: { message: "L'enfant est requis" }
-  # notes est optionnel - pas de validation de présence
-
-  # Validation personnalisée : au moins request_text ou notes doit être présent
-  validate :request_text_or_notes_present
-
-  def request_text_or_notes_present
-    if request_text.blank? && notes.blank?
-      errors.add(:base, "Veuillez préciser votre demande pour le professeur")
-    end
-  end
+  # notes et request_text sont optionnels - le message initial sera généré automatiquement
 
   # Callbacks
   before_validation :set_requested_at, on: :create

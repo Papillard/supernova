@@ -23,6 +23,30 @@ class ParentProfilesController < ApplicationController
       params_hash = params_hash.slice(:profile_image_url)
     end
 
+    # Gérer la mise à jour de l'email du user
+    user_email_updated = false
+    if params[:user].present? && params[:user][:email].present?
+      new_email = params[:user][:email].strip
+      if new_email != current_user.email
+        if current_user.update(email: new_email)
+          user_email_updated = true
+        else
+          # Si la mise à jour de l'email échoue, on affiche les erreurs
+          respond_to do |format|
+            format.turbo_stream do
+              flash.now[:alert] = "Erreur lors de la mise à jour de l'email : #{current_user.errors.full_messages.join(', ')}"
+              render :show, status: :unprocessable_entity
+            end
+            format.html do
+              flash[:alert] = "Erreur lors de la mise à jour de l'email : #{current_user.errors.full_messages.join(', ')}"
+              render :show, status: :unprocessable_entity
+            end
+          end
+          return
+        end
+      end
+    end
+
     # Gérer l'upload d'avatar
     if params[:parent_profile].present? && params[:parent_profile][:avatar].present?
       avatar_file = params[:parent_profile][:avatar]
@@ -95,9 +119,17 @@ class ParentProfilesController < ApplicationController
       if @parent_profile.update(params_hash)
         # Recharger le parent_profile pour avoir le statut de completion à jour
         @parent_profile.reload
+        notice_message = if @is_avatar_upload
+          "Photo de profil mise à jour avec succès."
+        elsif user_email_updated
+          "Profil et email mis à jour avec succès."
+        else
+          "Infos enregistrées"
+        end
+        flash.now[:notice] = notice_message
         format.turbo_stream { render :update }
         format.html do
-          flash[:notice] = @is_avatar_upload ? "Photo de profil mise à jour avec succès." : "Infos enregistrées"
+          flash[:notice] = notice_message
           redirect_to parent_profile_path
         end
       else
@@ -137,7 +169,7 @@ class ParentProfilesController < ApplicationController
 
   def parent_profile_params
     params.require(:parent_profile).permit(
-      :first_name, :last_name, :address, :zip_code, :city,
+      :first_name, :last_name, :phone, :address, :zip_code, :city,
       :profile_image_url, :avatar
     )
   end

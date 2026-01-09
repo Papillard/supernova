@@ -18,6 +18,24 @@ class RequestsController < ApplicationController
     redirect_to requests_path(id: params[:id])
   end
 
+  def destroy
+    @request = current_user.requests_as_parent.find_by(id: params[:id])
+
+    if @request.nil?
+      redirect_to requests_path, alert: "Demande introuvable."
+      return
+    end
+
+    # Supprimer les email_events associés avant de supprimer la request
+    EmailEvent.where(request_id: @request.id).destroy_all
+
+    if @request.destroy
+      redirect_to requests_path, notice: "Demande supprimée avec succès."
+    else
+      redirect_to requests_path(id: @request.id), alert: "Erreur lors de la suppression de la demande."
+    end
+  end
+
   def create
     @teacher = Teacher.find(params[:teacher_id])
 
@@ -81,8 +99,8 @@ class RequestsController < ApplicationController
       @request.requested_at = Time.current
       @request.last_message_at = Time.current
 
-      # Utiliser notes si fourni, sinon request_text pour compatibilité
-      @request.request_text = @request.notes.presence || @request.request_text || ""
+      # Utiliser notes si fourni, sinon laisser request_text vide (optionnel)
+      @request.request_text = @request.notes.presence || ""
 
       unless @request.save
         raise ActiveRecord::Rollback
@@ -98,12 +116,24 @@ class RequestsController < ApplicationController
 
       # Créer le premier message du parent
       student_name = student.first_name
-      notes_text = @request.notes.present? ? "\n\n#{@request.notes}" : ""
 
+      # Construire le message avec format conditionnel pour les précisions
       parent_message_body = <<~MESSAGE
         Bonjour #{teacher_first_name},
 
-        Je recherche des cours particulier en #{subject_label} niveau #{level_label} pour #{student_name}.#{notes_text}
+        Je recherche des cours particulier en #{subject_label} niveau #{level_label} pour #{student_name}.
+      MESSAGE
+
+      # Ajouter les précisions si présentes
+      if @request.notes.present?
+        parent_message_body += <<~MESSAGE
+
+          Voici quelques précisions utiles sur ma demande :
+          #{@request.notes}
+        MESSAGE
+      end
+
+      parent_message_body += <<~MESSAGE
 
         Merci d'avance pour votre réponse,
 

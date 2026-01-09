@@ -3,8 +3,8 @@ class Teacher::RequestsController < ApplicationController
   before_action :authenticate_user!
   before_action :ensure_teacher_role
   before_action :set_teacher
-  before_action :set_request, only: [:accept, :decline]
-  before_action :authorize_request_access, only: [:accept, :decline]
+  before_action :set_request, only: [:accept, :decline, :destroy]
+  before_action :authorize_request_access, only: [:accept, :decline, :destroy]
 
   def index
     @requests = @teacher.requests.order(last_message_at: :desc)
@@ -57,6 +57,17 @@ class Teacher::RequestsController < ApplicationController
       redirect_to teacher_requests_path(id: @request.id), notice: "Demande refusée."
     else
       redirect_to teacher_requests_path(id: @request.id), alert: "Erreur lors du refus."
+    end
+  end
+
+  def destroy
+    # Supprimer les email_events associés avant de supprimer la request
+    EmailEvent.where(request_id: @request.id).destroy_all
+
+    if @request.destroy
+      redirect_to teacher_requests_path, notice: "Demande supprimée avec succès."
+    else
+      redirect_to teacher_requests_path(id: @request.id), alert: "Erreur lors de la suppression de la demande."
     end
   end
 

@@ -17,164 +17,220 @@
     </div>
   <% end %>
 
-  <!-- Barre supérieure avec retour et CTA -->
-  <div class="flex items-center justify-between mb-6">
+  <!-- Barre supérieure avec retour -->
+  <div class="mb-6">
     <%= link_to "← Retour à l'annuaire", teachers_path, class: "text-gray-500 hover:text-gray-700 no-underline text-sm" %>
-    <% if user_signed_in? && current_user.parent? %>
-      <% parent_profile = current_user.parent_profile %>
-      <% if parent_profile %>
-        <button onclick="request_modal.showModal()" class="btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg">
-          Demander une mise en relation
-        </button>
-      <% else %>
-        <%= link_to "Compléter mon profil pour créer une demande", parent_profile_path, class: "btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg" %>
-      <% end %>
-    <% else %>
-      <%= link_to "Se connecter pour demander une mise en relation", new_user_session_path, class: "btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg" %>
-    <% end %>
   </div>
 
   <% if user_signed_in? && current_user.parent? %>
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-      <!-- Colonne gauche (1/3) -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Colonne gauche (1/3) - Profil sticky -->
       <div class="lg:col-span-1">
-        <div class="card bg-white shadow-sm">
+        <div class="card bg-white shadow-sm sticky top-4">
           <div class="card-body">
-            <!-- Avatar -->
-            <div class="flex justify-center mb-6">
-              <%= render "shared/teacher_avatar", teacher: @teacher, size: :large, for_parent: true %>
+            <!-- Avatar + Nom -->
+            <div class="flex flex-col items-center mb-4">
+              <div class="mb-4">
+                <%= render "shared/teacher_avatar", teacher: @teacher, size: :large, for_parent: true %>
+              </div>
+              <h1 class="text-2xl font-bold text-gray-900 text-center mb-2">
+                <%= teacher_short_name(@teacher) %>
+              </h1>
+              <!-- Ligne méta courte -->
+              <div class="flex flex-wrap items-center justify-center gap-2 text-sm text-gray-600">
+                <% meta_parts = [] %>
+                <% meta_parts << @teacher.city if @teacher.city.present? %>
+                <% meta_parts << format_career_status(@teacher.read_attribute(:career_status)) if @teacher.career_status.present? %>
+                <% meta_parts << @teacher.school_name if @teacher.school_name.present? %>
+                <% if meta_parts.any? %>
+                  <span><%= meta_parts.join(" • ") %></span>
+                <% end %>
+              </div>
             </div>
 
-            <!-- Nom -->
-            <h1 class="text-2xl font-bold text-gray-900 text-center mb-4">
-              <%= teacher_short_name(@teacher) %>
-            </h1>
-
-            <!-- Info basique -->
-            <div class="space-y-2 mb-6 text-center text-gray-600">
-              <% location_parts = [] %>
-              <% location_parts << @teacher.city if @teacher.city.present? %>
-              <% location_parts << @teacher.school_name if @teacher.school_name.present? %>
-              <% location_parts << @teacher.career_status.humanize if @teacher.career_status.present? %>
-              <% if location_parts.any? %>
-                <p class="text-sm"><%= location_parts.join(", ") %></p>
-              <% end %>
-            </div>
-
-            <!-- Badges -->
-            <div class="space-y-4">
-              <% if @teacher.levels.present? %>
-                <div class="text-center">
-                  <h3 class="text-xs font-semibold text-gray-500 uppercase mb-2">Niveaux</h3>
-                  <div class="flex flex-wrap gap-2 justify-center">
-                    <% @teacher.levels.each do |level| %>
-                      <span class="badge bg-orange-100 text-orange-700 border-orange-200"><%= format_level_tag(level) %></span>
-                    <% end %>
-                  </div>
-                </div>
-              <% end %>
-
+            <!-- Bloc fit -->
+            <div class="space-y-3 mb-6">
+              <!-- Chips Matières (style identique à la card) -->
               <% if @teacher.subjects_tags.present? %>
-                <div class="text-center">
-                  <h3 class="text-xs font-semibold text-gray-500 uppercase mb-2">Matières</h3>
-                  <div class="flex flex-wrap gap-2 justify-center">
-                    <% @teacher.subjects_tags.each do |tag| %>
-                      <span class="badge bg-[#fe6618]/10 text-[#fe6618] border-[#fe6618]/20"><%= format_subject_tag(tag) %></span>
-                    <% end %>
-                  </div>
+                <div class="flex flex-wrap gap-1.5 justify-center">
+                  <% @teacher.subjects_tags.first(2).each do |tag| %>
+                    <span class="badge badge-sm bg-[#fe6618]/10 text-[#fe6618] border-[#fe6618]/20"><%= format_subject_tag(tag) %></span>
+                  <% end %>
+                  <% if @teacher.subjects_tags.length > 2 %>
+                    <span class="badge badge-sm bg-[#fe6618]/10 text-[#fe6618] border-[#fe6618]/20">+<%= @teacher.subjects_tags.length - 2 %></span>
+                  <% end %>
+                </div>
+              <% end %>
+
+              <!-- Texte Niveaux (pas de labels CAPS) -->
+              <% if @teacher.levels.present? %>
+                <div class="text-xs text-gray-600 text-center">
+                  <%= @teacher.levels.map { |level| format_level_tag(level) }.join(" • ") %>
                 </div>
               <% end %>
             </div>
+
+            <!-- CTA principal -->
+            <% parent_profile = current_user.parent_profile %>
+            <% if parent_profile %>
+              <button onclick="request_modal.showModal()" class="btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg w-full mb-2">
+                Demander une mise en relation
+              </button>
+              <div class="text-center space-y-1">
+                <p class="text-xs text-gray-500">Coordonnées partagées après acceptation</p>
+                <p class="text-xs text-gray-500">Réponse sous 24–48h</p>
+              </div>
+            <% else %>
+              <%= link_to "Compléter mon profil pour créer une demande", parent_profile_path, class: "btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg w-full mb-2" %>
+            <% end %>
           </div>
         </div>
       </div>
 
-      <!-- Colonne droite (2/3) -->
+      <!-- Colonne droite (2/3) - Contenu continu -->
       <div class="lg:col-span-2">
         <div class="card bg-white shadow-sm">
-          <div class="card-body">
-            <!-- Contenu -->
-            <div class="space-y-6">
-            <% if @teacher.teaching_formats.present? %>
-              <div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-2">Formats d'enseignement</h3>
-                <p class="text-gray-600"><%= format_teaching_formats(@teacher.teaching_formats) %></p>
+          <div class="card-body space-y-8">
+            <!-- Section 1 — Infos pratiques -->
+            <div>
+              <h2 class="text-2xl font-semibold text-gray-900 mb-4">Infos pratiques</h2>
+              <div class="space-y-4 text-gray-700">
+                <!-- Formats de cours -->
+                <% if @teacher.teaching_formats.present? %>
+                  <p><%= format_teaching_formats_sentence(@teacher.teaching_formats, @teacher.gender) %></p>
+                <% end %>
+
+                <!-- Localisation -->
+                <% if @teacher.city.present? || @teacher.radius_text.present? %>
+                  <p>
+                    Je suis basé<% if @teacher.gender == "female" %>e<% end %>
+                    <% if @teacher.city.present? %>
+                      à <strong><%= @teacher.city %></strong>
+                      <% if @teacher.zip_code.present? %>
+                        (<%= @teacher.zip_code %>)
+                      <% end %>
+                    <% end %>
+                    <% if @teacher.radius_text.present? %>
+                      <% if @teacher.city.present? %>
+                        et je peux me déplacer dans un rayon de <%= format_radius_human(@teacher.radius_text).gsub("Se déplace de ", "") %>.
+                      <% else %>
+                        Je peux me déplacer dans un rayon de <%= format_radius_human(@teacher.radius_text).gsub("Se déplace de ", "") %>.
+                      <% end %>
+                    <% else %>
+                      .
+                    <% end %>
+                  </p>
+                <% end %>
+
+                <!-- Tarif -->
+                <% if @teacher.pricing_text.present? %>
+                  <p>
+                    Cours particuliers à
+                    <% price_match = @teacher.pricing_text.match(/(\d+)\s*€/) %>
+                    <strong><%= price_match ? "#{price_match[1]} € / heure" : format_pricing_text(@teacher.pricing_text) %></strong>.
+                  </p>
+                <% end %>
               </div>
-            <% end %>
+            </div>
 
-            <% if @teacher.city.present? || @teacher.address.present? || @teacher.radius_text.present? %>
+            <!-- Section 2 — Mon accompagnement -->
+            <% if @teacher.support_text.present? || @teacher.pedagogy_tags.present? %>
               <div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-2">Localisation</h3>
-                <p class="text-gray-600"><%= format_location_text(@teacher) %></p>
-              </div>
-            <% end %>
+                <h2 class="text-2xl font-semibold text-gray-900 mb-4">Mon accompagnement</h2>
 
-            <% if @teacher.support_text.present? || @teacher.experience_text.present? || @teacher.pedagogy_tags.present? %>
-              <div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-4">Expérience et pédagogie</h3>
-                <div class="space-y-3">
-                  <% if @teacher.experience_text.present? %>
-                    <div class="flex items-start gap-2">
-                      <svg class="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                      </svg>
-                      <p class="text-gray-600 whitespace-pre-line"><%= @teacher.experience_text %></p>
-                    </div>
-                  <% end %>
+                <%# Bullets (pedagogy_tags en priorité, sinon extraits de support_text) %>
+                <% bullets = [] %>
+                <% intro_text = nil %>
 
+                <% if @teacher.pedagogy_tags.present? %>
+                  <%# Utiliser pedagogy_tags comme bullets %>
+                  <% bullets = @teacher.pedagogy_tags.first(3).map { |tag| format_pedagogy_tag(tag) } %>
+                  <%# Si support_text existe aussi, l'utiliser comme phrase d'introduction %>
                   <% if @teacher.support_text.present? %>
-                    <div class="flex items-start gap-2">
-                      <svg class="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                      </svg>
-                      <p class="text-gray-600 whitespace-pre-line"><%= @teacher.support_text %></p>
-                    </div>
+                    <% support_clean = @teacher.support_text.strip.gsub(/\n+/, " ").gsub(/\s+/, " ") %>
+                    <% first_sentence = support_clean.split(/\./).first&.strip %>
+                    <%# Ne pas utiliser comme intro si c'est une liste (contient plusieurs virgules) %>
+                    <% if first_sentence.present? && first_sentence.split(',').length <= 2 %>
+                      <% intro_text = first_sentence %>
+                    <% end %>
                   <% end %>
+                <% elsif @teacher.support_text.present? %>
+                  <%# Extraire des bullets du support_text si pas de pedagogy_tags %>
+                  <% support_clean = @teacher.support_text.strip.gsub(/\n+/, " ").gsub(/\s+/, " ") %>
+                  <% first_sentence = support_clean.split(/\./).first&.strip %>
 
-                  <% if @teacher.pedagogy_tags.present? %>
-                    <div class="flex items-start gap-2">
-                      <svg class="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                      </svg>
-                      <p class="text-gray-600">
-                        <%= @teacher.pedagogy_tags.map { |tag| format_pedagogy_tag(tag) }.join(", ") %>
-                      </p>
-                    </div>
+                  <%# Si la première phrase est une liste (plusieurs virgules), la traiter comme bullets %>
+                  <% if first_sentence.present? && first_sentence.split(',').length > 2 %>
+                    <%# C'est une liste, la diviser en bullets %>
+                    <% bullets = first_sentence.split(',').map(&:strip).reject(&:empty?).first(3) %>
+                  <% else %>
+                    <%# C'est une phrase d'introduction, l'utiliser comme intro et extraire les autres phrases comme bullets %>
+                    <% intro_text = first_sentence %>
+                    <% support_sentences = support_clean.split(/\./).reject(&:blank?).map(&:strip).reject(&:empty?) %>
+                    <% bullets = support_sentences.drop(1).first(3) %>
                   <% end %>
-                </div>
+                <% end %>
+
+                <%# Afficher la phrase d'introduction si elle existe %>
+                <% if intro_text.present? %>
+                  <p class="text-gray-700 mb-4"><%= intro_text %>.</p>
+                <% end %>
+
+                <%# Afficher les bullets avec checks %>
+                <% if bullets.any? %>
+                  <%# Ajouter la phrase d'introduction si pas déjà de phrase d'intro %>
+                  <% unless intro_text.present? %>
+                    <p class="text-gray-700 mb-4">Je peux aider mes élèves notamment sur :</p>
+                  <% end %>
+                  <ul class="space-y-2">
+                    <% bullets.each do |bullet| %>
+                      <li class="flex items-start gap-2">
+                        <svg class="w-5 h-5 text-[#fe6618] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        <span class="text-gray-700"><%= bullet %></span>
+                      </li>
+                    <% end %>
+                  </ul>
+                <% end %>
               </div>
             <% end %>
 
-            <% if @teacher.pricing_text.present? %>
-              <div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-2">Tarifs</h3>
-                <p class="text-gray-600 whitespace-pre-line"><%= format_pricing_text(@teacher.pricing_text) %></p>
-              </div>
-            <% end %>
-
-            <% if @teacher.special_skills_text.present? %>
-              <div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-2">Compétences spéciales</h3>
-                <p class="text-gray-600 whitespace-pre-line"><%= @teacher.special_skills_text %></p>
-              </div>
-            <% end %>
-
+            <!-- Section 3 — Examens préparés -->
             <% if @teacher.exam_tags.present? %>
               <div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-2">Examens préparés</h3>
+                <h2 class="text-2xl font-semibold text-gray-900 mb-4">Examens préparés</h2>
                 <div class="flex flex-wrap gap-2">
                   <% @teacher.exam_tags.each do |tag| %>
-                    <span class="badge bg-purple-100 text-purple-700 border-purple-200"><%= format_exam_tag(tag) %></span>
+                    <span class="badge badge-sm bg-purple-100 text-purple-700 border-purple-200"><%= format_exam_tag(tag) %></span>
                   <% end %>
                 </div>
               </div>
             <% end %>
 
+            <!-- Section 4 — Expérience -->
+            <% if @teacher.experience_text.present? %>
+              <div>
+                <h2 class="text-2xl font-semibold text-gray-900 mb-4">Expérience</h2>
+                <%# Texte fluide, pas une liste %>
+                <%# Prendre la première phrase/ligne comme résumé fluide %>
+                <% experience_clean = @teacher.experience_text.strip.gsub(/\n+/, " ").gsub(/\s+/, " ") %>
+                <p class="text-gray-700"><%= experience_clean %></p>
+              </div>
+            <% end %>
+
+            <!-- Section 5 — Compétences pédagogiques -->
+            <% if @teacher.special_skills_text.present? && @teacher.special_skills_text.strip.length > 20 %>
+              <div>
+                <h2 class="text-2xl font-semibold text-gray-900 mb-4">Compétences pédagogiques</h2>
+                <%# Courte liste ou phrase %>
+                <p class="text-gray-700 whitespace-pre-line"><%= @teacher.special_skills_text %></p>
+              </div>
+            <% end %>
           </div>
         </div>
       </div>
     </div>
-  </div>
   <% else %>
     <!-- Aperçu limité pour les utilisateurs non connectés -->
     <div class="card bg-white shadow-sm">
@@ -205,7 +261,8 @@
     <!-- Modal pour créer une demande -->
     <dialog id="request_modal" class="modal <%= 'modal-open' if flash[:alert].present? %>">
       <div class="modal-box">
-        <h3 class="font-bold text-2xl mb-4">Demander une mise en relation avec <%= @teacher.first_name.presence || "ce professeur" %></h3>
+        <h3 class="font-bold text-2xl mb-2">Mise en relation</h3>
+        <p class="text-gray-600 mb-4">Ajouter des informations sur votre enfant et ses besoins pour aider <%= @teacher.first_name.presence || "ce professeur" %> à comprendre vos attentes.</p>
 
         <!-- Messages d'erreur -->
         <% if flash[:alert].present? %>

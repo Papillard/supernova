@@ -56,7 +56,7 @@
               <span class="hero-word">Des</span> <span class="hero-word">professeurs</span> <span class="hero-word">de</span>
               <span class="relative inline-block hero-word">
                 <span class="relative z-10 bg-gradient-to-r from-[#e05a1a] to-[#fe6618] bg-clip-text text-transparent">l'Éducation Nationale</span>
-              </span><span class="hero-word hidden md:inline">,</span>
+              </span>
               <span class="hero-word">disponibles</span> <span class="hero-word">pour</span> <span class="hero-word">votre</span> <span class="hero-word">enfant.</span>
             </h1>
             <p class="text-xl md:text-2xl text-gray-600 leading-relaxed">Le sérieux de l'école, la proximité du cours particulier.</p>
@@ -69,6 +69,11 @@
                   class: "btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg shadow-md hover:shadow-lg transition-shadow",
                   "aria-label": "Découvrir ProfConnect pour les parents" do %>
                 Je suis parent
+              <% end %>
+              <%= link_to new_teacher_registration_path,
+                  class: "btn bg-white border border-stone-300 text-gray-900 hover:bg-stone-50 rounded-lg shadow-md hover:shadow-lg transition-shadow",
+                  "aria-label": "Rejoindre ProfConnect en tant que professeur" do %>
+                Je suis professeur
               <% end %>
             </div>
           </div>

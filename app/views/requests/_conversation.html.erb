@@ -4,7 +4,32 @@
   <div class="flex flex-col h-full">
     <!-- Header du chat (fixe) -->
     <div class="border-b border-gray-200 px-6 py-4 flex-shrink-0">
-      <h2 class="text-xl font-bold text-gray-900">Messages</h2>
+      <div class="flex items-center justify-between gap-4">
+        <div class="flex-1 min-w-0">
+          <h2 class="text-xl font-bold text-gray-900">
+            <% if request.status == "accepted" %>
+              <%= "#{request.teacher.first_name} #{request.teacher.last_name}" %>
+            <% else %>
+              <%= teacher_short_name(request.teacher) %>
+            <% end %>
+          </h2>
+          <div class="flex items-center gap-2 text-sm text-gray-500 mt-1">
+            <span><%= format_subject_tag(request.subject) %></span>
+            <span>•</span>
+            <span><%= format_request_level(request.level) %></span>
+            <span>•</span>
+            <span><%= format_request_status(request.status) %></span>
+          </div>
+        </div>
+        <%= button_to request_path(request), method: :delete,
+            class: "btn btn-ghost btn-sm text-gray-400 hover:text-gray-600 hover:bg-gray-50 flex-shrink-0",
+            data: { "turbo-confirm": "Êtes-vous sûr de vouloir supprimer cette demande ? Cette action est irréversible et supprimera tous les messages associés." },
+            title: "Supprimer la demande" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          </svg>
+        <% end %>
+      </div>
     </div>
 
     <!-- Zone de messages (scrollable) -->

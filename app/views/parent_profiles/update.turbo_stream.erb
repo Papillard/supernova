@@ -9,15 +9,44 @@
   <% end %>
 <% end %>
 
-<%= turbo_stream.replace "flash-messages" do %>
-  <div id="flash-messages">
-    <div class="alert alert-success" data-controller="flash" data-flash-auto-hide-value="true" data-flash-delay-value="3000">
-      <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-      <span><%= @is_avatar_upload ? "Photo de profil mise à jour avec succès." : "Infos enregistrées" %></span>
+<% if flash[:notice].present? || flash[:alert].present? %>
+  <%= turbo_stream.replace "parent-profile-flash-messages" do %>
+    <div id="parent-profile-flash-messages" class="text-sm">
+      <% if flash[:notice].present? %>
+        <div id="flash-notice" class="flex items-center gap-2 text-green-600 mb-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+          <span><%= flash[:notice] %></span>
+        </div>
+      <% end %>
+      <% if flash[:alert].present? %>
+        <div id="flash-alert" class="flex items-center gap-2 text-red-600 mb-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+          <span><%= flash[:alert] %></span>
+        </div>
+      <% end %>
     </div>
-  </div>
+    <script>
+      setTimeout(function() {
+        var flashContainer = document.getElementById('parent-profile-flash-messages');
+        if (flashContainer) {
+          flashContainer.style.transition = 'opacity 0.3s ease-out';
+          flashContainer.style.opacity = '0';
+          setTimeout(function() {
+            flashContainer.innerHTML = '';
+            flashContainer.style.opacity = '1';
+          }, 300);
+        }
+      }, 3000);
+    </script>
+  <% end %>
+<% else %>
+  <%= turbo_stream.replace "parent-profile-flash-messages" do %>
+    <div id="parent-profile-flash-messages" class="text-sm"></div>
+  <% end %>
 <% end %>
 
 <% if @parent_profile.profile_completed? %>

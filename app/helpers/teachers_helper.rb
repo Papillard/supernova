@@ -126,10 +126,11 @@ module TeachersHelper
 
     # Mapping des valeurs courantes
     radius_mapping = {
-      "deux_a_5_km" => "2 à 5 km",
-      "5_a_10_km" => "5 à 10 km",
-      "10_a_20_km" => "10 à 20 km",
-      "plus_de_20_km" => "Plus de 20 km"
+      "moins_de_1_km" => "Se déplace de moins de 1 km",
+      "deux_a_5_km" => "Se déplace de 2 à 5 km",
+      "5_a_10_km" => "Se déplace de 5 à 10 km",
+      "10_a_20_km" => "Se déplace de 10 à 20 km",
+      "plus_de_20_km" => "Se déplace de plus de 20 km"
     }
 
     # Vérifier si c'est une valeur mappée
@@ -137,15 +138,17 @@ module TeachersHelper
       return radius_mapping[radius_text.downcase]
     end
 
-    # Si le texte contient déjà "km", on le retourne tel quel
-    return radius_text if radius_text.downcase.include?("km")
+    # Si le texte contient déjà "km", on ajoute "Se déplace de" au début
+    if radius_text.downcase.include?("km")
+      return "Se déplace de #{radius_text}"
+    end
 
-    # Sinon, on essaie d'extraire un nombre et on ajoute "km"
+    # Sinon, on essaie d'extraire un nombre et on ajoute "Se déplace de" et "km"
     if radius_text.match?(/\d+/)
       number = radius_text.scan(/\d+/).first
-      "#{number} km"
+      "Se déplace de #{number} km"
     else
-      radius_text.humanize
+      "Se déplace de #{radius_text.humanize}"
     end
   end
 
@@ -164,6 +167,48 @@ module TeachersHelper
   def format_teaching_formats(formats)
     return "" if formats.blank?
     formats.map { |f| format_teaching_format(f) }.join(", ")
+  end
+
+  # Helper pour générer une phrase naturelle sur les formats de cours
+  def format_teaching_formats_sentence(formats, teacher_gender = nil)
+    return "" if formats.blank?
+
+    formats_array = formats.is_a?(Array) ? formats : [formats]
+    formats_array = formats_array.compact.uniq
+
+    case formats_array.length
+    when 1
+      format = formats_array.first
+      case format.to_s
+      when "online"
+        "Je donne des cours uniquement en ligne."
+      when "at_teacher_home"
+        "Je donne des cours chez moi uniquement."
+      when "at_student_home"
+        "Je me déplace au domicile de l'élève uniquement."
+      else
+        "Je donne des cours #{format_teaching_format(format).downcase}."
+      end
+    when 2
+      has_online = formats_array.include?("online")
+      has_student_home = formats_array.include?("at_student_home")
+      has_teacher_home = formats_array.include?("at_teacher_home")
+
+      if has_student_home && has_teacher_home
+        "Je peux donner des cours au domicile de l'élève ou chez moi."
+      elsif has_student_home && has_online
+        "Je peux donner des cours en ligne ou au domicile de l'élève."
+      elsif has_teacher_home && has_online
+        "Je peux donner des cours en ligne ou chez moi."
+      else
+        "Je peux donner des cours #{formats_array.map { |f| format_teaching_format(f).downcase }.join(' ou ')}."
+      end
+    when 3
+      "Je peux donner des cours en ligne, au domicile de l'élève ou chez moi."
+    else
+      # Fallback pour plus de 3 formats
+      "Je peux donner des cours #{formats_array.first(3).map { |f| format_teaching_format(f).downcase }.join(', ')}."
+    end
   end
 
   # Helper pour formater un tag d'examen
@@ -195,6 +240,36 @@ module TeachersHelper
 
     # Sinon, on ajoute "/ heure" à la fin
     "#{pricing_text} / heure"
+  end
+
+  # Helper pour formater le statut de carrière avec les accents corrects
+  def format_career_status(career_status)
+    return "" if career_status.blank?
+
+    # Convertir en string
+    value = career_status.is_a?(String) ? career_status : career_status.to_s
+
+    # Mapping pour gérer les cas avec et sans accent (au cas où les données en DB varient)
+    mapping = {
+      # Valeurs avec accent (valeurs normales de l'enum)
+      "certifié" => "Certifié",
+      "agrégé" => "Agrégé",
+      "prof des écoles" => "Prof des écoles",
+      "autre" => "Autre",
+      # Valeurs sans accent (cas de données anciennes ou clés)
+      "certifie" => "Certifié",
+      "agrege" => "Agrégé",
+      "prof_des_ecoles" => "Prof des écoles"
+    }
+
+    # Chercher dans le mapping (insensible à la casse)
+    result = mapping[value] || mapping[value.downcase]
+
+    # Si trouvé, retourner le résultat
+    return result if result
+
+    # Sinon, capitaliser la première lettre
+    value.capitalize
   end
 
   # Helper pour formater la localisation de manière naturelle

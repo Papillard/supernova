@@ -36,6 +36,27 @@ class Teacher < ApplicationRecord
   scope :with_rgpd_consent, -> { where(rgpd_consent: true) }
   scope :public_visible, -> { approved.with_rgpd_consent }
 
+  # Méthode pour obtenir la valeur formatée du career_status
+  def formatted_career_status
+    return "" if career_status.blank?
+
+    # L'enum retourne la valeur stockée dans la DB
+    # Si c'est la valeur avec accent, on la capitalise
+    # Si c'est la clé sans accent, on la convertit
+    case career_status.to_s
+    when "certifié", "certifie"
+      "Certifié"
+    when "agrégé", "agrege"
+      "Agrégé"
+    when "prof des écoles", "prof_des_ecoles"
+      "Prof des écoles"
+    when "autre"
+      "Autre"
+    else
+      career_status.to_s.capitalize
+    end
+  end
+
   # Callbacks
   before_validation :set_defaults, on: :create
   before_validation :set_display_name, on: [:create, :update]

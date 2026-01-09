@@ -52,21 +52,41 @@
         <% parent_profile = current_user.parent_profile %>
         <div id="navbar-profile-completion-banner">
           <% unless parent_profile&.profile_completed? %>
-            <div class="bg-yellow-50 border-b border-yellow-200">
-            <div class="max-w-7xl mx-auto px-4 md:px-6 py-3">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                  </svg>
-                  <p class="text-sm text-yellow-800">
-                    <span class="font-semibold">Profil incomplet :</span> Complétez votre profil pour créer des demandes de cours.
-                  </p>
+            <% has_personal_info = parent_profile&.first_name.present? && parent_profile&.last_name.present? %>
+            <% has_no_students = parent_profile&.students&.empty? %>
+            <% if has_personal_info && has_no_students %>
+              <div class="bg-yellow-50 border-b border-yellow-200">
+                <div class="max-w-7xl mx-auto px-4 md:px-6 py-3">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                      </svg>
+                      <p class="text-sm text-yellow-800">
+                        <span class="font-semibold">Profil incomplet :</span> Ajouter des informations sur vos enfants
+                      </p>
+                    </div>
+                    <%= link_to "Compléter mon profil", parent_profile_path, class: "btn btn-sm btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white" %>
+                  </div>
                 </div>
-                <%= link_to "Compléter mon profil", parent_profile_path, class: "btn btn-sm btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white" %>
               </div>
-            </div>
-          </div>
+            <% else %>
+              <div class="bg-yellow-50 border-b border-yellow-200">
+                <div class="max-w-7xl mx-auto px-4 md:px-6 py-3">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                      </svg>
+                      <p class="text-sm text-yellow-800">
+                        <span class="font-semibold">Profil incomplet :</span> Complétez votre profil pour créer des demandes de cours.
+                      </p>
+                    </div>
+                    <%= link_to "Compléter mon profil", parent_profile_path, class: "btn btn-sm btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white" %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
           <% end %>
         </div>
       <% end %>
