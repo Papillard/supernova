@@ -1,4 +1,17 @@
 <% content_for :main_background, "background-color: oklch(0.985 0.002 247.839);" %>
+<% content_for(:description) { "Trouvez un professeur certifié en maths, français, anglais ou en sciences, pour des cours particuliers adaptés au niveau de votre enfant." } %>
+<%
+  # Meta title dynamique selon les filtres
+  if params[:subject].present? || params[:city].present?
+    title_parts = ["Cours particuliers"]
+    title_parts << "en #{format_subject_tag(params[:subject])}" if params[:subject].present?
+    title_parts << "à #{params[:city]}" if params[:city].present?
+    page_title = "#{title_parts.join(' ')} | ProfConnect"
+  else
+    page_title = "Cours particuliers avec professeurs de l'Éducation nationale | ProfConnect"
+  end
+%>
+<% content_for(:title) { page_title } %>
 
 <div class="container mx-auto max-w-6xl px-4 py-12">
   <div class="space-y-6">

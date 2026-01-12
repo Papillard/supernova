@@ -1,4 +1,10 @@
 <% content_for :main_background, "background-color: oklch(0.985 0.002 247.839);" %>
+<%
+  subjects = @teacher.subjects_tags.present? ? @teacher.subjects_tags.map { |t| format_subject_tag(t) }.join(", ") : "plusieurs matières"
+  location = @teacher.city.present? ? "à #{@teacher.city}" : "en France"
+%>
+<% content_for(:title) { "Professeur de l'Éducation nationale en #{subjects} #{location} | ProfConnect" } %>
+<% content_for(:description) { "Professeur certifié en #{subjects} #{location}, proposant des cours particuliers adaptés au niveau et aux objectifs de chaque élève." } %>
 
 <div class="container mx-auto max-w-7xl px-4 py-8">
   <!-- Bandeau d'inscription pour les utilisateurs non connectés -->
