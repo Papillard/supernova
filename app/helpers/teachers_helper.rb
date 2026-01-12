@@ -136,18 +136,30 @@ module TeachersHelper
   def format_radius_human(radius_text)
     return "" if radius_text.blank?
 
-    # Mapping des valeurs courantes
+    # Mapping des valeurs courantes (inclut variantes possibles)
     radius_mapping = {
       "moins_de_1_km" => "Se déplace de moins de 1 km",
       "deux_a_5_km" => "Se déplace de 2 à 5 km",
+      "2_a_5_km" => "Se déplace de 2 à 5 km",
       "5_a_10_km" => "Se déplace de 5 à 10 km",
+      "cinq_a_10_km" => "Se déplace de 5 à 10 km",
+      "cinq_a_dix_km" => "Se déplace de 5 à 10 km",
       "10_a_20_km" => "Se déplace de 10 à 20 km",
-      "plus_de_20_km" => "Se déplace de plus de 20 km"
+      "dix_a_20_km" => "Se déplace de 10 à 20 km",
+      "dix_a_vingt_km" => "Se déplace de 10 à 20 km",
+      "plus_de_20_km" => "Se déplace de plus de 20 km",
+      "plus_de_vingt_km" => "Se déplace de plus de 20 km"
     }
 
     # Vérifier si c'est une valeur mappée
     if radius_mapping.key?(radius_text.downcase)
       return radius_mapping[radius_text.downcase]
+    end
+
+    # Chercher dans RADIUS_OPTIONS pour le label correspondant
+    radius_option = RADIUS_OPTIONS.find { |_, value| value == radius_text }
+    if radius_option
+      return "Se déplace de #{radius_option[0].downcase}"
     end
 
     # Si le texte contient déjà "km", on ajoute "Se déplace de" au début
@@ -233,6 +245,16 @@ module TeachersHelper
     end
   end
 
+  # Version courte pour les cards
+  EXAM_TAGS_SHORT = {
+    "concours_ieP_sciences_po" => "Sciences Po",
+    "concours_ecole_commerce" => "École commerce"
+  }.freeze
+
+  def format_exam_tag_short(tag)
+    EXAM_TAGS_SHORT[tag] || format_exam_tag(tag)
+  end
+
   # Helper pour formater un tag pédagogique
   def format_pedagogy_tag(tag)
     pedagogy_option = PEDAGOGY_TAGS_OPTIONS.find { |_, value| value == tag }
@@ -241,6 +263,18 @@ module TeachersHelper
     else
       tag.humanize
     end
+  end
+
+  # Version courte pour les cards
+  PEDAGOGY_TAGS_SHORT = {
+    "methodologie_travail" => "Méthodologie",
+    "preparation_examens" => "Prépa examens",
+    "eleves_en_difficulte" => "Élèves en difficulté",
+    "besoins_particuliers" => "Besoins particuliers"
+  }.freeze
+
+  def format_pedagogy_tag_short(tag)
+    PEDAGOGY_TAGS_SHORT[tag] || format_pedagogy_tag(tag)
   end
 
   # Helper pour formater le texte des tarifs (ajoute "/ heure" si absent)

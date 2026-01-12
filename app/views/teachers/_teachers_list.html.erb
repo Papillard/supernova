@@ -92,14 +92,14 @@
           <% if teacher.exam_tags.present? %>
             <% teacher.exam_tags.first(2).each do |tag| %>
               <% break if badges_count >= 2 %>
-              <span class="badge badge-sm bg-gray-100 text-gray-700 border-gray-300 text-xs"><%= format_exam_tag(tag) %></span>
+              <span class="badge badge-sm bg-gray-100 text-gray-700 border-gray-300 text-xs max-w-[45%] truncate"><%= format_exam_tag_short(tag) %></span>
               <% badges_count += 1 %>
             <% end %>
           <% end %>
           <% if badges_count < 2 && teacher.pedagogy_tags.present? %>
             <% teacher.pedagogy_tags.first(2 - badges_count).each do |tag| %>
               <% break if badges_count >= 2 %>
-              <span class="badge badge-sm bg-gray-100 text-gray-700 border-gray-300 text-xs"><%= format_pedagogy_tag(tag) %></span>
+              <span class="badge badge-sm bg-gray-100 text-gray-700 border-gray-300 text-xs max-w-[45%] truncate"><%= format_pedagogy_tag_short(tag) %></span>
               <% badges_count += 1 %>
             <% end %>
           <% end %>

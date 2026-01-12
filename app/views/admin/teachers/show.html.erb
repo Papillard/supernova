@@ -56,7 +56,7 @@
             <p><strong>Adresse:</strong> <%= @teacher.address || "-" %></p>
             <p><strong>Ville:</strong> <%= @teacher.city || "-" %></p>
             <p><strong>Code postal:</strong> <%= @teacher.zip_code || "-" %></p>
-            <p><strong>Rayon:</strong> <%= @teacher.radius_text || "-" %></p>
+            <p><strong>Rayon:</strong> <%= @teacher.radius_text.present? ? format_radius_human(@teacher.radius_text) : "-" %></p>
           </div>
         </div>
 
