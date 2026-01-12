@@ -1,19 +1,29 @@
 <%= turbo_stream.replace "teacher-avatar-container" do %>
   <div class="flex-shrink-0" id="teacher-avatar-container">
     <%= render "shared/teacher_avatar", teacher: @teacher, size: :large, for_parent: false %>
-    <div id="avatar-upload-loading" class="hidden mt-2 text-sm text-gray-500 text-center" data-avatar-upload-target="loadingIndicator">
-      Upload en cours...
-    </div>
   </div>
 <% end %>
 
-<%= turbo_stream.replace "flash-messages" do %>
-  <div id="flash-messages">
-    <div class="alert alert-success" data-controller="flash" data-flash-auto-hide-value="true" data-flash-delay-value="3000">
-      <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-      <span>Photo de profil mise à jour avec succès.</span>
+<%= turbo_stream.replace "avatar-upload-form" do %>
+  <%= form_with model: @teacher, url: teacher_profile_path, method: :patch, local: false, multipart: true, data: { turbo: true, avatar_upload_target: "form" }, id: "avatar-upload-form", class: "space-y-4" do |avatar_form| %>
+    <div class="form-control">
+      <%= avatar_form.label :avatar, "Changer la photo", class: "label" do %>
+        <span class="label-text">Photo de profil</span>
+      <% end %>
+      <%= avatar_form.file_field :avatar,
+          accept: "image/jpeg,image/jpg,image/png",
+          class: "file-input file-input-bordered w-full",
+          data: { avatar_upload_target: "input" } %>
+      <div id="avatar-upload-loading" class="hidden mt-2 text-sm text-gray-500" data-avatar-upload-target="loadingIndicator">
+        Upload en cours...
+      </div>
     </div>
-  </div>
+    <div class="form-control">
+      <label class="label cursor-pointer justify-start gap-3">
+        <%= avatar_form.check_box :picture_visible, { checked: @teacher.picture_visible, class: "custom-checkbox" }, true, false %>
+        <span class="label-text text-base">Rendre ma photo visible publiquement sur ProfConnect (recommandé)</span>
+      </label>
+    </div>
+    <%= hidden_field_tag "avatar_only", "1" %>
+  <% end %>
 <% end %>

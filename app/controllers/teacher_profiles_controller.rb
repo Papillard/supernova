@@ -10,31 +10,13 @@ class TeacherProfilesController < ApplicationController
   end
 
   def update
-    # Détecter si c'est un upload d'avatar uniquement (formulaire séparé)
     is_avatar_only = params[:avatar_only].present?
 
-    params_hash = teacher_params.to_h
-
-    # Si c'est un upload d'avatar uniquement, ne traiter que les champs avatar et picture_visible
     if is_avatar_only
-      params_hash = params_hash.slice(:picture_visible, :profile_image_url, :profile_image_attached)
+      params_hash = build_avatar_params
     else
-      # Les multi-selects envoient déjà des arrays, mais peuvent être vides
-      # S'assurer que les champs array sont bien des arrays
-      %w[subjects_tags levels exam_tags pedagogy_tags].each do |field|
-        if params_hash[field].present?
-          params_hash[field] = Array(params_hash[field]).reject(&:blank?)
-        else
-          params_hash[field] = []
-        end
-      end
-
-      # Handle teaching_formats checkboxes
-      if params[:teacher][:teaching_formats].present?
-        params_hash[:teaching_formats] = Array(params[:teacher][:teaching_formats]).reject(&:blank?)
-      else
-        params_hash[:teaching_formats] = []
-      end
+      params_hash = teacher_params.to_h
+      normalize_array_params(params_hash)
     end
 
     # Handle avatar upload
@@ -114,11 +96,19 @@ class TeacherProfilesController < ApplicationController
 
     respond_to do |format|
       if @teacher.update(params_hash)
+        # Recharger pour avoir les données à jour depuis la DB
+        @teacher.reload
+
         if is_avatar_upload
-          # Recharger le teacher pour avoir les dernières données
-          @teacher.reload
           format.turbo_stream { render :update }
           format.html { redirect_to teacher_profile_path, notice: "Photo de profil mise à jour avec succès." }
+        elsif params[:stay_on_page].present?
+          @current_tab = params[:current_tab] || "infos-basiques"
+          format.turbo_stream { render :update_step }
+          format.html do
+            flash[:notice] = "Votre profil a été mis à jour avec succès."
+            redirect_to teacher_profile_path(current_tab: @current_tab)
+          end
         else
           format.html do
             flash[:notice] = "Votre profil a été mis à jour avec succès."
@@ -135,6 +125,18 @@ class TeacherProfilesController < ApplicationController
             flash[:alert] = "Erreur lors de la mise à jour du profil."
             render :show, status: :unprocessable_entity
           end
+      else
+        # En cas d'erreur, rester sur la page avec les erreurs affichées
+        if params[:stay_on_page].present?
+          @current_tab = params[:current_tab] || "infos-basiques"
+          format.turbo_stream do
+            flash.now[:alert] = "Erreur lors de la mise à jour : #{@teacher.errors.full_messages.join(', ')}"
+            render :show, status: :unprocessable_entity
+          end
+          format.html do
+            flash[:alert] = "Erreur lors de la mise à jour du profil."
+            render :show, status: :unprocessable_entity
+          end
         else
           format.html do
             flash[:alert] = "Erreur lors de la mise à jour du profil."
@@ -143,6 +145,7 @@ class TeacherProfilesController < ApplicationController
         end
       end
     end
+  end
   end
 
   private
@@ -187,6 +190,37 @@ class TeacherProfilesController < ApplicationController
     else
       ""
     end
+  end
+
+  def build_avatar_params
+    params_hash = {}
+
+    if params[:teacher].present?
+      teacher_params = params[:teacher]
+      params_hash[:picture_visible] = parse_checkbox_value(teacher_params[:picture_visible])
+      params_hash[:profile_image_url] = teacher_params[:profile_image_url] if teacher_params[:profile_image_url].present?
+      params_hash[:profile_image_attached] = teacher_params[:profile_image_attached] if teacher_params[:profile_image_attached].present?
+    else
+      params_hash[:picture_visible] = false
+    end
+
+    params_hash
+  end
+
+  def parse_checkbox_value(value)
+    return false if value.blank?
+
+    actual_value = value.is_a?(Array) ? value.last : value
+    actual_value.to_s == "1" || actual_value.to_s == "true" || actual_value == true
+  end
+
+  def normalize_array_params(params_hash)
+    %w[subjects_tags levels exam_tags pedagogy_tags].each do |field|
+      params_hash[field] = params_hash[field].present? ? Array(params_hash[field]).reject(&:blank?) : []
+    end
+
+    params_hash[:teaching_formats] = params[:teacher][:teaching_formats].present? ?
+      Array(params[:teacher][:teaching_formats]).reject(&:blank?) : []
   end
 
   def teacher_params

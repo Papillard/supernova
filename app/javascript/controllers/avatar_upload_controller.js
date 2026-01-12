@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="avatar-upload"
-// Handles automatic form submission when file is selected or checkbox changes
+// Handles automatic form submission when file is selected
 export default class extends Controller {
   static targets = ["input", "form", "loadingIndicator"]
 
@@ -11,8 +11,8 @@ export default class extends Controller {
       this.inputTarget.addEventListener("change", this.handleFileChange.bind(this))
     }
 
-    // Auto-submit when checkbox changes
-    const checkbox = this.element.querySelector('input[type="checkbox"][id*="picture_visible"]')
+    // Auto-submit when checkbox changes (but without loading indicator)
+    const checkbox = this.element.querySelector('input[type="checkbox"][name*="picture_visible"]')
     if (checkbox) {
       checkbox.addEventListener("change", this.handleCheckboxChange.bind(this))
     }
@@ -40,6 +40,7 @@ export default class extends Controller {
   }
 
   handleCheckboxChange() {
+    // Submit form for checkbox change, but without loading indicator
     if (this.hasFormTarget) {
       this.formTarget.requestSubmit()
     }

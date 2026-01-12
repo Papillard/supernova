@@ -2,7 +2,7 @@ class Teacher < ApplicationRecord
   belongs_to :user
 
   # Enums
-  enum :gender, { female: "female", male: "male" }
+  enum :gender, { female: "female", male: "male", other: "other" }
   enum :career_status, {
     certifie: "certifié",
     agrege: "agrégé",

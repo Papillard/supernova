@@ -1,6 +1,15 @@
 <div class="container mx-auto max-w-4xl px-4 py-8">
   <div class="space-y-6">
-    <h1 class="text-3xl font-bold text-gray-900">Mon profil professeur</h1>
+    <h1 class="text-xl font-bold text-gray-900 flex items-center gap-3">
+      Mon profil professeur
+      <% if @teacher.pending? %>
+        <span class="badge badge-warning badge-sm font-normal" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">en attente de validation</span>
+      <% elsif @teacher.approved? %>
+        <span class="badge badge-success badge-sm font-normal" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">validé</span>
+      <% elsif @teacher.rejected? %>
+        <span class="badge badge-error badge-sm font-normal" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">refusé</span>
+      <% end %>
+    </h1>
 
     <!-- Flash messages container -->
     <div id="flash-messages"></div>
@@ -21,356 +30,550 @@
       </div>
     <% end %>
 
-    <!-- Bannière statut -->
-    <% if @teacher.pending? %>
-      <div class="alert alert-warning">
-        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-        </svg>
-        <span>Votre profil est en cours de validation.</span>
+    <!-- Navigation par onglets -->
+    <div data-controller="tabs" data-tabs-active-value="<%= params[:current_tab] || 'infos-basiques' %>">
+      <div class="tabs tabs-boxed bg-base-200 mb-6">
+        <a data-tabs-target="tab" data-tab-id="infos-basiques" data-action="click->tabs#switch" class="tab tab-active">Profil</a>
+        <a data-tabs-target="tab" data-tab-id="preferences-cours" data-action="click->tabs#switch" class="tab">Préférences de cours</a>
+        <a data-tabs-target="tab" data-tab-id="pedagogie" data-action="click->tabs#switch" class="tab">Pédagogie</a>
+        <a data-tabs-target="tab" data-tab-id="validation" data-action="click->tabs#switch" class="tab">Validation & confidentialité</a>
       </div>
-    <% elsif @teacher.approved? %>
-      <div class="alert alert-success">
-        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        <span>Votre profil est validé et visible des parents.</span>
-      </div>
-    <% elsif @teacher.rejected? %>
-      <div class="alert alert-error">
-        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        <span>Votre profil a été refusé.</span>
-      </div>
-    <% end %>
 
-    <!-- Section Photo de profil (formulaire séparé) -->
-    <div class="card bg-white shadow-sm mb-6">
-      <div class="card-body">
-        <h2 class="card-title text-xl mb-4">Photo de profil</h2>
-        <div class="flex items-start gap-6" data-controller="avatar-upload">
-            <div class="flex-shrink-0" id="teacher-avatar-container">
-              <%= render "shared/teacher_avatar", teacher: @teacher, size: :large, for_parent: false %>
-              <div id="avatar-upload-loading" class="hidden mt-2 text-sm text-gray-500 text-center" data-avatar-upload-target="loadingIndicator">
-                Upload en cours...
+        <!-- Onglet 1: Infos basiques -->
+        <div data-tabs-target="panel" data-panel-id="infos-basiques" class="space-y-6">
+          <!-- Section Infos basiques -->
+          <div class="card bg-white shadow-sm">
+            <div class="card-body">
+              <div class="space-y-6">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Vos informations essentielles</h2>
+
+                <!-- Photo de profil (formulaire séparé mais visuellement intégré) -->
+                <div class="flex items-start gap-6" data-controller="avatar-upload">
+                <div class="flex-shrink-0" id="teacher-avatar-container">
+                  <%= render "shared/teacher_avatar", teacher: @teacher, size: :large, for_parent: false %>
+                </div>
+                <div class="flex-1 space-y-4">
+                  <%# Formulaire d'avatar séparé (en dehors du formulaire principal) %>
+                  <%= form_with model: @teacher, url: teacher_profile_path, method: :patch, local: false, multipart: true, data: { turbo: true, avatar_upload_target: "form" }, id: "avatar-upload-form", class: "space-y-4" do |avatar_form| %>
+                    <div class="form-control">
+                      <%= avatar_form.label :avatar, "Changer la photo", class: "label" do %>
+                        <span class="label-text">Photo de profil</span>
+                      <% end %>
+                      <%= avatar_form.file_field :avatar,
+                          accept: "image/jpeg,image/jpg,image/png",
+                          class: "file-input file-input-bordered w-full",
+                          data: { avatar_upload_target: "input" } %>
+                      <div id="avatar-upload-loading" class="hidden mt-2 text-sm text-gray-500" data-avatar-upload-target="loadingIndicator">
+                        Upload en cours...
+                      </div>
+                    </div>
+                    <div class="form-control">
+                      <label class="label cursor-pointer justify-start gap-3">
+                        <%= avatar_form.check_box :picture_visible, { checked: @teacher.picture_visible, class: "custom-checkbox" }, true, false %>
+                        <span class="label-text text-base">Rendre ma photo visible publiquement sur ProfConnect (recommandé)</span>
+                      </label>
+                    </div>
+                    <%= hidden_field_tag "avatar_only", "1" %>
+                  <% end %>
+                </div>
+              </div>
+
+              <!-- Formulaire principal avec onglets -->
+              <%= form_with model: @teacher, url: teacher_profile_path, method: :patch, local: false, multipart: true, data: { turbo: true }, class: "space-y-6" do |f| %>
+                <%= render "devise/shared/error_messages", resource: @teacher %>
+
+                <!-- Identité -->
+                <div class="grid gap-4 md:grid-cols-2">
+                  <div class="form-control">
+                    <%= f.label :first_name, class: "label" do %>
+                      <span class="label-text">Prénom *</span>
+                    <% end %>
+                    <%= f.text_field :first_name, class: "input input-bordered w-full", required: true %>
+                  </div>
+                  <div class="form-control">
+                    <%= f.label :last_name, class: "label" do %>
+                      <span class="label-text">Nom *</span>
+                    <% end %>
+                    <%= f.text_field :last_name, class: "input input-bordered w-full", required: true %>
+                  </div>
+                  <div class="form-control">
+                    <%= f.label :email_perso, class: "label" do %>
+                      <span class="label-text">Email personnel</span>
+                    <% end %>
+                    <%= f.email_field :email_perso, class: "input input-bordered w-full" %>
+                  </div>
+                  <div class="form-control">
+                    <%= f.label :phone, class: "label" do %>
+                      <span class="label-text">Téléphone</span>
+                    <% end %>
+                    <%= f.text_field :phone, class: "input input-bordered w-full", placeholder: "06 00 00 00 00" %>
+                  </div>
+                  <div class="form-control">
+                    <%= f.label :gender, class: "label" do %>
+                      <span class="label-text">Genre *</span>
+                    <% end %>
+                    <%= f.select :gender, options_for_select([["Féminin", "female"], ["Masculin", "male"], ["Non précisé", "other"]], @teacher.gender), { prompt: "Sélectionner" }, { class: "select select-bordered w-full", required: true } %>
+                  </div>
+                  <div class="form-control">
+                    <%= f.label :career_status, class: "label" do %>
+                      <span class="label-text">Statut professionnel *</span>
+                    <% end %>
+                    <%= f.select :career_status, options_for_select([
+                      ["Certifié", "certifié"],
+                      ["Agrégé", "agrégé"],
+                      ["Prof des écoles", "prof des écoles"],
+                      ["Autre", "autre"]
+                    ], @teacher.career_status), { prompt: "Sélectionner" }, { class: "select select-bordered w-full", required: true } %>
+                  </div>
+                  <div class="form-control">
+                    <%= f.label :academy_name, class: "label" do %>
+                      <span class="label-text">Académie</span>
+                    <% end %>
+                    <%= f.text_field :academy_name, class: "input input-bordered w-full", placeholder: "Paris" %>
+                  </div>
+                  <div class="form-control">
+                    <%= f.label :school_name, class: "label" do %>
+                      <span class="label-text">Établissement</span>
+                    <% end %>
+                    <%= f.text_field :school_name, class: "input input-bordered w-full", placeholder: "Lycée Montaigne" %>
+                  </div>
+                </div>
+
+                <!-- Matières et Niveaux -->
+                <div class="grid gap-4 md:grid-cols-2">
+                  <!-- Niveaux - Bouton avec modale -->
+                  <div class="form-control" data-controller="selection-modal" data-selection-modal-field-name-value="levels" data-selection-modal-selected-value="<%= @teacher.levels&.reject(&:blank?)&.to_json || [].to_json %>">
+                    <%= f.label :levels, class: "label" do %>
+                      <span class="label-text">Niveaux</span>
+                    <% end %>
+                    <button type="button"
+                            data-selection-modal-target="button"
+                            data-action="click->selection-modal#open"
+                            class="btn btn-outline w-full justify-between">
+                      <span>Sélectionner...</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                    <%= hidden_field_tag "teacher[levels][]", "", data: { selection_modal_target: "hiddenInput" } %>
+                    <% @teacher.levels&.reject(&:blank?)&.each do |level| %>
+                      <%= hidden_field_tag "teacher[levels][]", level %>
+                    <% end %>
+
+                    <!-- Modale Niveaux -->
+                    <div data-selection-modal-target="modal" class="hidden fixed inset-0 z-50 flex items-center justify-center" style="background-color: rgba(0,0,0,0.7);" data-action="click->selection-modal#backdropClick">
+                      <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 max-h-[80vh] flex flex-col">
+                        <div class="flex items-center justify-between p-4 border-b">
+                          <h3 class="text-lg font-semibold">Sélectionner les niveaux</h3>
+                          <button type="button" data-action="click->selection-modal#close" class="btn btn-sm btn-circle btn-ghost">✕</button>
+                        </div>
+                        <div class="p-4 overflow-y-auto flex-1">
+                          <div class="space-y-2">
+                            <% TeachersHelper::LEVELS_OPTIONS.reject { |_, value| value == "autre" }.each do |label, value| %>
+                              <label class="flex items-center gap-3 cursor-pointer p-2 rounded hover:bg-base-200 transition">
+                                <%= check_box_tag "levels_checkbox_#{value}", value, @teacher.levels&.include?(value),
+                                    {
+                                      class: "custom-checkbox",
+                                      data: {
+                                        selection_modal_target: "checkbox",
+                                        label: label,
+                                        action: "change->selection-modal#updateSelection"
+                                      }
+                                    } %>
+                                <span class="text-base"><%= label %></span>
+                              </label>
+                            <% end %>
+                          </div>
+                        </div>
+                        <div class="p-4 border-t flex justify-end">
+                          <button type="button" data-action="click->selection-modal#close" class="btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white">Fermer</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Matières - Bouton avec modale -->
+                  <div class="form-control" data-controller="selection-modal" data-selection-modal-field-name-value="subjects_tags" data-selection-modal-selected-value="<%= @teacher.subjects_tags&.reject(&:blank?)&.to_json || [].to_json %>">
+                    <%= f.label :subjects_tags, class: "label" do %>
+                      <span class="label-text">Matières</span>
+                    <% end %>
+                    <button type="button"
+                            data-selection-modal-target="button"
+                            data-action="click->selection-modal#open"
+                            class="btn btn-outline w-full justify-between">
+                      <span>Sélectionner...</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                    <%= hidden_field_tag "teacher[subjects_tags][]", "", data: { selection_modal_target: "hiddenInput" } %>
+                    <% @teacher.subjects_tags&.reject(&:blank?)&.each do |subject| %>
+                      <%= hidden_field_tag "teacher[subjects_tags][]", subject %>
+                    <% end %>
+
+                    <!-- Modale Matières -->
+                    <div data-selection-modal-target="modal" class="hidden fixed inset-0 z-50 flex items-center justify-center" style="background-color: rgba(0,0,0,0.7);" data-action="click->selection-modal#backdropClick">
+                      <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full mx-4 max-h-[80vh] flex flex-col">
+                        <div class="flex items-center justify-between p-4 border-b">
+                          <h3 class="text-lg font-semibold">Sélectionner les matières</h3>
+                          <button type="button" data-action="click->selection-modal#close" class="btn btn-sm btn-circle btn-ghost">✕</button>
+                        </div>
+                        <div class="p-4 overflow-y-auto flex-1">
+                          <div class="grid grid-cols-4 gap-2">
+                            <% TeachersHelper::SUBJECTS_OPTIONS.each do |label, value| %>
+                              <label class="flex items-center gap-3 cursor-pointer p-2 rounded hover:bg-base-200 transition">
+                                <%= check_box_tag "subjects_checkbox_#{value}", value, @teacher.subjects_tags&.include?(value),
+                                    {
+                                      class: "custom-checkbox",
+                                      data: {
+                                        selection_modal_target: "checkbox",
+                                        label: label,
+                                        action: "change->selection-modal#updateSelection"
+                                      }
+                                    } %>
+                                <span class="text-base"><%= label %></span>
+                              </label>
+                            <% end %>
+                          </div>
+                        </div>
+                        <div class="p-4 border-t flex justify-end">
+                          <button type="button" data-action="click->selection-modal#close" class="btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white">Fermer</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          <div class="flex-1 space-y-4">
-            <!-- Formulaire séparé pour l'upload d'avatar -->
-            <%= form_with model: @teacher, url: teacher_profile_path, method: :patch, local: false, multipart: true, data: { turbo: true, avatar_upload_target: "form" }, id: "avatar-upload-form", class: "space-y-4" do |avatar_form| %>
-              <div class="form-control">
-                <%= avatar_form.label :avatar, "Changer la photo", class: "label" do %>
-                  <span class="label-text">Photo de profil</span>
-                <% end %>
-                <%= avatar_form.file_field :avatar,
-                    accept: "image/jpeg,image/jpg,image/png",
-                    class: "file-input file-input-bordered w-full",
-                    data: { avatar_upload_target: "input" } %>
-                <label class="label">
-                  <span class="label-text-alt text-gray-500">Formats acceptés : JPEG, PNG</span>
-                </label>
-              </div>
-              <div class="form-control">
-                <label class="label cursor-pointer justify-start gap-2">
-                  <%= avatar_form.check_box :picture_visible, { checked: @teacher.picture_visible }, true, false %>
-                  <span class="label-text">Afficher ma photo aux parents (annuaire et profil public)</span>
-                </label>
-                <label class="label">
-                  <span class="label-text-alt text-gray-500">Si cette option est désactivée, seules vos initiales seront visibles pour les parents</span>
-                </label>
-              </div>
-              <!-- Champ caché pour indiquer que c'est un upload d'avatar -->
-              <%= hidden_field_tag "avatar_only", "1" %>
-            <% end %>
+          </div>
+
+
+          <!-- Navigation -->
+          <div class="flex justify-end">
+            <button type="button" data-action="click->tabs#next" class="btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg">
+              Suivant →
+            </button>
           </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Section Pièces justificatives (formulaire séparé) -->
-    <div class="card bg-white shadow-sm mb-6">
-      <div class="card-body">
-        <h2 class="card-title text-xl mb-4">Pièces justificatives</h2>
-        <div data-controller="verification-documents">
-          <div id="verification-documents-list" class="mb-4">
-            <%= render "teacher_verification_documents/list", teacher: @teacher %>
-          </div>
-          <%= render "teacher_verification_documents/form" %>
-        </div>
-      </div>
-    </div>
+        <!-- Onglet 2: Préférences de cours -->
+        <div data-tabs-target="panel" data-panel-id="preferences-cours" class="hidden space-y-6">
+          <div class="card bg-white shadow-sm">
+            <div class="card-body">
+              <div class="space-y-6">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Plus d'infos sur vos cours particuliers</h2>
 
-    <%= form_with model: @teacher, url: teacher_profile_path, method: :patch, local: false, multipart: true, data: { turbo: true }, class: "space-y-6" do |f| %>
-      <%= render "devise/shared/error_messages", resource: @teacher %>
-
-      <!-- Section Identité -->
-      <div class="card bg-white shadow-sm">
-        <div class="card-body">
-          <h2 class="card-title text-xl mb-4">Identité</h2>
-          <div class="grid gap-4 md:grid-cols-2">
-            <div class="form-control">
-              <%= f.label :first_name, class: "label" do %>
-                <span class="label-text">Prénom *</span>
-              <% end %>
-              <%= f.text_field :first_name, class: "input input-bordered w-full", required: true %>
-            </div>
-            <div class="form-control">
-              <%= f.label :last_name, class: "label" do %>
-                <span class="label-text">Nom *</span>
-              <% end %>
-              <%= f.text_field :last_name, class: "input input-bordered w-full", required: true %>
-            </div>
-            <div class="form-control">
-              <%= f.label :gender, class: "label" do %>
-                <span class="label-text">Genre *</span>
-              <% end %>
-              <%= f.select :gender, options_for_select([["Féminin", "female"], ["Masculin", "male"]], @teacher.gender), { prompt: "Sélectionner" }, { class: "select select-bordered w-full", required: true } %>
-            </div>
-            <div class="form-control">
-              <%= f.label :academy_name, class: "label" do %>
-                <span class="label-text">Académie</span>
-              <% end %>
-              <%= f.text_field :academy_name, class: "input input-bordered w-full", placeholder: "Paris" %>
-            </div>
-            <div class="form-control">
-              <%= f.label :school_name, class: "label" do %>
-                <span class="label-text">Établissement</span>
-              <% end %>
-              <%= f.text_field :school_name, class: "input input-bordered w-full", placeholder: "Lycée Montaigne" %>
-            </div>
-            <div class="form-control">
-              <%= f.label :career_status, class: "label" do %>
-                <span class="label-text">Statut professionnel *</span>
-              <% end %>
-              <%= f.select :career_status, options_for_select([
-                ["Certifié", "certifié"],
-                ["Agrégé", "agrégé"],
-                ["Prof des écoles", "prof des écoles"],
-                ["Autre", "autre"]
-              ], @teacher.career_status), { prompt: "Sélectionner" }, { class: "select select-bordered w-full", required: true } %>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Section Matières / Niveaux / Formats -->
-      <div class="card bg-white shadow-sm">
-        <div class="card-body">
-          <h2 class="card-title text-xl mb-4">Matières, Niveaux & Formats</h2>
-          <div class="space-y-4">
-            <div class="form-control">
-              <%= f.label :levels, class: "label" do %>
-                <span class="label-text">Niveaux</span>
-              <% end %>
-              <div class="grid grid-cols-2 md:grid-cols-4 gap-2 p-4 border border-stone-300 rounded-lg bg-base-100">
-                <% TeachersHelper::LEVELS_OPTIONS.reject { |_, value| value == "autre" }.each do |label, value| %>
-                  <label class="flex items-center gap-2 cursor-pointer p-2 rounded hover:bg-base-200 transition">
-                    <%= check_box_tag "teacher[levels][]", value, @teacher.levels&.include?(value), { id: "teacher_levels_#{value.parameterize}", class: "checkbox checkbox-primary checkbox-sm level-checkbox", data: { level: value } } %>
-                    <span class="text-sm"><%= label %></span>
+                <!-- Formats de cours -->
+                <div class="form-control">
+                  <label class="label">
+                    <span class="label-text">Où voulez-vous donner cours ?</span>
                   </label>
-                <% end %>
+                  <div class="flex flex-wrap gap-4">
+                    <label class="label cursor-pointer gap-3">
+                      <%= check_box_tag "teacher[teaching_formats][]", "online", @teacher.teaching_formats&.include?("online"), { id: "teacher_teaching_formats_online", class: "custom-checkbox" } %>
+                      <span class="label-text text-base">En ligne</span>
+                    </label>
+                    <label class="label cursor-pointer gap-3">
+                      <%= check_box_tag "teacher[teaching_formats][]", "at_student_home", @teacher.teaching_formats&.include?("at_student_home"), { id: "teacher_teaching_formats_at_student_home", class: "custom-checkbox" } %>
+                      <span class="label-text text-base">Au domicile de l'élève</span>
+                    </label>
+                    <label class="label cursor-pointer gap-3">
+                      <%= check_box_tag "teacher[teaching_formats][]", "at_teacher_home", @teacher.teaching_formats&.include?("at_teacher_home"), { id: "teacher_teaching_formats_at_teacher_home", class: "custom-checkbox" } %>
+                      <span class="label-text text-base">À mon domicile</span>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Tarif -->
+                <div class="form-control">
+                  <%= f.label :pricing_text, class: "label" do %>
+                    <span class="label-text">Votre tarif horaire *</span>
+                  <% end %>
+                  <%= f.select :pricing_text, options_for_select((25..100).step(5).map { |price| ["#{price}€", "#{price}€"] }, @teacher.pricing_text), { prompt: "Sélectionner un tarif" }, { class: "select select-bordered w-full" } %>
+                  <p class="text-sm text-gray-500 mt-2">
+                    En tant que professeur diplômé, nous vous invitons à proposer des tarifs valorisant votre expertise. Ceux-ci peuvent être ajustés selon votre zone géographique, la classe ou le grade de l'élève et la préparation éventuelle aux examens.
+                  </p>
+                </div>
+
+                <!-- Localisation -->
+                <div class="grid gap-4 md:grid-cols-3" data-controller="google-places-autocomplete">
+                  <div class="form-control">
+                    <%= f.label :address, class: "label" do %>
+                      <span class="label-text">Votre adresse</span>
+                    <% end %>
+                    <%= f.text_field :address, class: "input input-bordered w-full", placeholder: "123 rue de la République", data: { google_places_autocomplete_target: "address" } %>
+                  </div>
+                  <div class="form-control">
+                    <%= f.label :zip_code, class: "label" do %>
+                      <span class="label-text">Code postal</span>
+                    <% end %>
+                    <%= f.text_field :zip_code, class: "input input-bordered w-full", placeholder: "75014", data: { google_places_autocomplete_target: "zipCode" } %>
+                  </div>
+                  <div class="form-control">
+                    <%= f.label :city, class: "label" do %>
+                      <span class="label-text">Ville</span>
+                    <% end %>
+                    <%= f.text_field :city, class: "input input-bordered w-full", placeholder: "Paris", data: { google_places_autocomplete_target: "city" } %>
+                  </div>
+                  <div class="form-control">
+                    <%= f.label :radius_text, class: "label" do %>
+                      <span class="label-text">À quelle distance pouvez-vous vous déplacer ?</span>
+                    <% end %>
+                    <%= f.text_field :radius_text, class: "input input-bordered w-full", placeholder: "Ex: 20 km" %>
+                  </div>
+                </div>
               </div>
-              <%= hidden_field_tag "teacher[levels][]", "" %>
             </div>
-            <div class="form-control">
-              <%= f.label :subjects_tags, class: "label" do %>
-                <span class="label-text">Matières</span>
-              <% end %>
-              <div class="grid grid-cols-2 md:grid-cols-3 gap-2 p-4 border border-stone-300 rounded-lg bg-base-100 max-h-96 overflow-y-auto" id="subjects-container">
-                <% TeachersHelper::SUBJECTS_OPTIONS.each do |label, value| %>
-                  <label class="flex items-center gap-2 cursor-pointer p-2 rounded hover:bg-base-200 transition">
-                    <%= check_box_tag "teacher[subjects_tags][]", value, @teacher.subjects_tags&.include?(value), { id: "teacher_subjects_tags_#{value.parameterize}", class: "checkbox checkbox-primary checkbox-sm" } %>
-                    <span class="text-sm"><%= label %></span>
+          </div>
+
+          <!-- Navigation -->
+          <div class="flex justify-between">
+            <button type="button" data-action="click->tabs#previous" class="btn btn-outline">
+              ← Précédent
+            </button>
+            <button type="button" data-action="click->tabs#next" class="btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg">
+              Suivant →
+            </button>
+          </div>
+        </div>
+
+        <!-- Onglet 3: Pédagogie -->
+        <div data-tabs-target="panel" data-panel-id="pedagogie" class="hidden space-y-6">
+          <div class="card bg-white shadow-sm">
+            <div class="card-body">
+              <div class="space-y-6">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Décrivez votre expérience et pédagogie</h2>
+
+                <!-- Approche pédagogique -->
+                <div class="form-control">
+                  <%= f.label :support_text, class: "label" do %>
+                    <span class="label-text">👉 Approche pédagogique</span>
+                  <% end %>
+                  <%= f.text_area :support_text, class: "textarea textarea-bordered w-full", rows: 4, placeholder: "Décrivez votre manière d'enseigner, votre méthode et ce qui vous distingue." %>
+                </div>
+
+                <!-- Expérience -->
+                <div class="form-control">
+                  <%= f.label :experience_text, class: "label" do %>
+                    <span class="label-text">👉 Expérience</span>
+                  <% end %>
+                  <%= f.text_area :experience_text, class: "textarea textarea-bordered w-full", rows: 4, placeholder: "Présentez brièvement votre parcours et votre expérience d'enseignement." %>
+                </div>
+
+                <!-- Compétences spécifiques -->
+                <div class="form-control">
+                  <%= f.label :special_skills_text, class: "label" do %>
+                    <span class="label-text">👉 Compétences spécifiques</span>
+                  <% end %>
+                  <%= f.text_area :special_skills_text, class: "textarea textarea-bordered w-full", rows: 4, placeholder: "Exemples: élèves en difficulté, préparation intensive, pédagogie adaptée…" %>
+                </div>
+
+                <!-- Examens préparés et Types d'accompagnement sur une rangée -->
+                <div class="grid gap-4 md:grid-cols-2">
+                  <!-- Examens préparés - Modal -->
+                  <div class="form-control" data-controller="selection-modal" data-selection-modal-field-name-value="exam_tags" data-selection-modal-selected-value="<%= @teacher.exam_tags&.reject(&:blank?)&.to_json || [].to_json %>">
+                    <%= f.label :exam_tags, class: "label" do %>
+                      <span class="label-text">Examens préparés</span>
+                    <% end %>
+                    <button type="button"
+                            data-selection-modal-target="button"
+                            data-action="click->selection-modal#open"
+                            class="btn btn-outline w-full justify-between">
+                      <span>Sélectionner...</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                    <%= hidden_field_tag "teacher[exam_tags][]", "", data: { selection_modal_target: "hiddenInput" } %>
+                    <% @teacher.exam_tags&.reject(&:blank?)&.each do |tag| %>
+                      <%= hidden_field_tag "teacher[exam_tags][]", tag %>
+                    <% end %>
+
+                    <!-- Modale Examens préparés -->
+                    <div data-selection-modal-target="modal" class="hidden fixed inset-0 z-50 flex items-center justify-center" style="background-color: rgba(0,0,0,0.7);" data-action="click->selection-modal#backdropClick">
+                      <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full mx-4 max-h-[80vh] flex flex-col">
+                        <div class="flex items-center justify-between p-4 border-b">
+                          <h3 class="text-lg font-semibold">Sélectionner les examens préparés</h3>
+                          <button type="button" data-action="click->selection-modal#close" class="btn btn-sm btn-circle btn-ghost">✕</button>
+                        </div>
+                        <div class="p-4 overflow-y-auto flex-1">
+                          <div class="grid grid-cols-4 gap-2">
+                            <% TeachersHelper::EXAM_TAGS_OPTIONS.each do |label, value| %>
+                              <label class="flex items-center gap-3 cursor-pointer p-2 rounded hover:bg-base-200 transition">
+                                <%= check_box_tag "exam_checkbox_#{value}", value, @teacher.exam_tags&.include?(value),
+                                    {
+                                      class: "custom-checkbox",
+                                      data: {
+                                        selection_modal_target: "checkbox",
+                                        label: label,
+                                        action: "change->selection-modal#updateSelection"
+                                      }
+                                    } %>
+                                <span class="text-base"><%= label %></span>
+                              </label>
+                            <% end %>
+                          </div>
+                        </div>
+                        <div class="p-4 border-t flex justify-end">
+                          <button type="button" data-action="click->selection-modal#close" class="btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white">Fermer</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Types d'accompagnement - Modal -->
+                  <div class="form-control" data-controller="selection-modal" data-selection-modal-field-name-value="pedagogy_tags" data-selection-modal-selected-value="<%= @teacher.pedagogy_tags&.reject(&:blank?)&.to_json || [].to_json %>">
+                    <%= f.label :pedagogy_tags, class: "label" do %>
+                      <span class="label-text">Types d'accompagnement</span>
+                    <% end %>
+                    <button type="button"
+                            data-selection-modal-target="button"
+                            data-action="click->selection-modal#open"
+                            class="btn btn-outline w-full justify-between">
+                      <span>Sélectionner...</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                    <%= hidden_field_tag "teacher[pedagogy_tags][]", "", data: { selection_modal_target: "hiddenInput" } %>
+                    <% @teacher.pedagogy_tags&.reject(&:blank?)&.each do |tag| %>
+                      <%= hidden_field_tag "teacher[pedagogy_tags][]", tag %>
+                    <% end %>
+
+                    <!-- Modale Types d'accompagnement -->
+                    <div data-selection-modal-target="modal" class="hidden fixed inset-0 z-50 flex items-center justify-center" style="background-color: rgba(0,0,0,0.7);" data-action="click->selection-modal#backdropClick">
+                      <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full mx-4 max-h-[80vh] flex flex-col">
+                        <div class="flex items-center justify-between p-4 border-b">
+                          <h3 class="text-lg font-semibold">Sélectionner les types d'accompagnement</h3>
+                          <button type="button" data-action="click->selection-modal#close" class="btn btn-sm btn-circle btn-ghost">✕</button>
+                        </div>
+                        <div class="p-4 overflow-y-auto flex-1">
+                          <div class="grid grid-cols-4 gap-2">
+                            <% TeachersHelper::PEDAGOGY_TAGS_OPTIONS.each do |label, value| %>
+                              <label class="flex items-center gap-3 cursor-pointer p-2 rounded hover:bg-base-200 transition">
+                                <%= check_box_tag "pedagogy_checkbox_#{value}", value, @teacher.pedagogy_tags&.include?(value),
+                                    {
+                                      class: "custom-checkbox",
+                                      data: {
+                                        selection_modal_target: "checkbox",
+                                        label: label,
+                                        action: "change->selection-modal#updateSelection"
+                                      }
+                                    } %>
+                                <span class="text-base"><%= label %></span>
+                              </label>
+                            <% end %>
+                          </div>
+                        </div>
+                        <div class="p-4 border-t flex justify-end">
+                          <button type="button" data-action="click->selection-modal#close" class="btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white">Fermer</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Navigation -->
+          <div class="flex justify-between">
+            <button type="button" data-action="click->tabs#previous" class="btn btn-outline">
+              ← Précédent
+            </button>
+            <button type="button" data-action="click->tabs#next" class="btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg">
+              Suivant →
+            </button>
+          </div>
+        </div>
+
+        <!-- Onglet 4: Validation & confidentialité -->
+        <div data-tabs-target="panel" data-panel-id="validation" class="hidden space-y-6">
+          <div class="card bg-white shadow-sm">
+            <div class="card-body">
+              <div class="space-y-6">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Vos justificatifs</h2>
+
+                <!-- Email professionnel -->
+                <div class="form-control">
+                  <%= f.label :email_pro, class: "label" do %>
+                    <span class="label-text">Email professionnel *</span>
+                  <% end %>
+                  <%= f.email_field :email_pro, class: "input input-bordered w-full", required: true %>
+                </div>
+
+                <!-- Consentement RGPD -->
+                <div class="form-control">
+                  <label class="label cursor-pointer justify-start gap-3">
+                    <%= f.check_box :rgpd_consent, { checked: @teacher.rgpd_consent, class: "custom-checkbox" }, true, false %>
+                    <span class="label-text text-base">J'accepte que mes données soient utilisées conformément à la RGPD *</span>
                   </label>
+                  <p class="text-sm text-gray-500 mt-2">Vos coordonnées complètes sont partagées uniquement après acceptation d'une mise en relation.</p>
+                </div>
+
+                <!-- Message de validation -->
+                <% if @teacher.status.present? %>
+                  <% if @teacher.pending? %>
+                    <div class="alert alert-info">
+                      <div class="flex items-center gap-3 mb-2">
+                        <div class="badge badge-warning badge-lg">En attente de validation</div>
+                      </div>
+                      <p class="text-sm text-gray-600">
+                        Votre profil sera examiné par notre équipe. Vous recevrez une notification une fois la validation effectuée.
+                      </p>
+                    </div>
+                  <% elsif @teacher.approved? %>
+                    <div class="alert alert-success">
+                      <div class="flex items-center gap-3">
+                        <div class="badge badge-success badge-lg">Profil validé</div>
+                      </div>
+                    </div>
+                  <% elsif @teacher.rejected? %>
+                    <div class="alert alert-error">
+                      <div class="flex items-center gap-3">
+                        <div class="badge badge-error badge-lg">Profil refusé</div>
+                      </div>
+                    </div>
+                  <% end %>
                 <% end %>
-              </div>
-              <%= hidden_field_tag "teacher[subjects_tags][]", "" %>
-            </div>
-            <div class="form-control">
-              <label class="label">
-                <span class="label-text">Formats d'enseignement</span>
-              </label>
-              <div class="flex flex-wrap gap-4">
-                <label class="label cursor-pointer gap-2">
-                  <%= check_box_tag "teacher[teaching_formats][]", "online", @teacher.teaching_formats&.include?("online"), { id: "teacher_teaching_formats_online" } %>
-                  <span class="label-text">En ligne</span>
-                </label>
-                <label class="label cursor-pointer gap-2">
-                  <%= check_box_tag "teacher[teaching_formats][]", "at_student_home", @teacher.teaching_formats&.include?("at_student_home"), { id: "teacher_teaching_formats_at_student_home" } %>
-                  <span class="label-text">Au domicile de l'élève</span>
-                </label>
-                <label class="label cursor-pointer gap-2">
-                  <%= check_box_tag "teacher[teaching_formats][]", "at_teacher_home", @teacher.teaching_formats&.include?("at_teacher_home"), { id: "teacher_teaching_formats_at_teacher_home" } %>
-                  <span class="label-text">À mon domicile</span>
-                </label>
-              </div>
-            </div>
-            <div class="form-control">
-              <%= f.label :pricing_text, class: "label" do %>
-                <span class="label-text">Tarif horaire</span>
-              <% end %>
-              <%= f.select :pricing_text, options_for_select((40..100).step(5).map { |price| ["#{price}€", "#{price}€"] }, @teacher.pricing_text), { prompt: "Sélectionner un tarif" }, { class: "select select-bordered w-full" } %>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- Section Localisation -->
-      <div class="card bg-white shadow-sm">
-        <div class="card-body">
-          <h2 class="card-title text-xl mb-4">Localisation</h2>
-          <div class="grid gap-4 md:grid-cols-3" data-controller="google-places-autocomplete">
-            <div class="form-control">
-              <%= f.label :address, class: "label" do %>
-                <span class="label-text">Adresse</span>
-              <% end %>
-              <%= f.text_field :address, class: "input input-bordered w-full", placeholder: "123 rue de la République", data: { google_places_autocomplete_target: "address" } %>
-            </div>
-            <div class="form-control">
-              <%= f.label :zip_code, class: "label" do %>
-                <span class="label-text">Code postal</span>
-              <% end %>
-              <%= f.text_field :zip_code, class: "input input-bordered w-full", placeholder: "75014", data: { google_places_autocomplete_target: "zipCode" } %>
-            </div>
-            <div class="form-control">
-              <%= f.label :city, class: "label" do %>
-                <span class="label-text">Ville</span>
-              <% end %>
-              <%= f.text_field :city, class: "input input-bordered w-full", placeholder: "Paris", data: { google_places_autocomplete_target: "city" } %>
-            </div>
-            <div class="form-control">
-              <%= f.label :radius_text, class: "label" do %>
-                <span class="label-text">Rayon d'intervention</span>
-              <% end %>
-              <%= f.text_field :radius_text, class: "input input-bordered w-full", placeholder: "Ex: 20 km" %>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Section Description -->
-      <div class="card bg-white shadow-sm">
-        <div class="card-body">
-          <h2 class="card-title text-xl mb-4">Description</h2>
-          <div class="space-y-4">
-            <div class="form-control">
-              <%= f.label :support_text, class: "label" do %>
-                <span class="label-text">Texte de soutien</span>
-              <% end %>
-              <%= f.text_area :support_text, class: "textarea textarea-bordered w-full", rows: 4, placeholder: "Décrivez votre approche pédagogique..." %>
-            </div>
-            <div class="form-control">
-              <%= f.label :experience_text, class: "label" do %>
-                <span class="label-text">Expérience</span>
-              <% end %>
-              <%= f.text_area :experience_text, class: "textarea textarea-bordered w-full", rows: 4, placeholder: "Décrivez votre expérience..." %>
-            </div>
-            <div class="form-control">
-              <%= f.label :special_skills_text, class: "label" do %>
-                <span class="label-text">Compétences spéciales</span>
-              <% end %>
-              <%= f.text_area :special_skills_text, class: "textarea textarea-bordered w-full", rows: 4, placeholder: "Vos compétences particulières..." %>
-            </div>
-            <div class="form-control">
-              <%= f.label :interest_text, class: "label" do %>
-                <span class="label-text">Centres d'intérêt</span>
-              <% end %>
-              <%= f.text_area :interest_text, class: "textarea textarea-bordered w-full", rows: 4, placeholder: "Vos centres d'intérêt..." %>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Section Examens & Pédagogie -->
-      <div class="card bg-white shadow-sm">
-        <div class="card-body">
-          <h2 class="card-title text-xl mb-4">Examens & Pédagogie</h2>
-          <div class="space-y-4">
-            <div class="form-control">
-              <%= f.label :exams_raw_text, class: "label" do %>
-                <span class="label-text">Examens préparés</span>
-              <% end %>
-              <%= f.text_area :exams_raw_text, class: "textarea textarea-bordered w-full", rows: 3, placeholder: "Décrivez les examens que vous préparez..." %>
-            </div>
-            <div class="form-control">
-              <%= f.label :exam_tags, class: "label" do %>
-                <span class="label-text">Tags examens</span>
-              <% end %>
-              <div class="grid grid-cols-2 md:grid-cols-3 gap-2 p-4 border border-stone-300 rounded-lg bg-base-100 max-h-64 overflow-y-auto">
-                <% TeachersHelper::EXAM_TAGS_OPTIONS.each do |label, value| %>
-                  <label class="flex items-center gap-2 cursor-pointer p-2 rounded hover:bg-base-200 transition">
-                    <%= check_box_tag "teacher[exam_tags][]", value, @teacher.exam_tags&.include?(value), { id: "teacher_exam_tags_#{value.parameterize}", class: "checkbox checkbox-primary checkbox-sm" } %>
-                    <span class="text-sm"><%= label %></span>
+                <!-- Pièces justificatives (en dernier) -->
+                <div class="form-control">
+                  <label class="label">
+                    <span class="label-text">Pièces justificatives</span>
                   </label>
-                <% end %>
+                  <div class="mb-4 p-4 bg-base-200 rounded-lg">
+                    <p class="text-sm text-gray-700 mb-2">
+                      Nous vous demandons de bien vouloir nous fournir un document officiel attestant de votre statut de professeur :
+                    </p>
+                    <ul class="text-sm text-gray-700 list-disc list-inside space-y-1">
+                      <li>votre diplôme du CAPES ou de l'Agrégation,</li>
+                      <li>ou votre arrêté de titularisation,</li>
+                      <li>ou une capture d'écran de votre situation administrative provenant de Iprof.</li>
+                    </ul>
+                    <p class="text-sm text-gray-700 mt-2">
+                      Cela constitue la garantie de la qualité et de l'excellence qui font la spécificité de la plateforme ProfConnect.
+                    </p>
+                  </div>
+                  <div data-controller="verification-documents">
+                    <div id="verification-documents-list" class="mb-4">
+                      <%= render "teacher_verification_documents/list", teacher: @teacher %>
+                    </div>
+                    <%= render "teacher_verification_documents/form" %>
+                  </div>
+                </div>
               </div>
-              <%= hidden_field_tag "teacher[exam_tags][]", "" %>
-            </div>
-            <div class="form-control">
-              <%= f.label :pedagogy_tags, class: "label" do %>
-                <span class="label-text">Tags pédagogie</span>
-              <% end %>
-              <div class="grid grid-cols-2 md:grid-cols-3 gap-2 p-4 border border-stone-300 rounded-lg bg-base-100 max-h-64 overflow-y-auto">
-                <% TeachersHelper::PEDAGOGY_TAGS_OPTIONS.each do |label, value| %>
-                  <label class="flex items-center gap-2 cursor-pointer p-2 rounded hover:bg-base-200 transition">
-                    <%= check_box_tag "teacher[pedagogy_tags][]", value, @teacher.pedagogy_tags&.include?(value), { id: "teacher_pedagogy_tags_#{value.parameterize}", class: "checkbox checkbox-primary checkbox-sm" } %>
-                    <span class="text-sm"><%= label %></span>
-                  </label>
-                <% end %>
-              </div>
-              <%= hidden_field_tag "teacher[pedagogy_tags][]", "" %>
             </div>
           </div>
-        </div>
-      </div>
 
-      <!-- Section Données sensibles -->
-      <div class="card bg-white shadow-sm">
-        <div class="card-body">
-          <h2 class="card-title text-xl mb-4">Données de contact (privées)</h2>
-          <div class="space-y-4">
-            <div class="form-control">
-              <%= f.label :email_pro, class: "label" do %>
-                <span class="label-text">Email professionnel *</span>
-              <% end %>
-              <%= f.email_field :email_pro, class: "input input-bordered w-full", required: true %>
-            </div>
-            <div class="form-control">
-              <%= f.label :email_perso, class: "label" do %>
-                <span class="label-text">Email personnel</span>
-              <% end %>
-              <%= f.email_field :email_perso, class: "input input-bordered w-full" %>
-            </div>
-            <div class="form-control">
-              <%= f.label :phone, class: "label" do %>
-                <span class="label-text">Téléphone</span>
-              <% end %>
-              <%= f.text_field :phone, class: "input input-bordered w-full", placeholder: "06 00 00 00 00" %>
-            </div>
+          <!-- Navigation et bouton submit -->
+          <div class="flex justify-between">
+            <button type="button" data-action="click->tabs#previous" class="btn btn-outline">
+              ← Précédent
+            </button>
+            <%= f.submit "Enregistrer mon profil", class: "btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg" %>
           </div>
         </div>
-      </div>
-
-      <!-- Section RGPD -->
-      <div class="card bg-white shadow-sm border-2">
-        <div class="card-body">
-          <h2 class="card-title text-xl mb-4">Consentement RGPD</h2>
-          <div class="form-control">
-            <label class="label cursor-pointer justify-start gap-2">
-              <%= f.check_box :rgpd_consent, { checked: @teacher.rgpd_consent }, true, false %>
-              <span class="label-text">J'accepte que mes données soient utilisées conformément à la RGPD *</span>
-            </label>
-            <label class="label">
-              <span class="label-text-alt text-red-600">Ce consentement est obligatoire pour que votre profil soit visible</span>
-            </label>
-          </div>
-        </div>
-      </div>
-
-      <!-- Bouton submit -->
-      <div class="flex justify-end">
-        <%= f.submit "Enregistrer mon profil", class: "btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg" %>
       </div>
     <% end %>
   </div>
