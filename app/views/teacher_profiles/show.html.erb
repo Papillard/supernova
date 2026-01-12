@@ -1,14 +1,7 @@
 <div class="container mx-auto max-w-4xl px-4 py-8">
   <div class="space-y-6">
-    <h1 class="text-xl font-bold text-gray-900 flex items-center gap-3">
+    <h1 class="text-xl font-bold text-gray-900">
       Mon profil professeur
-      <% if @teacher.pending? %>
-        <span class="badge badge-warning badge-sm font-normal" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">en attente de validation</span>
-      <% elsif @teacher.approved? %>
-        <span class="badge badge-success badge-sm font-normal" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">validé</span>
-      <% elsif @teacher.rejected? %>
-        <span class="badge badge-error badge-sm font-normal" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">refusé</span>
-      <% end %>
     </h1>
 
     <!-- Flash messages container -->
@@ -31,17 +24,20 @@
     <% end %>
 
     <!-- Navigation par onglets -->
-    <div data-controller="tabs" data-tabs-active-value="<%= params[:current_tab] || 'infos-basiques' %>">
-      <div class="tabs tabs-boxed bg-base-200 mb-6">
-        <a data-tabs-target="tab" data-tab-id="infos-basiques" data-action="click->tabs#switch" class="tab tab-active">Profil</a>
-        <a data-tabs-target="tab" data-tab-id="preferences-cours" data-action="click->tabs#switch" class="tab">Préférences de cours</a>
-        <a data-tabs-target="tab" data-tab-id="pedagogie" data-action="click->tabs#switch" class="tab">Pédagogie</a>
-        <a data-tabs-target="tab" data-tab-id="validation" data-action="click->tabs#switch" class="tab">Validation & confidentialité</a>
+    <div data-controller="tabs" data-tabs-active-value="<%= params[:current_tab] || 'profil' %>">
+      <div class="flex border-b border-gray-200 mb-6">
+        <a data-tabs-target="tab" data-tab-id="profil" data-action="click->tabs#switch" class="profile-tab tab-active px-4 py-3 text-sm font-medium cursor-pointer transition-colors">Profil</a>
+        <a data-tabs-target="tab" data-tab-id="preferences-cours" data-action="click->tabs#switch" class="profile-tab px-4 py-3 text-sm font-medium cursor-pointer transition-colors">Préférences de cours</a>
+        <a data-tabs-target="tab" data-tab-id="pedagogie" data-action="click->tabs#switch" class="profile-tab px-4 py-3 text-sm font-medium cursor-pointer transition-colors">Pédagogie</a>
+        <a data-tabs-target="tab" data-tab-id="validation" data-action="click->tabs#switch" class="profile-tab px-4 py-3 text-sm font-medium cursor-pointer transition-colors">Validation</a>
       </div>
 
-        <!-- Onglet 1: Infos basiques -->
-        <div data-tabs-target="panel" data-panel-id="infos-basiques" class="space-y-6">
-          <!-- Section Infos basiques -->
+      <!-- Formulaire principal qui englobe tous les panels -->
+      <%= form_with model: @teacher, url: teacher_profile_path, method: :patch, local: false, multipart: true, data: { turbo: true }, id: "main-teacher-form", class: "space-y-6" do |f| %>
+        <%= render "devise/shared/error_messages", resource: @teacher %>
+
+        <!-- Onglet 1: Profil -->
+        <div data-tabs-target="panel" data-panel-id="profil" class="space-y-6">
           <div class="card bg-white shadow-sm">
             <div class="card-body">
               <div class="space-y-6">
@@ -49,38 +45,32 @@
 
                 <!-- Photo de profil (formulaire séparé mais visuellement intégré) -->
                 <div class="flex items-start gap-6" data-controller="avatar-upload">
-                <div class="flex-shrink-0" id="teacher-avatar-container">
-                  <%= render "shared/teacher_avatar", teacher: @teacher, size: :large, for_parent: false %>
-                </div>
-                <div class="flex-1 space-y-4">
-                  <%# Formulaire d'avatar séparé (en dehors du formulaire principal) %>
-                  <%= form_with model: @teacher, url: teacher_profile_path, method: :patch, local: false, multipart: true, data: { turbo: true, avatar_upload_target: "form" }, id: "avatar-upload-form", class: "space-y-4" do |avatar_form| %>
+                  <div class="flex-shrink-0" id="teacher-avatar-container">
+                    <%= render "shared/teacher_avatar", teacher: @teacher, size: :large, for_parent: false %>
+                  </div>
+                  <div class="flex-1 space-y-4">
+                    <%# Formulaire d'avatar séparé - NOTE: forms imbriqués non valides, mais le navigateur gère ce cas %>
+                    <%# On utilise formaction pour soumettre séparément %>
                     <div class="form-control">
-                      <%= avatar_form.label :avatar, "Changer la photo", class: "label" do %>
+                      <label class="label">
                         <span class="label-text">Photo de profil</span>
-                      <% end %>
-                      <%= avatar_form.file_field :avatar,
-                          accept: "image/jpeg,image/jpg,image/png",
-                          class: "file-input file-input-bordered w-full",
-                          data: { avatar_upload_target: "input" } %>
-                      <div id="avatar-upload-loading" class="hidden mt-2 text-sm text-gray-500" data-avatar-upload-target="loadingIndicator">
+                      </label>
+                      <input type="file" name="teacher[avatar]" accept="image/jpeg,image/jpg,image/png"
+                             class="file-input file-input-bordered w-full"
+                             data-controller="avatar-upload-inline"
+                             data-action="change->avatar-upload-inline#upload">
+                      <div id="avatar-upload-loading" class="hidden mt-2 text-sm text-gray-500">
                         Upload en cours...
                       </div>
                     </div>
                     <div class="form-control">
                       <label class="label cursor-pointer justify-start gap-3">
-                        <%= avatar_form.check_box :picture_visible, { checked: @teacher.picture_visible, class: "custom-checkbox" }, true, false %>
+                        <%= f.check_box :picture_visible, { checked: @teacher.picture_visible, class: "custom-checkbox" }, true, false %>
                         <span class="label-text text-base">Rendre ma photo visible publiquement sur ProfConnect (recommandé)</span>
                       </label>
                     </div>
-                    <%= hidden_field_tag "avatar_only", "1" %>
-                  <% end %>
+                  </div>
                 </div>
-              </div>
-
-              <!-- Formulaire principal avec onglets -->
-              <%= form_with model: @teacher, url: teacher_profile_path, method: :patch, local: false, multipart: true, data: { turbo: true }, class: "space-y-6" do |f| %>
-                <%= render "devise/shared/error_messages", resource: @teacher %>
 
                 <!-- Identité -->
                 <div class="grid gap-4 md:grid-cols-2">
@@ -118,12 +108,27 @@
                     <%= f.label :career_status, class: "label" do %>
                       <span class="label-text">Statut professionnel *</span>
                     <% end %>
+                    <%
+                      # Convertir la clé de l'enum en valeur pour le select
+                      career_status_value = case @teacher.career_status
+                      when "certifie", :certifie
+                        "certifié"
+                      when "agrege", :agrege
+                        "agrégé"
+                      when "prof_des_ecoles", :prof_des_ecoles
+                        "prof des écoles"
+                      when "autre", :autre
+                        "autre"
+                      else
+                        @teacher.career_status
+                      end
+                    %>
                     <%= f.select :career_status, options_for_select([
                       ["Certifié", "certifié"],
                       ["Agrégé", "agrégé"],
                       ["Prof des écoles", "prof des écoles"],
                       ["Autre", "autre"]
-                    ], @teacher.career_status), { prompt: "Sélectionner" }, { class: "select select-bordered w-full", required: true } %>
+                    ], career_status_value), { prompt: "Sélectionner" }, { class: "select select-bordered w-full", required: true } %>
                   </div>
                   <div class="form-control">
                     <%= f.label :academy_name, class: "label" do %>
@@ -247,7 +252,6 @@
             </div>
           </div>
 
-
           <!-- Navigation -->
           <div class="flex justify-end">
             <button type="button" data-action="click->tabs#next" class="btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg">
@@ -319,7 +323,7 @@
                     <%= f.label :radius_text, class: "label" do %>
                       <span class="label-text">À quelle distance pouvez-vous vous déplacer ?</span>
                     <% end %>
-                    <%= f.text_field :radius_text, class: "input input-bordered w-full", placeholder: "Ex: 20 km" %>
+                    <%= f.select :radius_text, options_for_select(TeachersHelper::RADIUS_OPTIONS, @teacher.radius_text), { prompt: "Sélectionner" }, { class: "select select-bordered w-full" } %>
                   </div>
                 </div>
               </div>
@@ -347,25 +351,25 @@
                 <!-- Approche pédagogique -->
                 <div class="form-control">
                   <%= f.label :support_text, class: "label" do %>
-                    <span class="label-text">👉 Approche pédagogique</span>
+                    <span class="label-text">Votre approche pédagogique</span>
                   <% end %>
-                  <%= f.text_area :support_text, class: "textarea textarea-bordered w-full", rows: 4, placeholder: "Décrivez votre manière d'enseigner, votre méthode et ce qui vous distingue." %>
+                  <%= f.text_area :support_text, class: "textarea textarea-bordered w-full", rows: 3, placeholder: "Décrivez votre manière d'enseigner, votre méthode et ce qui vous distingue." %>
                 </div>
 
                 <!-- Expérience -->
                 <div class="form-control">
                   <%= f.label :experience_text, class: "label" do %>
-                    <span class="label-text">👉 Expérience</span>
+                    <span class="label-text">Votre expérience</span>
                   <% end %>
-                  <%= f.text_area :experience_text, class: "textarea textarea-bordered w-full", rows: 4, placeholder: "Présentez brièvement votre parcours et votre expérience d'enseignement." %>
+                  <%= f.text_area :experience_text, class: "textarea textarea-bordered w-full", rows: 3, placeholder: "Présentez brièvement votre parcours et votre expérience d'enseignement." %>
                 </div>
 
                 <!-- Compétences spécifiques -->
                 <div class="form-control">
                   <%= f.label :special_skills_text, class: "label" do %>
-                    <span class="label-text">👉 Compétences spécifiques</span>
+                    <span class="label-text">Vos compétences spécifiques</span>
                   <% end %>
-                  <%= f.text_area :special_skills_text, class: "textarea textarea-bordered w-full", rows: 4, placeholder: "Exemples: élèves en difficulté, préparation intensive, pédagogie adaptée…" %>
+                  <%= f.text_area :special_skills_text, class: "textarea textarea-bordered w-full", rows: 3, placeholder: "Exemples: élèves en difficulté, préparation intensive, pédagogie adaptée…" %>
                 </div>
 
                 <!-- Examens préparés et Types d'accompagnement sur une rangée -->
@@ -502,45 +506,13 @@
                   <%= f.email_field :email_pro, class: "input input-bordered w-full", required: true %>
                 </div>
 
-                <!-- Consentement RGPD -->
-                <div class="form-control">
-                  <label class="label cursor-pointer justify-start gap-3">
-                    <%= f.check_box :rgpd_consent, { checked: @teacher.rgpd_consent, class: "custom-checkbox" }, true, false %>
-                    <span class="label-text text-base">J'accepte que mes données soient utilisées conformément à la RGPD *</span>
-                  </label>
-                  <p class="text-sm text-gray-500 mt-2">Vos coordonnées complètes sont partagées uniquement après acceptation d'une mise en relation.</p>
-                </div>
+      <% end %>
+      <!-- FIN du formulaire principal -->
 
-                <!-- Message de validation -->
-                <% if @teacher.status.present? %>
-                  <% if @teacher.pending? %>
-                    <div class="alert alert-info">
-                      <div class="flex items-center gap-3 mb-2">
-                        <div class="badge badge-warning badge-lg">En attente de validation</div>
-                      </div>
-                      <p class="text-sm text-gray-600">
-                        Votre profil sera examiné par notre équipe. Vous recevrez une notification une fois la validation effectuée.
-                      </p>
-                    </div>
-                  <% elsif @teacher.approved? %>
-                    <div class="alert alert-success">
-                      <div class="flex items-center gap-3">
-                        <div class="badge badge-success badge-lg">Profil validé</div>
-                      </div>
-                    </div>
-                  <% elsif @teacher.rejected? %>
-                    <div class="alert alert-error">
-                      <div class="flex items-center gap-3">
-                        <div class="badge badge-error badge-lg">Profil refusé</div>
-                      </div>
-                    </div>
-                  <% end %>
-                <% end %>
-
-                <!-- Pièces justificatives (en dernier) -->
+                <!-- Pièces justificatives (formulaire séparé dans un Turbo Frame) -->
                 <div class="form-control">
                   <label class="label">
-                    <span class="label-text">Pièces justificatives</span>
+                    <span class="label-text font-semibold">Pièces justificatives</span>
                   </label>
                   <div class="mb-4 p-4 bg-base-200 rounded-lg">
                     <p class="text-sm text-gray-700 mb-2">
@@ -555,26 +527,51 @@
                       Cela constitue la garantie de la qualité et de l'excellence qui font la spécificité de la plateforme ProfConnect.
                     </p>
                   </div>
-                  <div data-controller="verification-documents">
-                    <div id="verification-documents-list" class="mb-4">
-                      <%= render "teacher_verification_documents/list", teacher: @teacher %>
-                    </div>
+                  <%= turbo_frame_tag "verification-documents" do %>
+                    <%= render "teacher_verification_documents/list", teacher: @teacher %>
                     <%= render "teacher_verification_documents/form" %>
-                  </div>
+                  <% end %>
                 </div>
+
+                <!-- Consentement RGPD (lié au formulaire principal via l'attribut form) -->
+                <div class="form-control">
+                  <label class="label cursor-pointer justify-start gap-3">
+                    <input type="hidden" name="teacher[rgpd_consent]" value="0" form="main-teacher-form">
+                    <input type="checkbox" name="teacher[rgpd_consent]" value="1" form="main-teacher-form" class="custom-checkbox" <%= @teacher.rgpd_consent ? "checked" : "" %>>
+                    <span class="label-text text-base">J'accepte que mes coordonnées soient partagées quand j'accepte une mise en relation. *</span>
+                  </label>
+                </div>
+
               </div>
             </div>
           </div>
+
+          <!-- Message de validation -->
+          <% if @teacher.pending? %>
+            <div class="flex items-start gap-3 p-4 border border-orange-200 bg-orange-50 rounded-lg">
+              <div class="badge badge-warning badge-sm">En attente</div>
+              <p class="text-sm text-gray-700 flex-1">
+                Votre profil sera examiné par l'équipe ProfConnect, vous recevrez une notification une fois validé.
+              </p>
+            </div>
+          <% elsif @teacher.rejected? %>
+            <div class="flex items-center gap-3 p-4 border border-red-200 bg-red-50 rounded-lg">
+              <div class="badge badge-error badge-sm">Profil refusé</div>
+            </div>
+          <% end %>
 
           <!-- Navigation et bouton submit -->
           <div class="flex justify-between">
             <button type="button" data-action="click->tabs#previous" class="btn btn-outline">
               ← Précédent
             </button>
-            <%= f.submit "Enregistrer mon profil", class: "btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg" %>
+            <button type="submit" form="main-teacher-form" class="btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg">
+              Enregistrer mon profil
+            </button>
           </div>
         </div>
-      </div>
-    <% end %>
+      <%# FIN du panel validation %>
+    </div>
+    <%# FIN du tabs controller %>
   </div>
 </div>

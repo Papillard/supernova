@@ -1,8 +1,18 @@
 <div class="flex-none gap-6 items-center">
   <% if current_user.parent? %>
-    <%= link_to "Mes demandes", requests_path, class: "text-sm font-medium text-gray-600 hover:text-gray-900 px-4" %>
+    <%= link_to requests_path, class: "text-sm font-medium text-gray-600 hover:text-gray-900 px-4 inline-flex items-center gap-1.5" do %>
+      Mes demandes
+      <% if current_user.has_unread_requests? %>
+        <span class="w-2 h-2 bg-[#fe6618] rounded-full"></span>
+      <% end %>
+    <% end %>
   <% elsif current_user.teacher? %>
-    <%= link_to "Mes demandes", teacher_requests_path, class: "text-sm font-medium text-gray-600 hover:text-gray-900 px-4" %>
+    <%= link_to teacher_requests_path, class: "text-sm font-medium text-gray-600 hover:text-gray-900 px-4 inline-flex items-center gap-1.5" do %>
+      Mes demandes
+      <% if current_user.has_unread_requests? %>
+        <span class="w-2 h-2 bg-[#fe6618] rounded-full"></span>
+      <% end %>
+    <% end %>
   <% end %>
   <%= link_to "Annuaire des professeurs", teachers_path, class: "text-sm font-medium text-gray-600 hover:text-gray-900 px-4" %>
   <div class="dropdown dropdown-end">

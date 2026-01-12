@@ -46,16 +46,20 @@ Rails.application.routes.draw do
   get "teachers/:id", to: "teachers#show", as: :teacher
 
   # Requests (parents)
-  resources :requests, only: [:index, :show, :create, :destroy] do
+  resources :requests, only: [:index, :show, :create] do
+    member do
+      patch :archive
+    end
     resources :messages, only: [:create], controller: "messages"
   end
 
   # Teacher requests
   namespace :teacher do
-    resources :requests, only: [:index, :show, :destroy] do
+    resources :requests, only: [:index, :show] do
       member do
         patch :accept
         patch :decline
+        patch :archive
       end
       resources :messages, only: [:create], controller: "/messages"
     end

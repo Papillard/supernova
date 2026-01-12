@@ -2,13 +2,13 @@ class MessagesController < ApplicationController
   layout "authenticated"
   before_action :authenticate_user!
   before_action :set_request
-  before_action :authorize_message_access
 
   def create
     @message = Message.new(message_params)
     @message.request = @request
     @message.user = current_user
     @message.system = false
+    authorize @message
 
     respond_to do |format|
       if @message.save
@@ -45,15 +45,5 @@ class MessagesController < ApplicationController
 
   def set_request
     @request = Request.find(params[:request_id])
-  end
-
-  def authorize_message_access
-    # Vérifier que l'utilisateur est soit le parent, soit le teacher de la request
-    is_parent = @request.parent_id == current_user.id
-    is_teacher = current_user.teacher? && @request.teacher_id == current_user.teacher.id
-
-    unless is_parent || is_teacher
-      redirect_to root_path, alert: "Vous n'avez pas accès à cette conversation."
-    end
   end
 end

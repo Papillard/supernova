@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_25_000001) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_12_172947) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -183,6 +183,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_25_000001) do
     t.datetime "updated_at", null: false
     t.bigint "student_id"
     t.text "notes"
+    t.boolean "archived_by_parent", default: false, null: false
+    t.boolean "archived_by_teacher", default: false, null: false
+    t.datetime "parent_last_read_at"
+    t.datetime "teacher_last_read_at"
     t.index ["parent_id"], name: "index_requests_on_parent_id"
     t.index ["student_id"], name: "index_requests_on_student_id"
     t.index ["teacher_id"], name: "index_requests_on_teacher_id"
@@ -262,6 +266,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_25_000001) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "email_notifications_enabled", default: true, null: false
+    t.boolean "admin", default: false, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

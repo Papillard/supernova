@@ -11,11 +11,27 @@
         <%= form_for(resource, as: resource_name, url: teacher_registration_path, html: { class: "space-y-6" }) do |f| %>
           <%= render "devise/shared/error_messages", resource: resource %>
 
+          <div class="grid grid-cols-2 gap-4">
+            <div class="form-control">
+              <%= f.label :first_name, class: "label" do %>
+                <span class="label-text">Prénom *</span>
+              <% end %>
+              <%= f.text_field :first_name, autofocus: true, autocomplete: "given-name", class: "input input-bordered w-full", placeholder: "Prénom", required: true %>
+            </div>
+
+            <div class="form-control">
+              <%= f.label :last_name, class: "label" do %>
+                <span class="label-text">Nom *</span>
+              <% end %>
+              <%= f.text_field :last_name, autocomplete: "family-name", class: "input input-bordered w-full", placeholder: "Nom", required: true %>
+            </div>
+          </div>
+
           <div class="form-control">
             <%= f.label :email, class: "label" do %>
-              <span class="label-text">Email professionnel</span>
+              <span class="label-text">Email professionnel *</span>
             <% end %>
-            <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "input input-bordered w-full", placeholder: "votre.email@ac-*.fr" %>
+            <%= f.email_field :email, autocomplete: "email", class: "input input-bordered w-full", placeholder: "votre.email@ac-*.fr", required: true %>
             <label class="label">
               <span class="label-text-alt text-gray-500">Utilisez votre email académique si possible</span>
             </label>

@@ -12,25 +12,35 @@
       <div class="flex-1 overflow-y-auto space-y-2">
         <% @requests.each do |request| %>
           <%= link_to teacher_requests_path(id: request.id), class: "block" do %>
-            <div class="p-4 rounded-lg border transition-colors <%= @active_request&.id == request.id ? 'bg-[#fe6618]/5 border-[#fe6618]/30' : 'bg-white border-gray-200 hover:bg-white' %>">
+            <div class="p-4 rounded-lg bg-white border transition-colors <%= @active_request&.id == request.id ? 'border-[#fe6618] shadow-sm' : 'border-gray-200 hover:border-gray-300' %>">
               <div class="flex items-start justify-between mb-2">
-                <div class="flex-1">
-                  <div class="flex items-center gap-2 mb-1">
-                    <span class="text-sm font-semibold text-gray-900">Parent</span>
-                    <span class="badge <%= request_status_badge_class(request.status) %> badge-sm">
-                      <%= format_request_status(request.status) %>
-                    </span>
-                  </div>
-                  <div class="flex flex-wrap gap-1">
-                    <span class="badge badge-sm bg-[#fe6618]/10 text-[#d85514] border-[#fe6618]/20">
-                      <%= format_subject_tag(request.subject) %>
-                    </span>
-                    <span class="badge badge-sm bg-orange-100 text-orange-700 border-orange-200">
-                      <%= format_request_level(request.level) %>
-                    </span>
-                  </div>
+                <div class="flex-1 min-w-0">
+                  <h3 class="font-semibold text-gray-900 text-sm">
+                    <% parent_profile = request.parent&.parent_profile %>
+                    <% if request.status == "accepted" && parent_profile&.first_name.present? %>
+                      <%= "#{parent_profile.first_name} #{parent_profile.last_name}" %>
+                    <% elsif parent_profile&.first_name.present? %>
+                      <%= "#{parent_profile.first_name} #{parent_profile.last_name&.first&.upcase}." if parent_profile.last_name.present? %>
+                      <%= parent_profile.first_name unless parent_profile.last_name.present? %>
+                    <% else %>
+                      Parent
+                    <% end %>
+                  </h3>
+                  <%# Preview du dernier message %>
+                  <% last_message = request.messages.where(system: false).order(created_at: :desc).first %>
+                  <% if last_message %>
+                    <p class="text-xs text-gray-400 mt-1 truncate">
+                      <%= truncate(last_message.body, length: 60) %>
+                    </p>
+                  <% end %>
                 </div>
+                <span class="badge badge-xs <%= request.status == "pending" ? 'bg-gray-100 text-gray-500 border-gray-200' : request_status_badge_class(request.status) %> ml-2 flex-shrink-0">
+                  <%= format_request_status(request.status) %>
+                </span>
               </div>
+              <p class="text-xs text-gray-500">
+                Pour <%= request.student&.first_name || "l'élève" %> • <%= format_subject_tag(request.subject) %> • <%= format_request_level(request.level) %>
+              </p>
             </div>
           <% end %>
         <% end %>

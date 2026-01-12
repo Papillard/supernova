@@ -1,15 +1,15 @@
 class TeacherProfilesController < ApplicationController
   layout "authenticated"
   before_action :authenticate_user!
-  before_action :ensure_teacher!
   before_action :create_teacher_if_missing
   before_action :set_teacher
 
   def show
-    # Display the profile form
+    authorize @teacher
   end
 
   def update
+    authorize @teacher
     is_avatar_only = params[:avatar_only].present?
 
     if is_avatar_only
@@ -95,6 +95,13 @@ class TeacherProfilesController < ApplicationController
     is_avatar_upload = is_avatar_only || (params[:teacher].present? && params[:teacher][:avatar].present?)
 
     respond_to do |format|
+      # Nettoyer les valeurs vides (convertir "" en nil pour les champs texte)
+      params_hash.each do |key, value|
+        if value.is_a?(String) && value.empty? && !%w[subjects_tags levels exam_tags pedagogy_tags teaching_formats].include?(key.to_s)
+          params_hash[key] = nil
+        end
+      end
+
       if @teacher.update(params_hash)
         # Recharger pour avoir les données à jour depuis la DB
         @teacher.reload
@@ -150,11 +157,8 @@ class TeacherProfilesController < ApplicationController
 
   private
 
-  def ensure_teacher!
-    redirect_to root_path unless current_user&.teacher?
-  end
-
   def create_teacher_if_missing
+    return unless current_user&.teacher?
     return if current_user.teacher.present?
 
     # Créer un Teacher vide avec les valeurs minimales requises
@@ -221,6 +225,18 @@ class TeacherProfilesController < ApplicationController
 
     params_hash[:teaching_formats] = params[:teacher][:teaching_formats].present? ?
       Array(params[:teacher][:teaching_formats]).reject(&:blank?) : []
+
+    # Convertir career_status de la valeur string vers la clé d'enum
+    if params_hash[:career_status].present?
+      career_status_mapping = {
+        "certifié" => :certifie,
+        "agrégé" => :agrege,
+        "prof des écoles" => :prof_des_ecoles,
+        "autre" => :autre
+      }
+      mapped_value = career_status_mapping[params_hash[:career_status]]
+      params_hash[:career_status] = mapped_value if mapped_value
+    end
   end
 
   def teacher_params
@@ -234,7 +250,7 @@ class TeacherProfilesController < ApplicationController
       :email_pro, :email_perso, :phone,
       :profile_image_url, :profile_image_attached, :rgpd_consent, :picture_visible,
       :avatar,
-      subjects_tags: [], levels: [], exam_tags: [], pedagogy_tags: []
+      subjects_tags: [], levels: [], exam_tags: [], pedagogy_tags: [], teaching_formats: []
     )
   end
 end

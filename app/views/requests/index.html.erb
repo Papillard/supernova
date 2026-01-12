@@ -34,16 +34,9 @@
                   <%= format_request_status(request.status) %>
                 </span>
               </div>
-              <div class="flex items-center gap-2 text-xs text-gray-500">
-                <span><%= format_subject_tag(request.subject) %></span>
-                <span>•</span>
-                <span><%= format_request_level(request.level) %></span>
-                <% if request.student&.first_name.present? %>
-                  <span class="badge badge-xs bg-gray-100 text-gray-600 border-gray-200 ml-1">
-                    <%= request.student.first_name %>
-                  </span>
-                <% end %>
-              </div>
+              <p class="text-xs text-gray-500">
+                Pour <%= request.student&.first_name || "votre enfant" %> • <%= format_subject_tag(request.subject) %> • <%= format_request_level(request.level) %>
+              </p>
             </div>
           <% end %>
         <% end %>

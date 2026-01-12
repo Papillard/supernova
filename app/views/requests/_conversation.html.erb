@@ -13,20 +13,16 @@
               <%= teacher_short_name(request.teacher) %>
             <% end %>
           </h2>
-          <div class="flex items-center gap-2 text-sm text-gray-500 mt-1">
-            <span><%= format_subject_tag(request.subject) %></span>
-            <span>•</span>
-            <span><%= format_request_level(request.level) %></span>
-            <span>•</span>
-            <span><%= format_request_status(request.status) %></span>
-          </div>
+          <p class="text-sm text-gray-500 mt-1">
+            Pour <%= request.student&.first_name || "votre enfant" %> • <%= format_subject_tag(request.subject) %> / <%= format_request_level(request.level) %> • <%= format_request_status(request.status) %>
+          </p>
         </div>
-        <%= button_to request_path(request), method: :delete,
+        <%= button_to archive_request_path(request), method: :patch,
             class: "btn btn-ghost btn-sm text-gray-400 hover:text-gray-600 hover:bg-gray-50 flex-shrink-0",
-            data: { "turbo-confirm": "Êtes-vous sûr de vouloir supprimer cette demande ? Cette action est irréversible et supprimera tous les messages associés." },
-            title: "Supprimer la demande" do %>
+            data: { "turbo-confirm": "Êtes-vous sûr de vouloir archiver cette demande ?" },
+            title: "Archiver la demande" do %>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
           </svg>
         <% end %>
       </div>
@@ -42,8 +38,13 @@
     <!-- Formulaire de message (fixe en bas) -->
     <% if request.status == "accepted" || request.status == "pending" %>
       <div class="border-t border-gray-200 px-6 py-4 bg-white flex-shrink-0">
-        <%= form_with model: [request, Message.new], url: request_messages_path(request), local: false, data: { turbo_frame: "messages_frame_#{request.id}" }, id: "message-form-#{request.id}", class: "flex gap-3" do |f| %>
+        <%= form_with model: [request, Message.new], url: request_messages_path(request), local: false, data: { turbo_frame: "messages_frame_#{request.id}" }, id: "message-form-#{request.id}", class: "flex gap-3 items-end" do |f| %>
           <%= f.text_area :body, id: "message-body-#{request.id}", class: "flex-1 resize-none border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#fe6618] focus:border-transparent", placeholder: "Tapez votre message...", rows: 2, required: true %>
+          <button type="submit" class="btn bg-[#fe6618] hover:bg-[#e55a15] text-white border-none rounded-lg px-4 py-3 h-auto min-h-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </button>
         <% end %>
       </div>
     <% end %>

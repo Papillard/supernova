@@ -1,10 +1,11 @@
 class RequestsController < ApplicationController
   layout "authenticated"
   before_action :authenticate_user!
-  before_action :ensure_parent_role
+  before_action :set_request, only: [:show, :archive]
 
   def index
-    @requests = current_user.requests_as_parent.order(last_message_at: :desc)
+    authorize Request
+    @requests = policy_scope(Request).visible_to_parent.order(last_message_at: :desc)
 
     # Déterminer la request active
     if params[:id].present?
@@ -12,38 +13,32 @@ class RequestsController < ApplicationController
     else
       @active_request = @requests.first
     end
+
+    # Marquer la request active comme lue
+    @active_request&.mark_as_read_by_parent!
   end
 
   def show
+    authorize @request
     redirect_to requests_path(id: params[:id])
   end
 
-  def destroy
-    @request = current_user.requests_as_parent.find_by(id: params[:id])
+  def archive
+    authorize @request
 
-    if @request.nil?
-      redirect_to requests_path, alert: "Demande introuvable."
-      return
-    end
-
-    # Supprimer les email_events associés avant de supprimer la request
-    EmailEvent.where(request_id: @request.id).destroy_all
-
-    if @request.destroy
-      redirect_to requests_path, notice: "Demande supprimée avec succès."
+    if @request.update(archived_by_parent: true)
+      redirect_to requests_path, notice: "Demande archivée."
     else
-      redirect_to requests_path(id: @request.id), alert: "Erreur lors de la suppression de la demande."
+      redirect_to requests_path(id: @request.id), alert: "Erreur lors de l'archivage."
     end
   end
 
   def create
     @teacher = Teacher.find(params[:teacher_id])
 
-    # Vérifier que le teacher est approved et a rgpd_consent
-    unless @teacher.status == "approved" && @teacher.rgpd_consent
-      redirect_to teacher_path(@teacher), alert: "Ce professeur n'est pas disponible pour les demandes."
-      return
-    end
+    # Créer une request temporaire pour l'autorisation
+    @request = Request.new(teacher: @teacher, parent: current_user)
+    authorize @request
 
     # Vérifier que le parent a un profil
     parent_profile = current_user.parent_profile
@@ -200,13 +195,11 @@ class RequestsController < ApplicationController
 
   private
 
-  def request_params
-    params.require(:request).permit(:subject, :level, :request_text, :notes, :student_id, student_attributes: [:first_name, :birth_year])
+  def set_request
+    @request = Request.find(params[:id])
   end
 
-  def ensure_parent_role
-    unless current_user.parent?
-      redirect_to root_path, alert: "Accès réservé aux parents."
-    end
+  def request_params
+    params.require(:request).permit(:subject, :level, :request_text, :notes, :student_id, student_attributes: [:first_name, :birth_year])
   end
 end

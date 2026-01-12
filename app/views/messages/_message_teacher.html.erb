@@ -47,7 +47,7 @@
       <!-- Message -->
       <div class="flex-1 min-w-0">
         <div class="flex items-center gap-2 mb-1">
-          <span class="text-sm font-semibold text-gray-900">Parent</span>
+          <span class="text-sm font-semibold text-gray-900"><%= message.user.parent_profile&.first_name.presence || "Parent" %></span>
           <span class="text-xs text-gray-500"><%= message.created_at.strftime("%d/%m/%Y à %H:%M") %></span>
         </div>
         <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 inline-block max-w-[80%]">

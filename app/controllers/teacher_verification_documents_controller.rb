@@ -1,10 +1,10 @@
 class TeacherVerificationDocumentsController < ApplicationController
   layout "authenticated"
   before_action :authenticate_user!
-  before_action :ensure_teacher!
   before_action :set_teacher
 
   def create
+    authorize @teacher, policy_class: TeacherVerificationDocumentPolicy
     if params[:verification_documents].present?
       attached_count = 0
       errors = []
@@ -30,37 +30,15 @@ class TeacherVerificationDocumentsController < ApplicationController
 
       @teacher.reload
 
-      respond_to do |format|
-        if attached_count > 0
-          if errors.any?
-            flash.now[:alert] = "#{attached_count} document(s) ajouté(s). Erreurs : #{errors.join(', ')}"
-          else
-            flash.now[:notice] = "#{attached_count} document(s) ajouté(s) avec succès."
-          end
-          format.turbo_stream
-          format.html { redirect_to teacher_profile_path, notice: "#{attached_count} document(s) ajouté(s) avec succès." }
-        else
-          flash.now[:alert] = errors.any? ? errors.join(', ') : "Aucun document n'a pu être ajouté."
-          format.turbo_stream { render :create, status: :unprocessable_entity }
-          format.html { redirect_to teacher_profile_path, alert: errors.any? ? errors.join(', ') : "Aucun document n'a pu être ajouté." }
-        end
-      end
+      render :create
     else
-      respond_to do |format|
-        format.turbo_stream do
-          flash.now[:alert] = "Aucun document sélectionné."
-          render :create, status: :unprocessable_entity
-        end
-        format.html do
-          flash[:alert] = "Aucun document sélectionné."
-          redirect_to teacher_profile_path
-        end
-      end
+      render :create, status: :unprocessable_entity
     end
   end
 
   def destroy
     @document = @teacher.verification_documents.find_by_blob_id(params[:id])
+    authorize @document, policy_class: TeacherVerificationDocumentPolicy if @document
     if @document
       @document.purge
       @teacher.reload
@@ -87,12 +65,8 @@ class TeacherVerificationDocumentsController < ApplicationController
 
   private
 
-  def ensure_teacher!
-    redirect_to root_path unless current_user&.teacher?
-  end
-
   def set_teacher
-    @teacher = current_user.teacher
+    @teacher = current_user&.teacher
   end
 
   def valid_document_type?(document)

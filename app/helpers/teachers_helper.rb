@@ -64,6 +64,15 @@ module TeachersHelper
     ["Cambridge", "cambridge"]
   ].freeze
 
+  # Options de rayon de déplacement disponibles
+  RADIUS_OPTIONS = [
+    ["Moins de 1 km", "moins_de_1_km"],
+    ["2 à 5 km", "deux_a_5_km"],
+    ["5 à 10 km", "5_a_10_km"],
+    ["10 à 20 km", "10_a_20_km"],
+    ["Plus de 20 km", "plus_de_20_km"]
+  ].freeze
+
   # Tags pédagogie disponibles (par ordre d'importance)
   PEDAGOGY_TAGS_OPTIONS = [
     ["Aide aux devoirs", "aide_aux_devoirs"],
@@ -77,7 +86,10 @@ module TeachersHelper
     ["Haut potentiel", "haut_potentiel"],
     ["Confiance en soi", "confiance_en_soi"],
     ["Orientation", "orientation"],
-    ["Parcoursup", "parcoursup"]
+    ["Parcoursup", "parcoursup"],
+    ["FLE", "fle"],
+    ["Élèves TDAH", "eleves_tdah"],
+    ["Élèves à troubles DYS", "eleves_troubles_dys"]
   ].freeze
 
   # Helper pour obtenir les initiales d'un professeur
@@ -90,7 +102,7 @@ module TeachersHelper
   # Helper pour obtenir le nom d'affichage court (Prénom Initiale)
   def teacher_short_name(teacher)
     if teacher.first_name.present? && teacher.last_name.present?
-      "#{teacher.first_name} #{teacher.last_name[0].upcase}"
+      "#{teacher.first_name} #{teacher.last_name[0].upcase}."
     elsif teacher.first_name.present?
       teacher.first_name
     else

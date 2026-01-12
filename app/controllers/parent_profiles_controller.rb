@@ -1,20 +1,23 @@
 class ParentProfilesController < ApplicationController
   layout "authenticated"
   before_action :authenticate_user!
-  before_action :ensure_parent_role!
   before_action :set_parent_profile
 
   def show
-    # Display the profile form
+    authorize @parent_profile
   end
 
   def complete
     # Profile completion page - can be skipped
-    @parent_profile = current_user.parent_profile || current_user.build_parent_profile
+    @parent_profile = current_user.parent_profile || current_user.build_parent_profile(
+      first_name: current_user.first_name,
+      last_name: current_user.last_name
+    )
     @parent_profile.save! unless @parent_profile.persisted?
   end
 
   def update
+    authorize @parent_profile
     is_avatar_only = params[:avatar_only].present?
     params_hash = parent_profile_params.to_h
 
@@ -158,12 +161,11 @@ class ParentProfilesController < ApplicationController
 
   private
 
-  def ensure_parent_role!
-    redirect_to root_path, alert: "Accès réservé aux parents." unless current_user&.parent?
-  end
-
   def set_parent_profile
-    @parent_profile = current_user.parent_profile || current_user.build_parent_profile
+    @parent_profile = current_user.parent_profile || current_user.build_parent_profile(
+      first_name: current_user.first_name,
+      last_name: current_user.last_name
+    )
     @parent_profile.save! unless @parent_profile.persisted?
   end
 

@@ -1,12 +1,12 @@
 class StudentsController < ApplicationController
   layout "authenticated"
   before_action :authenticate_user!
-  before_action :ensure_parent_role!
   before_action :set_parent_profile
   before_action :set_student, only: [:destroy]
 
   def create
     @student = @parent_profile.students.build(student_params)
+    authorize @student
 
     respond_to do |format|
       if @student.save
@@ -30,16 +30,13 @@ class StudentsController < ApplicationController
   end
 
   def destroy
+    authorize @student
     @student.destroy
     flash[:notice] = "Enfant supprimé avec succès."
     redirect_to parent_profile_path
   end
 
   private
-
-  def ensure_parent_role!
-    redirect_to root_path, alert: "Accès réservé aux parents." unless current_user&.parent?
-  end
 
   def set_parent_profile
     @parent_profile = current_user.parent_profile

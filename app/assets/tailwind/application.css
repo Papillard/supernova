@@ -139,4 +139,21 @@
     transform: translateY(0);
   }
 
+  /* Profile form tabs */
+  .profile-tab {
+    color: #6b7280;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+  }
+
+  .profile-tab:hover {
+    color: #374151;
+  }
+
+  .profile-tab.tab-active {
+    color: #fe6618;
+    border-bottom-color: #fe6618;
+    font-weight: 600;
+  }
+
 }

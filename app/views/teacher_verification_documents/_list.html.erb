@@ -1,3 +1,4 @@
+<div id="verification-documents-list" class="mb-4">
 <% if teacher.verification_documents.attached? %>
   <div class="space-y-3">
     <% teacher.verification_documents.each do |document| %>
@@ -59,3 +60,4 @@
 <% else %>
   <p class="text-sm text-gray-500">Aucun document ajouté.</p>
 <% end %>
+</div>

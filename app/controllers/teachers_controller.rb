@@ -2,8 +2,7 @@ class TeachersController < ApplicationController
   layout "authenticated" if -> { user_signed_in? }
 
   def index
-    # Affiche uniquement les professeurs approuvés avec consentement RGPD
-    @teachers = Teacher.public_visible
+    @teachers = policy_scope(Teacher)
 
     # Filtre par niveau
     if params[:level].present?
@@ -29,8 +28,8 @@ class TeachersController < ApplicationController
   end
 
   def show
-    # Affiche uniquement les professeurs approuvés avec consentement RGPD
-    @teacher = Teacher.public_visible.find(params[:id])
+    @teacher = Teacher.find(params[:id])
+    authorize @teacher
   rescue ActiveRecord::RecordNotFound
     redirect_to teachers_path, alert: "Professeur non trouvé ou non disponible."
   end

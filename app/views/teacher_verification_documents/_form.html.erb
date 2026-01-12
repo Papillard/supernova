@@ -1,23 +1,10 @@
-<%= form_with url: teacher_verification_documents_path, method: :post, local: false, multipart: true, data: { turbo: true, verification_documents_target: "form" }, class: "space-y-4" do |f| %>
-  <div class="form-control">
-    <%= f.label :verification_documents, "Ajouter des pièces justificatives", class: "label" do %>
-      <span class="label-text">Pièces justificatives</span>
-    <% end %>
-    <%= file_field_tag "verification_documents[]",
-        multiple: true,
-        accept: "image/*,.pdf",
-        class: "file-input file-input-bordered w-full",
-        data: { verification_documents_target: "input" } %>
-    <label class="label">
-      <span class="label-text-alt text-gray-500">Formats acceptés : Images (JPEG, PNG) et PDF</span>
-    </label>
-  </div>
-
-  <div data-verification-documents-target="preview" class="space-y-2"></div>
-
-  <div id="verification-documents-loading" class="hidden text-sm text-gray-500 text-center" data-verification-documents-target="loadingIndicator">
-    Upload en cours...
-  </div>
+<%= form_with url: teacher_verification_documents_path, method: :post, multipart: true, data: { turbo_frame: "verification-documents" } do |f| %>
+  <%= file_field_tag "verification_documents[]",
+      multiple: true,
+      accept: "image/*,.pdf",
+      class: "file-input file-input-bordered w-full",
+      onchange: "this.form.requestSubmit()" %>
+  <label class="label">
+    <span class="label-text-alt text-gray-500">Formats acceptés : Images (JPEG, PNG) et PDF</span>
+  </label>
 <% end %>
-
-

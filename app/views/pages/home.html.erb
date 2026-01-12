@@ -24,9 +24,8 @@
           <% end %>
         </div>
         <div class="flex-none gap-6 items-center hidden lg:flex">
-          <%= link_to "Parents", "/parents", class: "text-sm font-medium text-gray-600 hover:text-gray-900" %>
-          <%= link_to "Professeurs", "/profs", class: "text-sm font-medium text-gray-600 hover:text-gray-900" %>
-          <%= link_to "FAQ", "/faq", class: "text-sm font-medium text-gray-600 hover:text-gray-900" %>
+          <%= link_to "Pourquoi ProfConnect ?", "#pourquoi", class: "text-sm font-medium text-gray-600 hover:text-gray-900" %>
+          <%= link_to "FAQ", "#faq", class: "text-sm font-medium text-gray-600 hover:text-gray-900" %>
         </div>
         <div class="flex-none lg:hidden">
           <div class="dropdown dropdown-end">
@@ -36,9 +35,8 @@
               </svg>
             </label>
             <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-10 p-4 shadow bg-white rounded-box w-56 space-y-2">
-              <li><%= link_to "Parents", "/parents", class: "text-sm text-gray-700 hover:text-[#fe6618]" %></li>
-              <li><%= link_to "Professeurs", "/profs", class: "text-sm text-gray-700 hover:text-[#fe6618]" %></li>
-              <li><%= link_to "FAQ", "/faq", class: "text-sm text-gray-700 hover:text-[#fe6618]" %></li>
+              <li><%= link_to "Pourquoi ProfConnect ?", "#pourquoi", class: "text-sm text-gray-700 hover:text-[#fe6618]" %></li>
+              <li><%= link_to "FAQ", "#faq", class: "text-sm text-gray-700 hover:text-[#fe6618]" %></li>
             </ul>
           </div>
         </div>
@@ -108,42 +106,42 @@
     </section>
 
     <!-- Pourquoi ProfConnect -->
-    <section class="py-20 md:py-24 bg-white">
+    <section id="pourquoi" class="py-20 md:py-24 bg-white">
       <div class="container mx-auto max-w-6xl px-6 space-y-10">
         <div class="max-w-3xl space-y-3">
           <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Pourquoi choisir ProfConnect ?</h2>
           <p class="text-gray-600 leading-relaxed">Nous sélectionnons des professeurs de métier, pour des progrès réels et durables.</p>
         </div>
         <div class="grid gap-6 md:grid-cols-3">
-          <div class="card bg-white border border-stone-200 shadow-sm hover:bg-gray-50 hover:shadow-sm transition ">
+          <div class="card bg-white border border-[#fe6618]/30 shadow-sm hover:bg-gray-50 hover:shadow-sm transition">
             <div class="card-body space-y-3">
               <div class="flex items-center gap-3">
-                <div class="flex-shrink-0 w-8 h-8 rounded-full border-2 border-green-600 bg-transparent flex items-center justify-center">
-                  <%= heroicon_tag 'check', variant: :outline, class: "w-5 h-5 text-green-600", "stroke-width": 2.5 %>
+                <div class="flex-shrink-0 w-8 h-8 rounded-full border-2 border-[#fe6618] bg-transparent flex items-center justify-center">
+                  <%= heroicon_tag 'check', variant: :outline, class: "w-5 h-5 text-[#fe6618]", "stroke-width": 2.5 %>
                 </div>
-                <h3 class="text-xl font-semibold text-gray-900">Professeurs diplômés de l'Éducation Nationale, tous certifiés ou agrégés</h3>
+                <h3 class="text-lg font-semibold text-gray-900">Professeurs diplômés de l'Éducation Nationale, tous certifiés ou agrégés</h3>
               </div>
               <p class="text-gray-600 leading-relaxed">100% des enseignants de la plateforme sont titulaires ou retraités de l'Éducation Nationale et maîtrisent les programmes pour lesquels ils proposent leurs enseignements.</p>
             </div>
           </div>
-          <div class="card bg-white border border-stone-200 shadow-sm hover:bg-gray-50 hover:shadow-sm transition ">
+          <div class="card bg-white border border-[#fe6618]/30 shadow-sm hover:bg-gray-50 hover:shadow-sm transition">
             <div class="card-body space-y-3">
               <div class="flex items-center gap-3">
-                <div class="flex-shrink-0 w-8 h-8 rounded-full border-2 border-green-600 bg-transparent flex items-center justify-center">
-                  <%= heroicon_tag 'check', variant: :outline, class: "w-5 h-5 text-green-600", "stroke-width": 2.5 %>
+                <div class="flex-shrink-0 w-8 h-8 rounded-full border-2 border-[#fe6618] bg-transparent flex items-center justify-center">
+                  <%= heroicon_tag 'check', variant: :outline, class: "w-5 h-5 text-[#fe6618]", "stroke-width": 2.5 %>
                 </div>
-                <h3 class="text-xl font-semibold text-gray-900">Préparation des examens et des grandes étapes de la scolarité</h3>
+                <h3 class="text-lg font-semibold text-gray-900">Préparation des examens et des grandes étapes de la scolarité</h3>
               </div>
               <p class="text-gray-600 leading-relaxed">Brevet, Baccalauréat, Parcoursup : des professeurs qui maîtrisent les programmes, les méthodes et les épreuves.</p>
             </div>
           </div>
-          <div class="card bg-white border border-stone-200 shadow-sm hover:bg-gray-50 hover:shadow-sm transition ">
+          <div class="card bg-white border border-[#fe6618]/30 shadow-sm hover:bg-gray-50 hover:shadow-sm transition">
             <div class="card-body space-y-3">
               <div class="flex items-center gap-3">
-                <div class="flex-shrink-0 w-8 h-8 rounded-full border-2 border-green-600 bg-transparent flex items-center justify-center">
-                  <%= heroicon_tag 'check', variant: :outline, class: "w-5 h-5 text-green-600", "stroke-width": 2.5 %>
+                <div class="flex-shrink-0 w-8 h-8 rounded-full border-2 border-[#fe6618] bg-transparent flex items-center justify-center">
+                  <%= heroicon_tag 'check', variant: :outline, class: "w-5 h-5 text-[#fe6618]", "stroke-width": 2.5 %>
                 </div>
-                <h3 class="text-xl font-semibold text-gray-900">Suivi personnalisé et pédagogie adaptée</h3>
+                <h3 class="text-lg font-semibold text-gray-900">Suivi personnalisé et pédagogie adaptée</h3>
               </div>
               <p class="text-gray-600 leading-relaxed">Chaque élève bénéficie d'un accompagnement sur mesure pour favoriser sa réussite selon son profil et ses besoins.</p>
             </div>
@@ -177,9 +175,10 @@
           <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Nos professeurs, tous issus de l'Éducation Nationale.</h2>
           <p class="text-gray-600 leading-relaxed">Une sélection d’enseignants disponibles pour accompagner votre enfant.</p>
           <div class="flex flex-wrap justify-center md:justify-start gap-4 text-sm">
-            <% ["Maths", "Français", "Physique", "Histoire-Géo"].each do |filter| %>
-              <%= link_to filter, "/teachers", class: "text-[#fe6618] hover:underline" %>
-            <% end %>
+            <%= link_to "Maths", teachers_path(subject: "mathematiques"), class: "text-[#fe6618] hover:underline" %>
+            <%= link_to "Français", teachers_path(subject: "francais"), class: "text-[#fe6618] hover:underline" %>
+            <%= link_to "Physique", teachers_path(subject: "physique-chimie"), class: "text-[#fe6618] hover:underline" %>
+            <%= link_to "Histoire-Géo", teachers_path(subject: "histoire-geographie"), class: "text-[#fe6618] hover:underline" %>
           </div>
         </div>
         <div class="grid gap-6 md:grid-cols-3">
@@ -206,6 +205,9 @@
               </div>
             </div>
           <% end %>
+        </div>
+        <div class="text-center pt-4">
+          <%= link_to "Découvrir tous les professeurs", teachers_path, class: "btn bg-[#fe6618] hover:bg-[#e55a15] text-white border-none rounded-lg px-8 py-3" %>
         </div>
       </div>
     </section>
@@ -367,7 +369,7 @@
     </section>
 
     <!-- FAQ -->
-    <section class="py-20 md:py-24 bg-gradient-to-b from-[#fff9f5] to-white">
+    <section id="faq" class="py-20 md:py-24 bg-gradient-to-b from-[#fff9f5] to-white">
       <div class="container mx-auto max-w-6xl px-6 space-y-10">
         <div class="max-w-3xl space-y-3">
           <span class="inline-flex items-center rounded-full border border-stone-200 bg-[#fff9f5] px-4 py-1 text-sm font-medium text-gray-600">Questions fréquentes</span>
@@ -458,9 +460,8 @@
     <div class="max-w-6xl mx-auto px-4 md:px-6 py-10 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
       <div class="text-lg font-semibold text-[#fe6618]">ProfConnect</div>
       <div class="flex flex-wrap gap-4 text-sm text-gray-600">
-        <%= link_to "Parents", "/parents", class: "hover:text-[#fe6618]" %>
-        <%= link_to "Professeurs", "/profs", class: "hover:text-[#fe6618]" %>
-        <%= link_to "FAQ", "/faq", class: "hover:text-[#fe6618]" %>
+        <%= link_to "Pourquoi ProfConnect ?", "#pourquoi", class: "hover:text-[#fe6618]" %>
+        <%= link_to "FAQ", "#faq", class: "hover:text-[#fe6618]" %>
         <a href="mailto:contact@prof-connect.fr" class="hover:text-[#fe6618]">contact@prof-connect.fr</a>
       </div>
     </div>

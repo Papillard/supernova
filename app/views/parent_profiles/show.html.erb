@@ -2,160 +2,171 @@
 
 <div class="container mx-auto max-w-4xl px-4 py-8">
   <div class="space-y-6">
-    <h1 class="text-3xl font-bold text-gray-900">Mon profil</h1>
+    <h1 class="text-xl font-bold text-gray-900">Mon profil</h1>
 
-    <!-- Tout dans une seule card -->
-    <div class="card bg-white shadow-sm">
-      <div class="card-body space-y-8">
-        <!-- Photo de profil (formulaire séparé) -->
-        <div data-controller="avatar-upload">
-          <h2 class="text-xl font-semibold mb-4">Photo de profil (facultatif)</h2>
-          <div class="flex items-start gap-6">
-            <div class="flex-shrink-0" id="parent-avatar-container">
-              <%= render "shared/parent_avatar", parent_profile: @parent_profile, size: :large %>
-              <div id="avatar-upload-loading" class="hidden mt-2 text-sm text-gray-500 text-center" data-avatar-upload-target="loadingIndicator">
-                Upload en cours...
+    <!-- Onglets -->
+    <div data-controller="tabs" data-tabs-active-value="<%= params[:tab] || 'infos' %>">
+      <div class="flex border-b border-gray-200 mb-6">
+        <a data-tabs-target="tab" data-tab-id="infos" data-action="click->tabs#switch" class="profile-tab tab-active px-4 py-3 text-sm font-medium cursor-pointer transition-colors">Mes infos</a>
+        <a data-tabs-target="tab" data-tab-id="enfants" data-action="click->tabs#switch" class="profile-tab px-4 py-3 text-sm font-medium cursor-pointer transition-colors">Mes enfants</a>
+      </div>
+
+      <!-- Onglet 1: Mes infos -->
+      <div data-tabs-target="panel" data-panel-id="infos" class="space-y-6">
+        <div class="card bg-white shadow-sm">
+          <div class="card-body space-y-8">
+            <!-- Photo de profil (formulaire séparé) -->
+            <div data-controller="avatar-upload">
+              <h2 class="text-xl font-semibold mb-4">Mes informations</h2>
+              <div class="flex items-start gap-6">
+                <div class="flex-shrink-0" id="parent-avatar-container">
+                  <%= render "shared/parent_avatar", parent_profile: @parent_profile, size: :large %>
+                  <div id="avatar-upload-loading" class="hidden mt-2 text-sm text-gray-500 text-center" data-avatar-upload-target="loadingIndicator">
+                    Upload en cours...
+                  </div>
+                </div>
+                <div class="flex-1">
+                  <!-- Formulaire séparé pour l'upload d'avatar -->
+                  <%= form_with model: @parent_profile, url: parent_profile_path, method: :patch, local: false, multipart: true, data: { turbo: true, avatar_upload_target: "form" }, id: "avatar-upload-form" do |avatar_form| %>
+                    <div class="form-control">
+                      <%= avatar_form.label :avatar, "Changer la photo", class: "label" do %>
+                        <span class="label-text">Photo de profil (facultatif)</span>
+                      <% end %>
+                      <%= avatar_form.file_field :avatar,
+                          accept: "image/jpeg,image/jpg,image/png",
+                          class: "file-input file-input-bordered w-full",
+                          data: { avatar_upload_target: "input" } %>
+                    </div>
+                    <!-- Champ caché pour indiquer que c'est un upload d'avatar -->
+                    <%= hidden_field_tag "avatar_only", "1" %>
+                  <% end %>
+                </div>
               </div>
             </div>
-            <div class="flex-1">
-              <!-- Formulaire séparé pour l'upload d'avatar -->
-              <%= form_with model: @parent_profile, url: parent_profile_path, method: :patch, local: false, multipart: true, data: { turbo: true, avatar_upload_target: "form" }, id: "avatar-upload-form" do |avatar_form| %>
+
+            <!-- Informations personnelles -->
+            <%= form_with model: @parent_profile, url: parent_profile_path, method: :patch, local: false, multipart: true, data: { turbo: true }, id: "parent-info-form", class: "space-y-4" do |f| %>
+              <!-- Messages flash (discret) -->
+              <div id="parent-profile-flash-messages" class="text-sm">
+                <!-- Messages affichés via turbo stream -->
+              </div>
+              <div class="space-y-4">
                 <div class="form-control">
-                  <%= avatar_form.label :avatar, "Changer la photo", class: "label" do %>
-                    <span class="label-text">Photo de profil</span>
+                  <%= label_tag "user_email", "Email *", class: "label" do %>
+                    <span class="label-text">Email *</span>
                   <% end %>
-                  <%= avatar_form.file_field :avatar,
-                      accept: "image/jpeg,image/jpg,image/png",
-                      class: "file-input file-input-bordered w-full",
-                      data: { avatar_upload_target: "input" } %>
-                  <label class="label">
-                    <span class="label-text-alt text-gray-500">Formats acceptés : JPEG, PNG</span>
-                  </label>
+                  <%= email_field_tag "user[email]", current_user.email, class: "input input-bordered w-full", required: true, placeholder: "votre@email.com" %>
                 </div>
-                <!-- Champ caché pour indiquer que c'est un upload d'avatar -->
-                <%= hidden_field_tag "avatar_only", "1" %>
-              <% end %>
-            </div>
+                <div class="grid gap-4 md:grid-cols-2">
+                  <div class="form-control">
+                    <%= f.label :first_name, class: "label" do %>
+                      <span class="label-text">Prénom *</span>
+                    <% end %>
+                    <%= f.text_field :first_name, class: "input input-bordered w-full", required: true, placeholder: "Prénom" %>
+                  </div>
+                  <div class="form-control">
+                    <%= f.label :last_name, class: "label" do %>
+                      <span class="label-text">Nom *</span>
+                    <% end %>
+                    <%= f.text_field :last_name, class: "input input-bordered w-full", required: true, placeholder: "Nom" %>
+                  </div>
+                </div>
+                <div class="form-control">
+                  <%= f.label :phone, class: "label" do %>
+                    <span class="label-text">Numéro de téléphone</span>
+                  <% end %>
+                  <%= f.text_field :phone, class: "input input-bordered w-full", placeholder: "06 12 34 56 78" %>
+                </div>
+
+                <div class="grid gap-4 md:grid-cols-3" data-controller="google-places-autocomplete">
+                  <div class="form-control md:col-span-3">
+                    <%= f.label :address, class: "label" do %>
+                      <span class="label-text">Adresse</span>
+                    <% end %>
+                    <%= f.text_field :address, class: "input input-bordered w-full", placeholder: "123 rue de la République", data: { google_places_autocomplete_target: "address" } %>
+                  </div>
+                  <div class="form-control">
+                    <%= f.label :zip_code, class: "label" do %>
+                      <span class="label-text">Code postal</span>
+                    <% end %>
+                    <%= f.text_field :zip_code, class: "input input-bordered w-full", placeholder: "75014", data: { google_places_autocomplete_target: "zipCode" } %>
+                  </div>
+                  <div class="form-control">
+                    <%= f.label :city, class: "label" do %>
+                      <span class="label-text">Ville</span>
+                    <% end %>
+                    <%= f.text_field :city, class: "input input-bordered w-full", placeholder: "Paris", data: { google_places_autocomplete_target: "city" } %>
+                  </div>
+                </div>
+              </div>
+              <!-- Bouton unique à la fin -->
+              <div class="flex justify-end pt-4">
+                <%= f.submit "Enregistrer", class: "btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white" %>
+              </div>
+            <% end %>
           </div>
         </div>
+      </div>
 
-        <!-- Informations personnelles -->
-        <%= form_with model: @parent_profile, url: parent_profile_path, method: :patch, local: false, multipart: true, data: { turbo: true }, class: "space-y-8" do |f| %>
-          <div>
-            <h2 class="text-xl font-semibold mb-4">Informations personnelles</h2>
-            <!-- Messages flash (discret) -->
-            <div id="parent-profile-flash-messages" class="text-sm mb-4">
-              <!-- Messages affichés via turbo stream -->
+      <!-- Onglet 2: Mes enfants -->
+      <div data-tabs-target="panel" data-panel-id="enfants" class="hidden space-y-6">
+        <div class="card bg-white shadow-sm">
+          <div class="card-body">
+            <h2 class="text-xl font-semibold mb-4">Mes enfants</h2>
+
+            <!-- Liste des enfants -->
+            <div id="students-list" class="space-y-3 mb-6">
+              <% if @parent_profile.students.any? %>
+                <% @parent_profile.students.each do |student| %>
+                  <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg" id="student-<%= student.id %>">
+                    <div>
+                      <p class="font-semibold"><%= student.first_name %></p>
+                      <p class="text-sm text-gray-600">
+                        Né(e) en <%= student.birth_year %>
+                        <% if student.age %>
+                          (<%= student.age %> ans)
+                        <% end %>
+                      </p>
+                    </div>
+                    <%= button_to student_path(student), method: :delete, class: "btn btn-ghost btn-sm text-red-600", data: { confirm: "Êtes-vous sûr de vouloir supprimer cet enfant ?" } do %>
+                      Supprimer
+                    <% end %>
+                  </div>
+                <% end %>
+              <% else %>
+                <p class="text-gray-500 text-sm">Aucun enfant ajouté pour le moment.</p>
+              <% end %>
             </div>
-            <div class="space-y-4">
-                  <div class="form-control">
-                    <%= label_tag "user_email", "Email *", class: "label" do %>
-                      <span class="label-text">Email *</span>
-                    <% end %>
-                    <%= email_field_tag "user[email]", current_user.email, class: "input input-bordered w-full", required: true, placeholder: "votre@email.com" %>
-                  </div>
-                  <div class="grid gap-4 md:grid-cols-2">
-                    <div class="form-control">
-                      <%= f.label :first_name, class: "label" do %>
-                        <span class="label-text">Prénom *</span>
-                      <% end %>
-                      <%= f.text_field :first_name, class: "input input-bordered w-full", required: true, placeholder: "Prénom" %>
-                    </div>
-                    <div class="form-control">
-                      <%= f.label :last_name, class: "label" do %>
-                        <span class="label-text">Nom *</span>
-                      <% end %>
-                      <%= f.text_field :last_name, class: "input input-bordered w-full", required: true, placeholder: "Nom" %>
-                    </div>
-                  </div>
-                  <div class="form-control">
-                    <%= f.label :phone, class: "label" do %>
-                      <span class="label-text">Numéro de téléphone</span>
-                    <% end %>
-                    <%= f.text_field :phone, class: "input input-bordered w-full", placeholder: "06 12 34 56 78" %>
-                  </div>
 
-              <div class="grid gap-4 md:grid-cols-3" data-controller="google-places-autocomplete">
-                <div class="form-control md:col-span-3">
-                  <%= f.label :address, class: "label" do %>
-                    <span class="label-text">Adresse</span>
+            <!-- Formulaire d'ajout d'enfant -->
+            <div id="student-form" class="pt-4 border-t border-gray-200">
+              <p class="text-sm text-gray-600 mb-4">Ajouter un enfant</p>
+              <%= form_with model: [@parent_profile, @parent_profile.students.build], url: students_path, local: false, data: { turbo: true }, class: "grid gap-4 md:grid-cols-3 items-end" do |student_form| %>
+                <div class="form-control">
+                  <%= student_form.label :first_name, class: "label" do %>
+                    <span class="label-text">Prénom</span>
                   <% end %>
-                  <%= f.text_field :address, class: "input input-bordered w-full", placeholder: "123 rue de la République", data: { google_places_autocomplete_target: "address" } %>
+                  <%= student_form.text_field :first_name,
+                      class: "input input-bordered w-full",
+                      required: true,
+                      placeholder: "Prénom" %>
                 </div>
                 <div class="form-control">
-                  <%= f.label :zip_code, class: "label" do %>
-                    <span class="label-text">Code postal</span>
+                  <%= student_form.label :birth_year, class: "label" do %>
+                    <span class="label-text">Année de naissance</span>
                   <% end %>
-                  <%= f.text_field :zip_code, class: "input input-bordered w-full", placeholder: "75014", data: { google_places_autocomplete_target: "zipCode" } %>
+                  <%= student_form.number_field :birth_year,
+                      class: "input input-bordered w-full",
+                      min: 1900,
+                      max: Date.current.year,
+                      required: true,
+                      placeholder: Date.current.year.to_s %>
                 </div>
                 <div class="form-control">
-                  <%= f.label :city, class: "label" do %>
-                    <span class="label-text">Ville</span>
-                  <% end %>
-                  <%= f.text_field :city, class: "input input-bordered w-full", placeholder: "Paris", data: { google_places_autocomplete_target: "city" } %>
-                </div>
-              </div>
-            </div>
-            <!-- Bouton unique à la fin -->
-            <div class="flex justify-end pt-4">
-              <%= f.submit "Enregistrer mes infos", class: "btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white" %>
-            </div>
-          </div>
-        <% end %>
-
-        <!-- Section Enfants (formulaire séparé) -->
-        <div>
-          <h2 class="text-xl font-semibold mb-4">Mes enfants *</h2>
-
-          <!-- Liste des enfants -->
-          <div id="students-list" class="space-y-3 mb-6">
-            <% if @parent_profile.students.any? %>
-              <% @parent_profile.students.each do |student| %>
-                <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg" id="student-<%= student.id %>">
-                  <div>
-                    <p class="font-semibold"><%= student.first_name %></p>
-                    <p class="text-sm text-gray-600">
-                      Né(e) en <%= student.birth_year %>
-                      <% if student.age %>
-                        (<%= student.age %> ans)
-                      <% end %>
-                    </p>
-                  </div>
-                  <%= button_to student_path(student), method: :delete, class: "btn btn-ghost btn-sm text-red-600", data: { confirm: "Êtes-vous sûr de vouloir supprimer cet enfant ?" } do %>
-                    Supprimer
-                  <% end %>
+                  <%= student_form.submit "Ajouter un enfant", class: "btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white w-full" %>
                 </div>
               <% end %>
-            <% end %>
-          </div>
-
-          <!-- Formulaire d'ajout d'enfant (séparé, inline) -->
-          <div id="student-form" class="pt-4">
-            <%= form_with model: [@parent_profile, @parent_profile.students.build], url: students_path, local: false, data: { turbo: true }, class: "grid gap-4 md:grid-cols-3 items-end" do |student_form| %>
-              <div class="form-control">
-                <%= student_form.label :first_name, class: "label" do %>
-                  <span class="label-text">Prénom</span>
-                <% end %>
-                <%= student_form.text_field :first_name,
-                    class: "input input-bordered w-full",
-                    required: true,
-                    placeholder: "Prénom" %>
-              </div>
-              <div class="form-control">
-                <%= student_form.label :birth_year, class: "label" do %>
-                  <span class="label-text">Année de naissance</span>
-                <% end %>
-                <%= student_form.number_field :birth_year,
-                    class: "input input-bordered w-full",
-                    min: 1900,
-                    max: Date.current.year,
-                    required: true,
-                    placeholder: Date.current.year.to_s %>
-              </div>
-              <div class="form-control">
-                <%= student_form.submit "Ajouter un enfant", class: "btn border-[#fe6618] text-[#fe6618] hover:bg-[#fe6618] hover:text-white w-full" %>
-              </div>
-            <% end %>
+            </div>
           </div>
         </div>
       </div>

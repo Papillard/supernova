@@ -20,6 +20,25 @@ class User < ApplicationRecord
   # Callbacks
   after_create_commit :send_welcome_email
 
+  def admin?
+    admin
+  end
+
+  # Compteur de requests non lues pour la pastille navbar
+  def unread_requests_count
+    if parent?
+      requests_as_parent.unread_for_parent.count
+    elsif teacher?
+      teacher&.requests&.unread_for_teacher&.count || 0
+    else
+      0
+    end
+  end
+
+  def has_unread_requests?
+    unread_requests_count > 0
+  end
+
   private
 
   def send_welcome_email
