@@ -34,12 +34,13 @@
             </span>
           <% end %>
           <%= button_to archive_teacher_request_path(request), method: :patch,
-              class: "btn btn-ghost btn-sm text-gray-400 hover:text-gray-600 hover:bg-gray-50 ml-2",
+              class: "btn btn-ghost btn-sm text-gray-400 hover:text-gray-600 hover:bg-gray-50 ml-2 gap-1",
               data: { "turbo-confirm": "Êtes-vous sûr de vouloir archiver cette demande ?" },
               title: "Archiver la demande" do %>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
             </svg>
+            <span class="text-sm">Archiver</span>
           <% end %>
         </div>
       </div>
@@ -55,9 +56,9 @@
     <!-- Formulaire de message (fixe en bas) -->
     <% if request.status == "accepted" || request.status == "pending" %>
       <div class="border-t border-gray-200 px-6 py-4 bg-white flex-shrink-0">
-        <%= form_with model: [request, Message.new], url: teacher_request_messages_path(request), local: false, data: { turbo_frame: "messages_frame_#{request.id}" }, id: "message-form-#{request.id}", class: "flex gap-3 items-end" do |f| %>
-          <%= f.text_area :body, id: "message-body-#{request.id}", class: "flex-1 resize-none border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#fe6618] focus:border-transparent", placeholder: "Tapez votre message...", rows: 2, required: true %>
-          <button type="submit" class="btn bg-[#fe6618] hover:bg-[#e55a15] text-white border-none rounded-lg px-4 py-3 h-auto min-h-0">
+        <%= form_with model: [request, Message.new], url: teacher_request_messages_path(request), local: false, data: { turbo_frame: "messages_frame_#{request.id}" }, id: "message-form-#{request.id}", class: "flex gap-3 items-center" do |f| %>
+          <%= f.text_area :body, id: "message-body-#{request.id}", class: "flex-1 resize-none border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#fe6618] focus:border-transparent", placeholder: "Tapez votre message...", rows: 1, required: true, style: "min-height: 2.5rem; max-height: 120px;" %>
+          <button type="submit" class="btn bg-[#fe6618] hover:bg-[#e55a15] text-white border-none rounded-lg px-4 py-2 h-10 min-h-0 flex-shrink-0">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>

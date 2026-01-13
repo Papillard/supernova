@@ -156,4 +156,64 @@
     font-weight: 600;
   }
 
+  /* Step number styling for profile tabs */
+  .profile-tab .step-number {
+    font-size: 0.7rem;
+  }
+
+  .profile-tab.tab-active .step-number {
+    border-color: #fe6618;
+    color: #fe6618;
+  }
+
+  /* Safe area padding for iPhone X+ */
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+
+  /* Fix file input overflow on mobile */
+  .file-input {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Ensure form controls don't overflow their container */
+  .form-control {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  /* Hide home bottom nav initially on home page */
+  .home-bottom-nav-hidden {
+    opacity: 0;
+    transform: translateY(100%);
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  /* Fix checkbox label text wrapping on mobile */
+  .label {
+    flex-wrap: wrap !important;
+    white-space: normal !important;
+  }
+
+  .label .label-text {
+    flex: 1 1 0% !important;
+    min-width: 0 !important;
+    word-wrap: break-word !important;
+    white-space: normal !important;
+    overflow-wrap: break-word !important;
+  }
+
+  /* Checkbox label specific fix */
+  .form-control .label.cursor-pointer {
+    display: flex !important;
+    align-items: flex-start !important;
+  }
+
+  .form-control .label.cursor-pointer .label-text {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+  }
 }

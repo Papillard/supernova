@@ -1,147 +1,129 @@
-<div class="container mx-auto max-w-7xl px-4 py-8">
-  <%= link_to "← Retour à mes demandes", requests_path, class: "link link-primary mb-6 inline-block" %>
+<% content_for :main_background, "background-color: #ffffff;" %>
+<% content_for :hide_mobile_nav do %><% end %>
 
-  <div class="flex gap-6 h-[calc(100vh-12rem)]">
-    <!-- Colonne gauche (60%) - Chat -->
-    <div class="flex-1 flex flex-col min-w-0" style="flex: 0 0 60%;">
-      <div class="card bg-white shadow-lg flex-1 flex flex-col min-h-0">
-        <div class="card-body flex-1 flex flex-col min-h-0 p-0">
-          <!-- Header du chat -->
-          <div class="border-b border-gray-200 px-6 py-4">
-            <h2 class="text-xl font-bold text-gray-900">Messages</h2>
-          </div>
+<% messages = @request.messages.order(created_at: :asc) %>
 
-          <!-- Zone de messages (scrollable) -->
-          <div class="flex-1 overflow-y-auto px-6 py-6 space-y-6">
-            <% @messages.each do |message| %>
-              <% if message.system || message.user.teacher? %>
-                <!-- Messages système ou du prof (à gauche) -->
-                <div class="flex items-start gap-3">
-                  <!-- Avatar -->
-                  <div class="flex-shrink-0">
-                    <% if message.system %>
-                      <div class="rounded-full overflow-hidden flex-shrink-0 bg-gray-300 flex items-center justify-center w-10 h-10">
-                        <div class="flex items-center justify-center text-gray-600 font-semibold text-xs w-10 h-10 bg-gray-300">
-                          PC
-                        </div>
-                      </div>
-                    <% else %>
-                      <%= render "shared/teacher_avatar", teacher: message.user.teacher, size: :small, for_parent: true %>
-                    <% end %>
-                  </div>
-                  <!-- Message -->
-                  <div class="flex-1 min-w-0">
-                    <div class="flex items-center gap-2 mb-1">
-                      <span class="text-sm font-semibold text-gray-900">
-                        <% if message.system %>
-                          ProfConnect
-                        <% else %>
-                          <% if @request.status == "accepted" %>
-                            <%= "#{message.user.teacher.first_name} #{message.user.teacher.last_name}" %>
-                          <% else %>
-                            <%= teacher_short_name(message.user.teacher) %>
-                          <% end %>
-                        <% end %>
-                      </span>
-                      <span class="text-xs text-gray-500"><%= message.created_at.strftime("%d/%m/%Y à %H:%M") %></span>
-                    </div>
-                    <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 inline-block max-w-[80%]">
-                      <p class="text-gray-900 whitespace-pre-line text-sm leading-relaxed"><%= message.body %></p>
-                    </div>
-                  </div>
-                </div>
-              <% else %>
-                <!-- Messages du parent (à droite) -->
-                <div class="flex items-start gap-3 justify-end">
-                  <!-- Message -->
-                  <div class="flex-1 min-w-0 flex flex-col items-end">
-                    <div class="flex items-center gap-2 mb-1">
-                      <span class="text-xs text-gray-500"><%= message.created_at.strftime("%d/%m/%Y à %H:%M") %></span>
-                      <span class="text-sm font-semibold text-gray-900">Vous</span>
-                    </div>
-                    <div class="rounded-2xl rounded-tr-sm px-4 py-3 inline-block max-w-[80%]" style="background-color: #3F3F3F;">
-                      <p class="text-white whitespace-pre-line text-sm leading-relaxed"><%= message.body %></p>
-                    </div>
-                  </div>
-                  <!-- Avatar -->
-                  <div class="flex-shrink-0 rounded-full overflow-hidden" style="width: 32px; height: 32px; background-color: #e5e7eb;">
-                    <div class="flex items-center justify-center text-gray-600 font-semibold text-xs" style="width: 32px; height: 32px; background-color: #e5e7eb;">
-                      <% if current_user.first_name.present? || current_user.last_name.present? %>
-                        <%= "#{current_user.first_name&.first || ''}#{current_user.last_name&.first || ''}".upcase %>
-                      <% else %>
-                        <%= current_user.email[0].upcase %>
-                      <% end %>
-                    </div>
-                  </div>
-                </div>
-              <% end %>
-            <% end %>
-          </div>
-
-          <!-- Formulaire de message (sticky en bas) -->
-          <% if @request.status == "accepted" || @request.status == "pending" %>
-            <div class="border-t border-gray-200 px-6 py-4 bg-white sticky bottom-0">
-              <%= form_with model: [@request, Message.new], url: request_messages_path(@request), local: true, class: "flex gap-3" do |f| %>
-                <%= f.text_area :body, class: "flex-1 resize-none border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#fe6618] focus:border-transparent", placeholder: "Tapez votre message...", rows: 2, required: true %>
-                <%= f.submit "Envoyer", class: "px-6 py-3 bg-[#fe6618] hover:bg-[#d85514] text-white font-medium rounded-lg transition-colors self-end" %>
-              <% end %>
-            </div>
+<div class="flex flex-col h-[calc(100vh-4rem)]">
+  <!-- Header avec bouton retour -->
+  <div class="border-b border-gray-200 px-4 py-3 flex-shrink-0 bg-white">
+    <div class="flex items-center gap-3">
+      <%= link_to requests_path, class: "btn btn-ghost btn-sm btn-square" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+      <% end %>
+      <div class="flex-1 min-w-0">
+        <h2 class="font-bold text-gray-900 truncate">
+          <% if @request.status == "accepted" %>
+            <%= "#{@request.teacher.first_name} #{@request.teacher.last_name}" %>
+          <% else %>
+            <%= teacher_short_name(@request.teacher) %>
           <% end %>
-        </div>
+        </h2>
+        <p class="text-xs text-gray-500 truncate">
+          <%= format_subject_tag(@request.subject) %> • <%= format_request_level(@request.level) %> • <%= format_request_status(@request.status) %>
+        </p>
       </div>
-    </div>
-
-    <!-- Colonne droite (40%) - Résumé de la demande -->
-    <div class="flex-shrink-0" style="flex: 0 0 40%;">
-      <div class="card bg-white shadow-lg h-full">
-        <div class="card-body">
-          <div class="flex items-center justify-between mb-6">
-            <h1 class="text-2xl font-bold text-gray-900">Demande de mise en relation</h1>
-            <span class="badge <%= request_status_badge_class(@request.status) %> badge-lg">
-              <%= format_request_status(@request.status) %>
-            </span>
-          </div>
-
-          <div class="divider"></div>
-
-          <div class="space-y-6">
-            <div>
-              <h3 class="text-sm font-semibold text-gray-500 uppercase mb-2">Professeur</h3>
-              <p class="text-lg text-gray-900">
-                <% if @request.status == "accepted" %>
-                  <%= "#{@request.teacher.first_name} #{@request.teacher.last_name}" %>
-                <% else %>
-                  <%= teacher_short_name(@request.teacher) %>
-                <% end %>
-              </p>
-            </div>
-
-            <div>
-              <h3 class="text-sm font-semibold text-gray-500 uppercase mb-2">Matière</h3>
-              <p class="text-lg text-gray-900"><%= format_subject_tag(@request.subject) %></p>
-            </div>
-
-            <div>
-              <h3 class="text-sm font-semibold text-gray-500 uppercase mb-2">Niveau</h3>
-              <p class="text-lg text-gray-900"><%= format_request_level(@request.level) %></p>
-            </div>
-
-            <div>
-              <h3 class="text-sm font-semibold text-gray-500 uppercase mb-2">Votre demande</h3>
-              <p class="text-gray-700 whitespace-pre-line leading-relaxed"><%= @request.request_text %></p>
-            </div>
-
-            <div class="divider"></div>
-
-            <div class="text-sm text-gray-500 space-y-1">
-              <p><strong>Demandé le</strong> <%= @request.requested_at.strftime("%d/%m/%Y à %H:%M") %></p>
-              <% if @request.responded_at.present? %>
-                <p><strong>Répondu le</strong> <%= @request.responded_at.strftime("%d/%m/%Y à %H:%M") %></p>
-              <% end %>
-            </div>
-          </div>
-        </div>
-      </div>
+      <%= button_to archive_request_path(@request), method: :patch,
+          class: "btn btn-ghost btn-sm btn-square text-gray-400",
+          data: { "turbo-confirm": "Êtes-vous sûr de vouloir archiver cette demande ?" },
+          title: "Archiver" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+        </svg>
+      <% end %>
     </div>
   </div>
+
+  <!-- Zone de messages (scrollable) -->
+  <div id="messages-container-<%= @request.id %>" class="flex-1 overflow-y-auto px-4 py-4 space-y-4 bg-gray-50" style="padding-bottom: 5rem;">
+    <% messages.each do |message| %>
+      <%= render "messages/message", message: message %>
+    <% end %>
+  </div>
 </div>
+
+<!-- Formulaire de message (fixed au-dessus de la bottom nav) -->
+<% if @request.status == "accepted" || @request.status == "pending" %>
+  <div class="md:hidden fixed left-0 right-0 z-40 border-t border-gray-200 px-4 py-3 bg-white" style="bottom: calc(4.8rem + env(safe-area-inset-bottom, 0px));">
+    <%= form_with model: [@request, Message.new], url: request_messages_path(@request), local: false, id: "message-form-#{@request.id}", class: "flex gap-2 items-end" do |f| %>
+      <%= f.text_area :body, id: "message-body-#{@request.id}", class: "flex-1 resize-none border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#fe6618] focus:border-transparent text-base", placeholder: "Message...", rows: 1, required: true, style: "min-height: 40px; max-height: 120px;" %>
+      <button type="submit" class="btn btn-circle bg-[#fe6618] hover:bg-[#e55a15] text-white border-none h-10 w-10 min-h-0">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </button>
+    <% end %>
+  </div>
+<% end %>
+
+<!-- Mobile Bottom Navigation (toujours visible) -->
+<%= render "shared/mobile_bottom_nav" %>
+
+<script>
+  (function() {
+    function initMobileChat() {
+      const requestId = <%= @request.id %>;
+      const textarea = document.getElementById('message-body-' + requestId);
+      const form = document.getElementById('message-form-' + requestId);
+      const messagesContainer = document.getElementById('messages-container-' + requestId);
+
+      // Auto-scroll initial
+      if (messagesContainer) {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+
+      // Auto-resize textarea
+      if (textarea) {
+        textarea.addEventListener('input', function() {
+          this.style.height = 'auto';
+          this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+        });
+
+        // Envoi au clavier (Enter sans Shift)
+        textarea.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            if (textarea.value.trim() && form) {
+              form.requestSubmit();
+            }
+          }
+        });
+      }
+    }
+
+    // Initialisation
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initMobileChat);
+    } else {
+      initMobileChat();
+    }
+
+    document.addEventListener('turbo:load', initMobileChat);
+    document.addEventListener('turbo:frame-load', initMobileChat);
+
+    // Auto-scroll après ajout de message
+    const observer = new MutationObserver(function(mutations) {
+      const requestId = <%= @request.id %>;
+      const messagesContainer = document.getElementById('messages-container-' + requestId);
+      const textarea = document.getElementById('message-body-' + requestId);
+
+      mutations.forEach(function(mutation) {
+        if (mutation.addedNodes.length > 0 && messagesContainer) {
+          setTimeout(function() {
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            if (textarea) {
+              textarea.value = '';
+              textarea.style.height = 'auto';
+            }
+          }, 10);
+        }
+      });
+    });
+
+    const container = document.getElementById('messages-container-<%= @request.id %>');
+    if (container) {
+      observer.observe(container, { childList: true });
+    }
+  })();
+</script>

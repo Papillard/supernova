@@ -1,56 +1,51 @@
 <div id="verification-documents-list" class="mb-4">
 <% if teacher.verification_documents.attached? %>
-  <div class="space-y-3">
+  <div class="space-y-2">
     <% teacher.verification_documents.each do |document| %>
       <div class="flex items-center gap-3 p-3 bg-white rounded-lg" id="verification-document-<%= document.blob_id %>">
-        <% if document.image? %>
-          <!-- Image preview -->
-          <div class="flex-shrink-0">
-            <%= image_tag document, class: "w-16 h-16 object-cover rounded" %>
-          </div>
+        <%# Desktop: preview + filename %>
+        <div class="hidden md:flex items-center gap-3 flex-1 min-w-0">
+          <% if document.image? %>
+            <div class="flex-shrink-0">
+              <%= image_tag document, class: "w-12 h-12 object-cover rounded" %>
+            </div>
+          <% elsif document.content_type == "application/pdf" %>
+            <div class="flex-shrink-0 w-12 h-12 bg-red-100 rounded flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+              </svg>
+            </div>
+          <% else %>
+            <div class="flex-shrink-0 w-12 h-12 bg-gray-100 rounded flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+          <% end %>
           <div class="flex-1 min-w-0">
             <p class="text-sm font-medium text-gray-900 truncate"><%= document.filename %></p>
-            <p class="text-xs text-gray-500">Image</p>
           </div>
-        <% elsif document.content_type == "application/pdf" %>
-          <!-- PDF icon -->
-          <div class="flex-shrink-0 w-16 h-16 bg-red-100 rounded flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-            </svg>
-          </div>
-          <div class="flex-1 min-w-0">
-            <p class="text-sm font-medium text-gray-900 truncate"><%= document.filename %></p>
-            <p class="text-xs text-gray-500">PDF</p>
-          </div>
-        <% else %>
-          <!-- Generic file -->
-          <div class="flex-shrink-0 w-16 h-16 bg-gray-100 rounded flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-          </div>
-          <div class="flex-1 min-w-0">
-            <p class="text-sm font-medium text-gray-900 truncate"><%= document.filename %></p>
-            <p class="text-xs text-gray-500"><%= document.content_type %></p>
-          </div>
-        <% end %>
+        </div>
 
-        <div class="flex items-center gap-2">
-          <%= link_to url_for(document), target: "_blank", class: "btn btn-sm btn-ghost" do %>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <%# Mobile: filename only %>
+        <div class="md:hidden flex-1 min-w-0">
+          <p class="text-sm font-medium text-gray-900 truncate"><%= document.filename %></p>
+        </div>
+
+        <%# Actions: eye + trash %>
+        <div class="flex items-center gap-1 flex-shrink-0">
+          <%= link_to url_for(document), target: "_blank", class: "btn btn-sm btn-ghost btn-square", title: "Voir" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
             </svg>
-            Voir
           <% end %>
 
           <% unless defined?(read_only) && read_only %>
-            <%= button_to teacher_verification_document_path(document.blob_id), method: :delete, local: false, form: { data: { turbo: true } }, class: "btn btn-sm btn-ghost text-red-600 hover:text-red-700" do %>
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <%= button_to teacher_verification_document_path(document.blob_id), method: :delete, local: false, form: { data: { turbo: true } }, class: "btn btn-sm btn-ghost btn-square text-red-600 hover:text-red-700", title: "Supprimer" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
               </svg>
-              Supprimer
             <% end %>
           <% end %>
         </div>

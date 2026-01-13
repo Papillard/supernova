@@ -1,3 +1,3 @@
-<%= turbo_stream.replace "flash-messages" do %>
-  <div id="flash-messages"></div>
+<%= turbo_stream.update "flash-messages" do %>
+  <%= render "shared/flash" %>
 <% end %>

@@ -23,7 +23,7 @@ class Teacher < ApplicationRecord
   validates :last_name, presence: true
   validates :gender, presence: true
   validates :career_status, presence: true
-  validates :email_pro, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :email_pro, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_blank: true
   validates :status, presence: true
   validates :user_id, uniqueness: true
 
@@ -35,6 +35,21 @@ class Teacher < ApplicationRecord
   scope :approved, -> { where(status: :approved) }
   scope :with_rgpd_consent, -> { where(rgpd_consent: true) }
   scope :public_visible, -> { approved.with_rgpd_consent }
+
+  # Vérifie si le profil est suffisamment complété pour accéder aux demandes
+  # Critères minimum:
+  # - Identité: display_name présent
+  # - Offre: subjects_tags et levels non vides
+  # - Logistique: teaching_formats non vide + city ou zip_code renseigné
+  # - Confiance: rgpd_consent = true
+  def profile_completed?
+    display_name.present? &&
+      subjects_tags.present? &&
+      levels.present? &&
+      teaching_formats.present? &&
+      (city.present? || zip_code.present?) &&
+      rgpd_consent == true
+  end
 
   # Méthode pour obtenir la valeur formatée du career_status
   def formatted_career_status

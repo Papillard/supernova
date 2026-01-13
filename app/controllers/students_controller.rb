@@ -11,16 +11,15 @@ class StudentsController < ApplicationController
     respond_to do |format|
       if @student.save
         @parent_profile.reload
+        flash.now[:notice] = "Enfant ajouté avec succès."
         format.turbo_stream { render :create }
         format.html do
           flash[:notice] = "Enfant ajouté avec succès."
           redirect_to parent_profile_path
         end
       else
-        format.turbo_stream do
-          flash.now[:alert] = "Erreur lors de l'ajout de l'enfant : #{@student.errors.full_messages.join(', ')}"
-          render :create, status: :unprocessable_entity
-        end
+        flash.now[:alert] = "Erreur lors de l'ajout : #{@student.errors.full_messages.join(', ')}"
+        format.turbo_stream { render :create, status: :unprocessable_entity }
         format.html do
           flash[:alert] = "Erreur lors de l'ajout de l'enfant : #{@student.errors.full_messages.join(', ')}"
           redirect_to parent_profile_path

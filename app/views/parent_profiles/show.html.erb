@@ -46,10 +46,6 @@
 
             <!-- Informations personnelles -->
             <%= form_with model: @parent_profile, url: parent_profile_path, method: :patch, local: false, multipart: true, data: { turbo: true }, id: "parent-info-form", class: "space-y-4" do |f| %>
-              <!-- Messages flash (discret) -->
-              <div id="parent-profile-flash-messages" class="text-sm">
-                <!-- Messages affichés via turbo stream -->
-              </div>
               <div class="space-y-4">
                 <div class="form-control">
                   <%= label_tag "user_email", "Email *", class: "label" do %>

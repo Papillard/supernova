@@ -35,11 +35,14 @@ class TeacherVerificationDocumentPolicy < ApplicationPolicy
   def owner?
     return false unless user&.teacher?
 
-    # record is an ActiveStorage::Attachment or Blob
-    if record.respond_to?(:record)
+    # record can be:
+    # - a Teacher model (for create action)
+    # - an ActiveStorage::Attachment (for destroy action)
+    if record.is_a?(Teacher)
+      record == user.teacher
+    elsif record.respond_to?(:record)
+      # ActiveStorage::Attachment
       record.record == user.teacher
-    elsif record.respond_to?(:attachments)
-      record.attachments.any? { |a| a.record == user.teacher }
     else
       false
     end

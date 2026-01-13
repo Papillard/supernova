@@ -1,9 +1,11 @@
 <%= form_with url: teacher_verification_documents_path, method: :post, multipart: true, data: { turbo_frame: "verification-documents" } do |f| %>
-  <%= file_field_tag "verification_documents[]",
-      multiple: true,
-      accept: "image/*,.pdf",
-      class: "file-input file-input-bordered w-full",
-      onchange: "this.form.requestSubmit()" %>
+  <div class="w-full min-w-0 overflow-hidden">
+    <%= file_field_tag "verification_documents[]",
+        multiple: true,
+        accept: "image/*,.pdf",
+        class: "file-input file-input-bordered w-full max-w-full",
+        onchange: "this.form.requestSubmit()" %>
+  </div>
   <label class="label">
     <span class="label-text-alt text-gray-500">Formats acceptés : Images (JPEG, PNG) et PDF</span>
   </label>

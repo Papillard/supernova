@@ -21,7 +21,14 @@ class Teacher::RequestsController < ApplicationController
 
   def show
     authorize @request
-    redirect_to teacher_requests_path(id: params[:id])
+    @request.mark_as_read_by_teacher!
+
+    # Sur mobile, afficher la conversation en plein écran
+    if browser_is_mobile?
+      render :show
+    else
+      redirect_to teacher_requests_path(id: params[:id])
+    end
   end
 
   def accept
@@ -30,13 +37,16 @@ class Teacher::RequestsController < ApplicationController
       teacher = @request.teacher
       full_name = "#{teacher.first_name} #{teacher.last_name}"
 
+      # Email: priorité à email_pro, sinon email du compte
+      email_text = teacher.email_pro.presence || teacher.user.email
+
       phone_text = if teacher.phone.present?
         teacher.phone
       else
         "Préfère échanger sur ProfConnect ou par mail"
       end
 
-      message_body = "#{full_name} a accepté votre demande de connexion !\n\nNous vous partageons ses informations pour continuer à échanger et vous organiser ensemble:\n\n- Email: #{teacher.email_pro}\n- Telephone: #{phone_text}\n\nBon échange !"
+      message_body = "#{full_name} a accepté votre demande de connexion !\n\nNous vous partageons ses informations pour continuer à échanger et vous organiser ensemble:\n\n- Email: #{email_text}\n- Telephone: #{phone_text}\n\nBon échange !"
 
       Message.create!(
         request: @request,
@@ -84,5 +94,9 @@ class Teacher::RequestsController < ApplicationController
 
   def set_request
     @request = Request.find(params[:id])
+  end
+
+  def browser_is_mobile?
+    request.user_agent =~ /Mobile|Android|iPhone|iPad/i
   end
 end

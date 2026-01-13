@@ -1,0 +1,20 @@
+<% flash.each do |type, message| %>
+  <% next if message.blank? %>
+  <% is_notice = type.to_s == 'notice' %>
+  <div class="alert <%= is_notice ? 'alert-success' : 'alert-error' %> shadow-lg"
+       data-controller="flash"
+       data-flash-auto-hide-value="true"
+       data-flash-delay-value="<%= is_notice ? 4000 : 6000 %>">
+    <% if is_notice %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-5 w-5" fill="none" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    <% else %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-5 w-5" fill="none" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    <% end %>
+    <span class="text-sm"><%= message %></span>
+    <button type="button" data-action="flash#hide" class="btn btn-ghost btn-xs">✕</button>
+  </div>
+<% end %>

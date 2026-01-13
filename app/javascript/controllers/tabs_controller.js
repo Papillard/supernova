@@ -3,7 +3,7 @@ import { Controller } from "@hotwired/stimulus"
 // Connects to data-controller="tabs"
 // Handles tab navigation for multi-step forms
 export default class extends Controller {
-  static targets = ["tab", "panel"]
+  static targets = ["tab", "panel", "currentStep"]
   static values = { active: String }
 
 
@@ -28,8 +28,14 @@ export default class extends Controller {
 
     // Add active class to selected tab
     const selectedTab = this.tabTargets.find(tab => tab.dataset.tabId === tabId)
+    const currentIndex = this.tabTargets.findIndex(tab => tab.dataset.tabId === tabId)
     if (selectedTab) {
       selectedTab.classList.add("tab-active")
+    }
+
+    // Update mobile step indicator
+    if (this.hasCurrentStepTarget && currentIndex >= 0) {
+      this.currentStepTarget.textContent = currentIndex + 1
     }
 
     // Update active value

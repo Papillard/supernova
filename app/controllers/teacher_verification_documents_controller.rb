@@ -30,9 +30,22 @@ class TeacherVerificationDocumentsController < ApplicationController
 
       @teacher.reload
 
-      render :create
+      if errors.any?
+        flash.now[:alert] = errors.join(". ")
+      elsif attached_count > 0
+        flash.now[:notice] = "#{attached_count} document(s) ajouté(s) avec succès."
+      end
+
+      respond_to do |format|
+        format.turbo_stream { render :create }
+        format.html { redirect_to teacher_profile_path }
+      end
     else
-      render :create, status: :unprocessable_entity
+      flash.now[:alert] = "Veuillez sélectionner au moins un fichier."
+      respond_to do |format|
+        format.turbo_stream { render :create, status: :unprocessable_entity }
+        format.html { redirect_to teacher_profile_path, alert: "Veuillez sélectionner au moins un fichier." }
+      end
     end
   end
 
@@ -46,6 +59,7 @@ class TeacherVerificationDocumentsController < ApplicationController
       respond_to do |format|
         format.turbo_stream do
           flash.now[:notice] = "Document supprimé avec succès."
+          render :destroy
         end
         format.html { redirect_to teacher_profile_path, notice: "Document supprimé avec succès." }
       end

@@ -20,7 +20,15 @@ class RequestsController < ApplicationController
 
   def show
     authorize @request
-    redirect_to requests_path(id: params[:id])
+    @request.mark_as_read_by_parent!
+
+    # Sur mobile, afficher la conversation en plein écran
+    # Sur desktop, rediriger vers l'index avec la request sélectionnée
+    if browser_is_mobile?
+      render :show
+    else
+      redirect_to requests_path(id: params[:id])
+    end
   end
 
   def archive
@@ -201,5 +209,9 @@ class RequestsController < ApplicationController
 
   def request_params
     params.require(:request).permit(:subject, :level, :request_text, :notes, :student_id, student_attributes: [:first_name, :birth_year])
+  end
+
+  def browser_is_mobile?
+    request.user_agent =~ /Mobile|Android|iPhone|iPad/i
   end
 end

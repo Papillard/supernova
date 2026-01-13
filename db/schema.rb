@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_12_172947) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_13_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -236,7 +236,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_12_172947) do
     t.text "pedagogy_tags", default: [], array: true
     t.text "pricing_text"
     t.string "target_students_range"
-    t.string "email_pro", null: false
+    t.string "email_pro"
     t.string "email_perso"
     t.string "phone"
     t.string "profile_image_url"

@@ -1,3 +1,7 @@
+<%= turbo_stream.update "flash-messages" do %>
+  <%= render "shared/flash" %>
+<% end %>
+
 <%= turbo_stream.replace "teacher-avatar-container" do %>
   <div class="flex-shrink-0" id="teacher-avatar-container">
     <%= render "shared/teacher_avatar", teacher: @teacher, size: :large, for_parent: false %>
