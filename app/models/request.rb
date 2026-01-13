@@ -12,6 +12,8 @@ class Request < ApplicationRecord
   validates :level, presence: { message: "Le niveau est requis" }
   validates :requested_at, presence: true
   validates :student, presence: { message: "L'enfant est requis" }
+  validate :no_active_request_with_same_teacher, on: :create
+  validate :declined_request_cooldown_period, on: :create
   # notes et request_text sont optionnels - le message initial sera généré automatiquement
 
   # Callbacks
@@ -26,6 +28,8 @@ class Request < ApplicationRecord
   scope :not_archived_by_teacher, -> { where(archived_by_teacher: false) }
   scope :visible_to_parent, -> { not_archived_by_parent }
   scope :visible_to_teacher, -> { not_archived_by_teacher }
+  scope :active, -> { where(status: [:pending, :accepted]) }
+  scope :declined_recently, -> { declined.where("responded_at > ?", 7.days.ago) }
 
   # Scopes pour notifications non lues
   # Parent: messages non lus sur pending OU changement de statut (accepted/declined) non vu
@@ -50,6 +54,33 @@ class Request < ApplicationRecord
   end
 
   private
+
+  def no_active_request_with_same_teacher
+    return unless parent_id.present? && teacher_id.present?
+
+    active_request = Request.active
+                            .where(parent_id: parent_id, teacher_id: teacher_id)
+                            .where.not(id: id) # Exclure la request actuelle si elle existe déjà
+                            .exists?
+
+    if active_request
+      errors.add(:base, "Vous avez déjà une demande active avec ce professeur. Veuillez attendre une réponse avant d'en créer une nouvelle.")
+    end
+  end
+
+  def declined_request_cooldown_period
+    return unless parent_id.present? && teacher_id.present?
+
+    # Vérifier les requests declined récemment (avec responded_at défini)
+    recent_declined = Request.declined_recently
+                              .where(parent_id: parent_id, teacher_id: teacher_id)
+                              .where.not(id: id) # Exclure la request actuelle si elle existe déjà
+                              .exists?
+
+    if recent_declined
+      errors.add(:base, "Vous avez récemment contacté ce professeur. Vous pourrez le recontacter dans 7 jours après le refus de sa demande précédente.")
+    end
+  end
 
   def set_requested_at
     self.requested_at ||= Time.current

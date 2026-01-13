@@ -19,6 +19,7 @@ module TeachersHelper
 
   # Matières disponibles (liste unique sans groupement)
   SUBJECTS_OPTIONS = [
+    ["Aide aux devoirs", "aide_aux_devoirs"],
     ["Mathématiques", "mathematiques"],
     ["Français", "francais"],
     ["Anglais", "anglais"],

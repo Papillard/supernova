@@ -121,10 +121,16 @@ class RequestsController < ApplicationController
       student_name = student.first_name
 
       # Construire le message avec format conditionnel pour les précisions
+      if @request.subject == "aide_aux_devoirs"
+        subject_text = "de l'aide aux devoirs"
+      else
+        subject_text = "des cours particuliers en #{subject_label}"
+      end
+
       parent_message_body = <<~MESSAGE
         Bonjour #{teacher_first_name},
 
-        Je recherche des cours particulier en #{subject_label} niveau #{level_label} pour #{student_name}.
+        Je recherche #{subject_text} niveau #{level_label} pour #{student_name}.
       MESSAGE
 
       # Ajouter les précisions si présentes

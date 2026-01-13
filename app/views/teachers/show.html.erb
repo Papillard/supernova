@@ -77,9 +77,15 @@
             <% if current_user.parent? %>
               <% parent_profile = current_user.parent_profile %>
               <% if parent_profile %>
-                <button onclick="request_modal.showModal()" class="btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg w-full mb-2">
-                  Demander une mise en relation
-                </button>
+                <% if @has_active_request %>
+                  <button disabled class="btn btn-disabled bg-gray-300 text-gray-600 border-gray-300 rounded-lg w-full mb-2 cursor-not-allowed">
+                    Professeur déjà contacté
+                  </button>
+                <% else %>
+                  <button onclick="request_modal.showModal()" class="btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg w-full mb-2">
+                    Demander une mise en relation
+                  </button>
+                <% end %>
                 <div class="text-center space-y-1">
                   <p class="text-xs text-gray-500">Coordonnées partagées après acceptation</p>
                   <p class="text-xs text-gray-500">Réponse sous 24–48h</p>
@@ -303,21 +309,22 @@
           </div>
 
           <div class="form-control">
-            <%= f.label :subject, class: "label" do %>
-              <span class="label-text">Pour quelles matière ? *</span>
-            <% end %>
-            <%= select_tag "request[subject]", options_for_select(TeachersHelper::SUBJECTS_OPTIONS, @form_subject), { prompt: "Sélectionnez une matière", class: "select select-bordered w-full", required: true } %>
-          </div>
-
-          <div class="form-control">
             <%= label_tag "request[level]", "Niveau", class: "label" do %>
-              <span class="label-text">Quel niveau ?</span>
+              <span class="label-text">Quel niveau ? *</span>
             <% end %>
             <%= select_tag "request[level]",
                 options_for_select(RequestsHelper::LEVELS_OPTIONS, @form_level),
                 { class: "select select-bordered w-full",
+                  required: true,
                   data: { student_selector_target: "levelDisplay" },
                   id: "request_level" } %>
+          </div>
+
+          <div class="form-control">
+            <%= f.label :subject, class: "label" do %>
+              <span class="label-text">Pour quelle matière ? *</span>
+            <% end %>
+            <%= select_tag "request[subject]", options_for_select(TeachersHelper::SUBJECTS_OPTIONS, @form_subject), { prompt: "Sélectionnez une matière", class: "select select-bordered w-full", required: true } %>
           </div>
 
           <div class="form-control">

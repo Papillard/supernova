@@ -30,6 +30,13 @@ class TeachersController < ApplicationController
   def show
     @teacher = Teacher.find(params[:id])
     authorize @teacher
+
+    # Vérifier si le parent a déjà une requête active avec ce professeur
+    if user_signed_in? && current_user.parent?
+      @has_active_request = Request.active
+                                    .where(parent_id: current_user.id, teacher_id: @teacher.id)
+                                    .exists?
+    end
   rescue ActiveRecord::RecordNotFound
     redirect_to teachers_path, alert: "Professeur non trouvé ou non disponible."
   end
