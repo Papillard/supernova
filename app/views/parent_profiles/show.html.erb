@@ -2,12 +2,15 @@
 
 <div class="container mx-auto max-w-4xl px-4 py-8">
   <div class="space-y-6">
-    <h1 class="text-xl font-bold text-gray-900">Mon profil</h1>
+    <h1 class="hidden md:block text-xl font-bold text-gray-900">Mon profil</h1>
 
     <!-- Onglets -->
     <div data-controller="tabs" data-tabs-active-value="<%= params[:tab] || 'infos' %>">
       <div class="flex border-b border-gray-200 mb-6">
-        <a data-tabs-target="tab" data-tab-id="infos" data-action="click->tabs#switch" class="profile-tab tab-active px-4 py-3 text-sm font-medium cursor-pointer transition-colors">Mes infos</a>
+        <a data-tabs-target="tab" data-tab-id="infos" data-action="click->tabs#switch" class="profile-tab tab-active px-4 py-3 text-sm font-medium cursor-pointer transition-colors">
+          <span class="md:hidden">Profil</span>
+          <span class="hidden md:inline">Mes infos</span>
+        </a>
         <a data-tabs-target="tab" data-tab-id="enfants" data-action="click->tabs#switch" class="profile-tab px-4 py-3 text-sm font-medium cursor-pointer transition-colors">Mes enfants</a>
       </div>
 
@@ -17,7 +20,10 @@
           <div class="card-body space-y-8">
             <!-- Photo de profil (formulaire séparé) -->
             <div data-controller="avatar-upload">
-              <h2 class="text-xl font-semibold mb-4">Mes informations</h2>
+              <h2 class="text-xl font-semibold mb-4">
+                <span class="md:hidden">Mon profil</span>
+                <span class="hidden md:inline">Mes informations</span>
+              </h2>
               <div class="flex items-start gap-6">
                 <div class="flex-shrink-0" id="parent-avatar-container">
                   <%= render "shared/parent_avatar", parent_profile: @parent_profile, size: :large %>
@@ -97,7 +103,7 @@
               </div>
               <!-- Bouton unique à la fin -->
               <div class="flex justify-end pt-4">
-                <%= f.submit "Enregistrer", class: "btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white" %>
+                <%= f.submit "Enregistrer", class: "btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white w-full md:w-auto" %>
               </div>
             <% end %>
           </div>

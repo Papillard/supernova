@@ -1,17 +1,25 @@
 <% if @student.persisted? %>
-  <%= turbo_stream.append "students-list" do %>
-    <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg" id="student-<%= @student.id %>">
-      <div>
-        <p class="font-semibold"><%= @student.first_name %></p>
-        <p class="text-sm text-gray-600">
-          Né(e) en <%= @student.birth_year %>
-          <% if @student.age %>
-            (<%= @student.age %> ans)
-          <% end %>
-        </p>
-      </div>
-      <%= button_to student_path(@student), method: :delete, class: "btn btn-ghost btn-sm text-red-600", data: { confirm: "Êtes-vous sûr de vouloir supprimer cet enfant ?" } do %>
-        Supprimer
+  <%= turbo_stream.replace "students-list" do %>
+    <div id="students-list" class="space-y-3 mb-6">
+      <% if @parent_profile.students.any? %>
+        <% @parent_profile.students.each do |student| %>
+          <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg" id="student-<%= student.id %>">
+            <div>
+              <p class="font-semibold"><%= student.first_name %></p>
+              <p class="text-sm text-gray-600">
+                Né(e) en <%= student.birth_year %>
+                <% if student.age %>
+                  (<%= student.age %> ans)
+                <% end %>
+              </p>
+            </div>
+            <%= button_to student_path(student), method: :delete, class: "btn btn-ghost btn-sm text-red-600", data: { confirm: "Êtes-vous sûr de vouloir supprimer cet enfant ?" } do %>
+              Supprimer
+            <% end %>
+          </div>
+        <% end %>
+      <% else %>
+        <p class="text-gray-500 text-sm">Aucun enfant ajouté pour le moment.</p>
       <% end %>
     </div>
   <% end %>
