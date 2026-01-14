@@ -1,5 +1,5 @@
 <div class="min-h-screen bg-white flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-md w-full space-y-8">
+  <div class="max-w-md md:max-w-xl w-full space-y-8">
     <div class="text-center">
       <h1 class="text-3xl font-bold text-gray-900">ProfConnect</h1>
       <h2 class="mt-2 text-xl text-gray-600">Créer un compte parent</h2>
@@ -33,21 +33,55 @@
             <%= f.email_field :email, autocomplete: "email", class: "input input-bordered w-full", placeholder: "votre@email.com", required: true %>
           </div>
 
-          <div class="form-control">
-            <%= f.label :password, class: "label" do %>
-              <span class="label-text">Mot de passe</span>
-              <% if @minimum_password_length %>
-                <span class="label-text-alt">(<%= @minimum_password_length %> caractères minimum)</span>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="form-control">
+              <%= f.label :password, class: "label" do %>
+                <span class="label-text">Mot de passe</span>
+                <% if @minimum_password_length %>
+                  <span class="label-text-alt">(<%= @minimum_password_length %> caractères minimum)</span>
+                <% end %>
               <% end %>
-            <% end %>
-            <%= f.password_field :password, autocomplete: "new-password", class: "input input-bordered w-full", placeholder: "••••••••" %>
+              <%= f.password_field :password, autocomplete: "new-password", class: "input input-bordered w-full", placeholder: "••••••••" %>
+            </div>
+
+            <div class="form-control">
+              <%= f.label :password_confirmation, class: "label" do %>
+                <span class="label-text">Confirmer le mot de passe</span>
+              <% end %>
+              <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "input input-bordered w-full", placeholder: "••••••••" %>
+            </div>
           </div>
 
-          <div class="form-control">
-            <%= f.label :password_confirmation, class: "label" do %>
-              <span class="label-text">Confirmer le mot de passe</span>
-            <% end %>
-            <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "input input-bordered w-full", placeholder: "••••••••" %>
+          <!-- Checkboxes légales -->
+          <div class="space-y-3 pt-4 border-t border-gray-200">
+            <div class="form-control">
+              <label class="flex items-start gap-3 cursor-pointer">
+                <%= check_box_tag "user[accept_cgs]", "1", false, { class: "checkbox checkbox-primary flex-shrink-0 mt-0.5", required: true } %>
+                <span class="text-sm text-gray-700 leading-relaxed">
+                  J'ai lu et j'accepte les
+                  <%= link_to "Conditions Générales de Services (CGS)", conditions_generales_path, target: "_blank", class: "text-[#fe6618] hover:underline" %>
+                  de ProfConnect. *
+                </span>
+              </label>
+            </div>
+            <div class="form-control">
+              <label class="flex items-start gap-3 cursor-pointer">
+                <%= check_box_tag "user[accept_privacy_policy]", "1", false, { class: "checkbox checkbox-primary flex-shrink-0 mt-0.5", required: true } %>
+                <span class="text-sm text-gray-700 leading-relaxed">
+                  J'accepte la
+                  <%= link_to "Politique de confidentialité", politique_de_confidentialite_path, target: "_blank", class: "text-[#fe6618] hover:underline" %>
+                  et consens à la collecte de mes données pour permettre la mise en relation avec les professeurs. *
+                </span>
+              </label>
+            </div>
+            <div class="form-control">
+              <label class="flex items-start gap-3 cursor-pointer">
+                <%= check_box_tag "user[accept_marketing_emails]", "1", false, { class: "checkbox checkbox-primary flex-shrink-0 mt-0.5" } %>
+                <span class="text-sm text-gray-700 leading-relaxed">
+                  Je souhaite recevoir par email des conseils pédagogiques et des actualités de la part de ProfConnect.
+                </span>
+              </label>
+            </div>
           </div>
 
           <div class="form-control mt-6">

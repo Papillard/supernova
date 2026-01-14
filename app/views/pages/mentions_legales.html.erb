@@ -1,0 +1,154 @@
+<% content_for(:title) { "Mentions légales | ProfConnect" } %>
+
+<div class="min-h-screen bg-white text-gray-900 pb-20 md:pb-0">
+  <!-- Mobile Header (visible only on mobile) -->
+  <header class="md:hidden sticky top-0 z-50 bg-white border-b border-stone-200">
+    <div class="px-4 py-3 flex items-center justify-between">
+      <%= link_to root_path do %>
+        <%= image_tag "logo.png", alt: "ProfConnect", style: "height: 40px; width: auto;" %>
+      <% end %>
+      <% if user_signed_in? %>
+        <div class="dropdown dropdown-end">
+          <label tabindex="0" class="btn btn-ghost btn-circle avatar">
+            <div class="w-9 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+              <% if current_user.teacher? && current_user.teacher&.profile_image_url.present? %>
+                <%= image_tag current_user.teacher.profile_image_url, alt: "Avatar", class: "w-full h-full object-cover" %>
+              <% else %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              <% end %>
+            </div>
+          </label>
+          <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[100] p-2 shadow bg-white rounded-box w-40">
+            <li>
+              <%= button_to "Déconnexion", destroy_user_session_path, method: :delete, class: "text-left w-full" %>
+            </li>
+          </ul>
+        </div>
+      <% end %>
+    </div>
+  </header>
+
+  <!-- Desktop Header (hidden on mobile) -->
+  <% if user_signed_in? %>
+    <header class="hidden md:block sticky top-0 z-50 bg-white border-b border-stone-200">
+      <div class="navbar max-w-7xl mx-auto px-4 md:px-6">
+        <div class="flex-1">
+          <%= link_to root_path, class: "flex items-center space-x-2" do %>
+            <%= image_tag "logo.png", alt: "ProfConnect", style: "height: 50px; width: auto;" %>
+          <% end %>
+        </div>
+        <div class="flex-none gap-6 items-center">
+          <%= render "shared/navbar_logged_in" %>
+        </div>
+      </div>
+    </header>
+  <% else %>
+    <header class="hidden md:block sticky top-0 z-50 bg-white border-b border-stone-200">
+      <div class="navbar max-w-7xl mx-auto px-4 md:px-6">
+        <div class="flex-1">
+          <%= link_to root_path, class: "flex items-center space-x-2" do %>
+            <%= image_tag "logo.png", alt: "ProfConnect", style: "height: 50px; width: auto;" %>
+          <% end %>
+        </div>
+        <div class="flex-none flex items-center space-x-8">
+          <%= link_to "Pourquoi ProfConnect ?", root_path(anchor: "pourquoi"), class: "text-sm font-medium text-gray-600 hover:text-gray-900" %>
+          <%= link_to "FAQ", root_path(anchor: "faq"), class: "text-sm font-medium text-gray-600 hover:text-gray-900" %>
+        </div>
+      </div>
+    </header>
+  <% end %>
+
+  <div class="max-w-4xl mx-auto px-4 md:px-6 py-12 md:py-16">
+    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-8">Mentions légales</h1>
+
+    <div class="prose prose-lg max-w-none">
+      <p class="text-gray-700 leading-relaxed mb-6">
+        Conformément aux dispositions des Articles 6-III et 19 de la Loi n°2004-575 du 21 juin 2004 pour la Confiance dans l'Économie Numérique (L.C.E.N.), il est porté à la connaissance des utilisateurs du site ProfConnect les présentes mentions légales.
+      </p>
+
+      <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">1. ÉDITION DU SITE</h2>
+      <p class="text-gray-700 leading-relaxed mb-4">
+        Le site ProfConnect, accessible à l'adresse www.profconnect.fr, est édité par :
+      </p>
+      <div class="text-gray-700 leading-relaxed space-y-2 mb-6">
+        <p><strong>Nom / Raison Sociale :</strong> Gaëlle Bailly-Maître, agissant pour le compte de la société ProfConnect, société en cours de formation.</p>
+        <p><strong>Siège social :</strong> 11 rue Villebois Mareuil, 75017 Paris.</p>
+        <p><strong>Numéro SIRET :</strong> En cours d'immatriculation.</p>
+        <p><strong>Directeur de la publication :</strong> Gaëlle Bailly-Maître.</p>
+        <p><strong>Contact :</strong> <a href="mailto:contact@prof-connect.fr" class="text-[#fe6618] hover:underline">contact@prof-connect.fr</a></p>
+      </div>
+
+      <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">2. HÉBERGEMENT DU SITE</h2>
+      <p class="text-gray-700 leading-relaxed mb-4">
+        Le site est hébergé par :
+      </p>
+      <div class="text-gray-700 leading-relaxed space-y-2 mb-6">
+        <p><strong>Nom de l'hébergeur :</strong> à renseigner (nom seulement)</p>
+        <p><strong>Adresse de l'hébergeur :</strong> à renseigner (adresse postale)</p>
+        <p><strong>Contact :</strong> à renseigner (numéro de téléphone ou adresse web)</p>
+      </div>
+
+      <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">3. PROPRIÉTÉ INTELLECTUELLE</h2>
+      <p class="text-gray-700 leading-relaxed mb-6">
+        L'ensemble de la structure du site ProfConnect (textes, graphismes, logos, icônes) est la propriété exclusive de l'éditeur, à l'exception des marques, logos ou contenus appartenant à des tiers (notamment les photographies de profil des Professeurs). Toute reproduction ou représentation, totale ou partielle, est strictement interdite sans l'autorisation écrite préalable de Gaëlle Bailly-Maître.
+      </p>
+
+      <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">4. COLLECTE DE DONNÉES ET RGPD</h2>
+      <p class="text-gray-700 leading-relaxed mb-4">
+        Le site ProfConnect assure une collecte et un traitement d'informations personnelles dans le respect de la vie privée, conformément au Règlement Général sur la Protection des Données (RGPD) et à la loi Informatique et Libertés.
+      </p>
+      <p class="text-gray-700 leading-relaxed mb-6">
+        L'utilisateur dispose d'un droit d'accès, de rectification, de suppression et d'opposition de ses données personnelles.
+      </p>
+      <p class="text-gray-700 leading-relaxed mb-6">
+        Ce droit s'exerce par email à : <a href="mailto:contact@prof-connect.fr" class="text-[#fe6618] hover:underline">contact@prof-connect.fr</a>.
+      </p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-t border-stone-200">
+    <div class="max-w-6xl mx-auto px-4 md:px-6 py-10">
+      <div class="flex flex-col md:flex-row md:justify-between gap-8 md:gap-12">
+        <div class="space-y-2">
+          <div class="text-lg font-semibold text-[#fe6618]">ProfConnect</div>
+          <p class="text-sm text-gray-500">© 2026 ProfConnect. Tous droits réservés.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 flex-1 md:max-w-2xl">
+          <!-- Colonne 1 – ProfConnect -->
+          <div class="space-y-3">
+            <h3 class="text-sm font-semibold text-gray-900 mb-3">ProfConnect</h3>
+            <ul class="space-y-2 text-sm text-gray-600">
+              <li>
+                <%= link_to "Pourquoi ProfConnect ?", root_path(anchor: "pourquoi"), class: "hover:text-[#fe6618]" %>
+              </li>
+              <li>
+                <%= link_to "FAQ", root_path(anchor: "faq"), class: "hover:text-[#fe6618]" %>
+              </li>
+              <li>
+                <a href="mailto:contact@prof-connect.fr" class="hover:text-[#fe6618]">contact@prof-connect.fr</a>
+              </li>
+            </ul>
+          </div>
+          <!-- Colonne 2 – Légal -->
+          <div class="space-y-3">
+            <h3 class="text-sm font-semibold text-gray-900 mb-3">Légal</h3>
+            <ul class="space-y-2 text-sm text-gray-600">
+              <li>
+                <%= link_to "Conditions générales", conditions_generales_path, class: "hover:text-[#fe6618]" %>
+              </li>
+              <li>
+                <%= link_to "Politique de confidentialité", politique_de_confidentialite_path, class: "hover:text-[#fe6618]" %>
+              </li>
+              <li>
+                <%= link_to "Mentions légales", mentions_legales_path, class: "hover:text-[#fe6618]" %>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>

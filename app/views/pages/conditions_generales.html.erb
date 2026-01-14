@@ -1,0 +1,202 @@
+<% content_for(:title) { "Conditions générales | ProfConnect" } %>
+
+<div class="min-h-screen bg-white text-gray-900 pb-20 md:pb-0">
+  <!-- Mobile Header (visible only on mobile) -->
+  <header class="md:hidden sticky top-0 z-50 bg-white border-b border-stone-200">
+    <div class="px-4 py-3 flex items-center justify-between">
+      <%= link_to root_path do %>
+        <%= image_tag "logo.png", alt: "ProfConnect", style: "height: 40px; width: auto;" %>
+      <% end %>
+      <% if user_signed_in? %>
+        <div class="dropdown dropdown-end">
+          <label tabindex="0" class="btn btn-ghost btn-circle avatar">
+            <div class="w-9 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+              <% if current_user.teacher? && current_user.teacher&.profile_image_url.present? %>
+                <%= image_tag current_user.teacher.profile_image_url, alt: "Avatar", class: "w-full h-full object-cover" %>
+              <% else %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              <% end %>
+            </div>
+          </label>
+          <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[100] p-2 shadow bg-white rounded-box w-40">
+            <li>
+              <%= button_to "Déconnexion", destroy_user_session_path, method: :delete, class: "text-left w-full" %>
+            </li>
+          </ul>
+        </div>
+      <% end %>
+    </div>
+  </header>
+
+  <!-- Desktop Header (hidden on mobile) -->
+  <% if user_signed_in? %>
+    <header class="hidden md:block sticky top-0 z-50 bg-white border-b border-stone-200">
+      <div class="navbar max-w-7xl mx-auto px-4 md:px-6">
+        <div class="flex-1">
+          <%= link_to root_path, class: "flex items-center space-x-2" do %>
+            <%= image_tag "logo.png", alt: "ProfConnect", style: "height: 50px; width: auto;" %>
+          <% end %>
+        </div>
+        <div class="flex-none gap-6 items-center">
+          <%= render "shared/navbar_logged_in" %>
+        </div>
+      </div>
+    </header>
+  <% else %>
+    <header class="hidden md:block sticky top-0 z-50 bg-white border-b border-stone-200">
+      <div class="navbar max-w-7xl mx-auto px-4 md:px-6">
+        <div class="flex-1">
+          <%= link_to root_path, class: "flex items-center space-x-2" do %>
+            <%= image_tag "logo.png", alt: "ProfConnect", style: "height: 50px; width: auto;" %>
+          <% end %>
+        </div>
+        <div class="flex-none flex items-center space-x-8">
+          <%= link_to "Pourquoi ProfConnect ?", root_path(anchor: "pourquoi"), class: "text-sm font-medium text-gray-600 hover:text-gray-900" %>
+          <%= link_to "FAQ", root_path(anchor: "faq"), class: "text-sm font-medium text-gray-600 hover:text-gray-900" %>
+        </div>
+      </div>
+    </header>
+  <% end %>
+
+  <div class="max-w-4xl mx-auto px-4 md:px-6 py-12 md:py-16">
+    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Conditions générales de services</h1>
+    <p class="text-sm text-gray-600 mb-8">Dernière mise à jour : 13 janvier 2026</p>
+
+    <div class="prose prose-lg max-w-none">
+      <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">PRÉAMBULE</h2>
+      <p class="text-gray-700 leading-relaxed mb-6">
+        La plateforme ProfConnect, accessible à l'adresse https://www.profconnnect.fr, est un espace numérique dédié à l'excellence éducative. Elle a pour mission exclusive de faciliter la mise en relation entre des enseignants titulaires ou retraités de l'Éducation Nationale (ci-après « les Professeurs ») et des particuliers (ci-après « les Familles »). En accédant au service ou en créant un compte, chaque utilisateur accepte sans réserve l'intégralité des présentes conditions.
+      </p>
+
+      <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">ARTICLE 1 – NATURE ET LIMITES DU SERVICE</h2>
+      <div class="text-gray-700 leading-relaxed space-y-4 mb-6">
+        <p>
+          <strong>1.1. Rôle de tiers de confiance :</strong> ProfConnect agit en qualité de simple intermédiaire technique et de facilitateur relationnel. Son intervention se limite à la fourniture d'outils de visibilité (annuaire des profils) et de communication (messagerie).
+        </p>
+        <p>
+          <strong>1.2. Indépendance des parties :</strong> ProfConnect n'est en aucun cas partie aux accords, qu'ils soient écrits ou verbaux, conclus entre les Professeurs et les Familles. La plateforme n'exerce aucun lien de subordination et n'est ni employeur, ni agence de placement, ni organisme de soutien scolaire.
+        </p>
+        <p>
+          <strong>1.3. Exonération de responsabilité :</strong> ProfConnect décline toute responsabilité quant à la qualité des enseignements, l'assiduité des parties, la sécurité lors des cours au domicile, ou la réussite scolaire de l'élève. Tout différend relatif à la prestation de cours ou à son paiement doit être résolu directement entre la Famille et le Professeur.
+        </p>
+      </div>
+
+      <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">ARTICLE 2 – CERTIFICATION ET ÉLIGIBILITÉ DES PROFESSEURS</h2>
+      <div class="text-gray-700 leading-relaxed space-y-4 mb-6">
+        <p>
+          <strong>2.1. Qualité requise :</strong> L'inscription en tant que Professeur est strictement réservée aux personnes majeures titulaires d'un diplôme d'État ou d'un concours de l'enseignement délivré par l'Éducation Nationale française.
+        </p>
+        <p>
+          <strong>2.2. Processus de vérification :</strong> Le Professeur s'engage à fournir une preuve numérique de ses titres (diplôme, arrêté de titularisation). ProfConnect effectue une vérification de cohérence avant validation.
+        </p>
+        <p>
+          <strong>2.3. Hygiène numérique :</strong> Afin de garantir la confidentialité absolue des données sensibles, les copies de diplômes sont définitivement détruites dès la validation du profil. ProfConnect ne saurait être tenu responsable en cas de manœuvres frauduleuses ou de falsification documentaire indécelable par des contrôles de cohérence standards.
+        </p>
+      </div>
+
+      <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">ARTICLE 3 – MODALITÉS FINANCIÈRES (ABONNEMENT)</h2>
+      <div class="text-gray-700 leading-relaxed space-y-4 mb-6">
+        <p>
+          <strong>3.1. Pour les Familles :</strong> La création d'un compte, la recherche et la mise en relation sont gratuites.
+        </p>
+        <p>
+          <strong>3.2. Pour les Professeurs :</strong> L'accès aux fonctionnalités de mise en relation est soumis à un engagement forfaitaire annuel, indépendant du nombre de mises en relation ou des montants que le Professeur pourra facturer aux Familles.
+        </p>
+        <p class="ml-4">
+          Options de paiement : Le Professeur peut choisir un règlement en une échéance annuelle unique ou par prélèvements mensuels.
+        </p>
+        <p class="ml-4">
+          Tacite reconduction : À l'issue de la période initiale de 12 mois, l'abonnement est renouvelé automatiquement pour des périodes successives d'un an, sauf dénonciation par le Professeur.
+        </p>
+        <p>
+          <strong>3.3. Absence de commission :</strong> ProfConnect ne perçoit aucune commission sur les heures de cours. La rémunération convenue est versée à 100% par la Famille au Professeur selon des modalités qu'ils auront définies ensemble.
+        </p>
+        <p>
+          <strong>3.4. Droit de rétractation :</strong> Le service de mise en relation débutant immédiatement après le premier paiement, le Professeur renonce expressément à son droit de rétractation de 14 jours, conformément à l'article L.221-28 du Code de la consommation.
+        </p>
+      </div>
+
+      <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">ARTICLE 4 – OBLIGATIONS SOCIALES ET FISCALES</h2>
+      <div class="text-gray-700 leading-relaxed space-y-4 mb-6">
+        <p>
+          <strong>4.1. Responsabilité de la Famille :</strong> En cas de cours à domicile, la Famille agit en qualité de particulier-employeur. Il lui appartient de s'acquitter des formalités administratives et des charges sociales afférentes.
+        </p>
+        <p>
+          <strong>4.2. Responsabilité du Professeur :</strong> Le Professeur est seul responsable de la déclaration des revenus perçus auprès des autorités fiscales compétentes.
+        </p>
+        <p>
+          <strong>4.3. Déshérence :</strong> ProfConnect ne pourra être inquiété pour tout défaut de déclaration ou toute pratique de travail dissimulé entre les utilisateurs.
+        </p>
+      </div>
+
+      <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">ARTICLE 5 – DROIT À L'IMAGE ET PROPRIÉTÉ</h2>
+      <p class="text-gray-700 leading-relaxed mb-6">
+        En publiant une photographie sur son profil, le Professeur concède à ProfConnect une licence gratuite d'utilisation de son image pour la promotion exclusive de la plateforme sur tout support numérique. Les contenus textuels des annonces sont sous la responsabilité de leurs auteurs.
+      </p>
+
+      <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">ARTICLE 6 – PROTECTION DES DONNÉES (RGPD)</h2>
+      <div class="text-gray-700 leading-relaxed space-y-4 mb-6">
+        <p>Les informations collectées sont traitées pour la gestion des comptes et la mise en relation.</p>
+        <p>Contact RGPD : contact@prof-connect.fr.</p>
+        <p>Droit des utilisateurs : Accès, rectification et suppression sur simple demande.</p>
+        <p>Conservation : 3 ans après la dernière activité de l'utilisateur.</p>
+      </div>
+
+      <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">ARTICLE 7 – RÉSILIATION</h2>
+      <p class="text-gray-700 leading-relaxed mb-6">
+        En cas de manquement grave aux règles de courtoisie, de fraude sur les diplômes ou d'utilisation détournée de la plateforme, ProfConnect se réserve le droit de suspendre ou de supprimer un compte de plein droit, sans préavis ni remboursement des périodes d'abonnement entamées.
+      </p>
+
+      <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">ARTICLE 8 – DROIT APPLICABLE ET LITIGES</h2>
+      <p class="text-gray-700 leading-relaxed mb-6">
+        Les présentes conditions sont régies par le droit français. En cas de litige relatif à l'interprétation ou à l'exécution des présentes, et à défaut de résolution amiable, les tribunaux de Paris seront seuls compétents.
+      </p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-t border-stone-200">
+    <div class="max-w-6xl mx-auto px-4 md:px-6 py-10">
+      <div class="flex flex-col md:flex-row md:justify-between gap-8 md:gap-12">
+        <div class="space-y-2">
+          <div class="text-lg font-semibold text-[#fe6618]">ProfConnect</div>
+          <p class="text-sm text-gray-500">© 2026 ProfConnect. Tous droits réservés.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 flex-1 md:max-w-2xl">
+          <!-- Colonne 1 – ProfConnect -->
+          <div class="space-y-3">
+            <h3 class="text-sm font-semibold text-gray-900 mb-3">ProfConnect</h3>
+            <ul class="space-y-2 text-sm text-gray-600">
+              <li>
+                <%= link_to "Pourquoi ProfConnect ?", root_path(anchor: "pourquoi"), class: "hover:text-[#fe6618]" %>
+              </li>
+              <li>
+                <%= link_to "FAQ", root_path(anchor: "faq"), class: "hover:text-[#fe6618]" %>
+              </li>
+              <li>
+                <a href="mailto:contact@prof-connect.fr" class="hover:text-[#fe6618]">contact@prof-connect.fr</a>
+              </li>
+            </ul>
+          </div>
+          <!-- Colonne 2 – Légal -->
+          <div class="space-y-3">
+            <h3 class="text-sm font-semibold text-gray-900 mb-3">Légal</h3>
+            <ul class="space-y-2 text-sm text-gray-600">
+              <li>
+                <%= link_to "Conditions générales", conditions_generales_path, class: "hover:text-[#fe6618]" %>
+              </li>
+              <li>
+                <%= link_to "Politique de confidentialité", politique_de_confidentialite_path, class: "hover:text-[#fe6618]" %>
+              </li>
+              <li>
+                <%= link_to "Mentions légales", mentions_legales_path, class: "hover:text-[#fe6618]" %>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>

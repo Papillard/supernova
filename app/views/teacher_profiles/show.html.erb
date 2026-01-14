@@ -264,18 +264,6 @@
             </div>
           </div>
 
-          <!-- Consentement RGPD -->
-          <div class="card bg-white shadow-sm">
-            <div class="card-body">
-              <div class="form-control overflow-hidden">
-                <label class="flex items-start gap-3 cursor-pointer py-2">
-                  <%= f.check_box :rgpd_consent, { checked: @teacher.rgpd_consent, class: "custom-checkbox flex-shrink-0 mt-0.5" }, true, false %>
-                  <span class="text-sm leading-relaxed">J'accepte que mes coordonnées soient partagées quand j'accepte une mise en relation. *</span>
-                </label>
-              </div>
-            </div>
-          </div>
-
           <!-- Navigation -->
           <div class="flex">
             <button type="button" data-action="click->tabs#next" class="btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg w-full md:w-auto md:ml-auto">

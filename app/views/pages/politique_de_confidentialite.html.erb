@@ -1,0 +1,194 @@
+<% content_for(:title) { "Politique de confidentialité | ProfConnect" } %>
+
+<div class="min-h-screen bg-white text-gray-900 pb-20 md:pb-0">
+  <!-- Mobile Header (visible only on mobile) -->
+  <header class="md:hidden sticky top-0 z-50 bg-white border-b border-stone-200">
+    <div class="px-4 py-3 flex items-center justify-between">
+      <%= link_to root_path do %>
+        <%= image_tag "logo.png", alt: "ProfConnect", style: "height: 40px; width: auto;" %>
+      <% end %>
+      <% if user_signed_in? %>
+        <div class="dropdown dropdown-end">
+          <label tabindex="0" class="btn btn-ghost btn-circle avatar">
+            <div class="w-9 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+              <% if current_user.teacher? && current_user.teacher&.profile_image_url.present? %>
+                <%= image_tag current_user.teacher.profile_image_url, alt: "Avatar", class: "w-full h-full object-cover" %>
+              <% else %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              <% end %>
+            </div>
+          </label>
+          <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[100] p-2 shadow bg-white rounded-box w-40">
+            <li>
+              <%= button_to "Déconnexion", destroy_user_session_path, method: :delete, class: "text-left w-full" %>
+            </li>
+          </ul>
+        </div>
+      <% end %>
+    </div>
+  </header>
+
+  <!-- Desktop Header (hidden on mobile) -->
+  <% if user_signed_in? %>
+    <header class="hidden md:block sticky top-0 z-50 bg-white border-b border-stone-200">
+      <div class="navbar max-w-7xl mx-auto px-4 md:px-6">
+        <div class="flex-1">
+          <%= link_to root_path, class: "flex items-center space-x-2" do %>
+            <%= image_tag "logo.png", alt: "ProfConnect", style: "height: 50px; width: auto;" %>
+          <% end %>
+        </div>
+        <div class="flex-none gap-6 items-center">
+          <%= render "shared/navbar_logged_in" %>
+        </div>
+      </div>
+    </header>
+  <% else %>
+    <header class="hidden md:block sticky top-0 z-50 bg-white border-b border-stone-200">
+      <div class="navbar max-w-7xl mx-auto px-4 md:px-6">
+        <div class="flex-1">
+          <%= link_to root_path, class: "flex items-center space-x-2" do %>
+            <%= image_tag "logo.png", alt: "ProfConnect", style: "height: 50px; width: auto;" %>
+          <% end %>
+        </div>
+        <div class="flex-none flex items-center space-x-8">
+          <%= link_to "Pourquoi ProfConnect ?", root_path(anchor: "pourquoi"), class: "text-sm font-medium text-gray-600 hover:text-gray-900" %>
+          <%= link_to "FAQ", root_path(anchor: "faq"), class: "text-sm font-medium text-gray-600 hover:text-gray-900" %>
+        </div>
+      </div>
+    </header>
+  <% end %>
+
+  <div class="max-w-4xl mx-auto px-4 md:px-6 py-12 md:py-16">
+    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Politique de confidentialité</h1>
+    <p class="text-sm text-gray-600 mb-8">Dernière mise à jour : 14 janvier 2026</p>
+
+    <div class="prose prose-lg max-w-none">
+      <p class="text-gray-700 leading-relaxed mb-6">
+        ProfConnect attache une importance capitale à la protection de la vie privée des enseignants et des familles. Cette politique détaille la manière dont ProfConnect traite vos données personnelles avec rigueur et transparence.
+      </p>
+
+      <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">1. RESPONSABLE DU TRAITEMENT</h2>
+      <p class="text-gray-700 leading-relaxed mb-6">
+        Les données sont collectées et traitées par Gaëlle Bailly-Maître, agissant pour le compte de la société ProfConnect (en cours de formation), dont le siège social est situé au 11 rue Villebois Mareuil, 75017 Paris. Contact : contact@prof-connect.fr
+      </p>
+
+      <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">2. DONNÉES COLLECTÉES ET FINALITÉS</h2>
+      <p class="text-gray-700 leading-relaxed mb-4">
+        Nous collectons uniquement les données strictement nécessaires à la mise en relation d'excellence que nous proposons :
+      </p>
+      <div class="text-gray-700 leading-relaxed space-y-4 mb-6">
+        <p>
+          <strong>Pour les Professeurs :</strong> Identité (nom, prénom), coordonnées (email, téléphone), photographie de profil, parcours académique, et justificatifs de diplômes ou de titularisation.
+        </p>
+        <p class="ml-4">
+          <strong>Finalité :</strong> Certification du profil et présentation aux familles.
+        </p>
+        <p>
+          <strong>Pour les Familles :</strong> Identité, coordonnées, zone géographique, et besoins pédagogiques de l'enfant.
+        </p>
+        <p class="ml-4">
+          <strong>Finalité :</strong> Mise en relation avec les professeurs sélectionnés.
+        </p>
+      </div>
+
+      <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">3. LE PRINCIPE DE "VÉRIFICATION ÉPHÉMÈRE" DES DIPLÔMES</h2>
+      <p class="text-gray-700 leading-relaxed mb-6">
+        Conformément à notre charte d'éthique, les justificatifs de diplômes envoyés par les professeurs pour la certification de leur compte sont définitivement supprimés de nos serveurs dès que la vérification manuelle a été effectuée par nos soins. Aucune copie n'est conservée à long terme, garantissant ainsi une sécurité maximale contre l'usurpation d'identité.
+      </p>
+
+      <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">4. BASE JURIDIQUE DU TRAITEMENT</h2>
+      <p class="text-gray-700 leading-relaxed mb-4">
+        Le traitement de vos données repose sur :
+      </p>
+      <ul class="text-gray-700 leading-relaxed space-y-2 mb-6 list-disc list-inside">
+        <li><strong>L'exécution du contrat :</strong> Pour permettre la mise en relation et l'accès aux services de la plateforme.</li>
+        <li><strong>Votre consentement :</strong> Pour l'utilisation de votre image ou l'envoi de communications informatives.</li>
+      </ul>
+
+      <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">5. DESTINATAIRES DES DONNÉES</h2>
+      <div class="text-gray-700 leading-relaxed space-y-4 mb-6">
+        <p>Vos données sont destinées exclusivement à l'usage interne de ProfConnect.</p>
+        <p>Les coordonnées des Familles ne sont transmises au Professeur qu'après acceptation mutuelle de la mise en relation.</p>
+        <p>Nous ne vendons, ne louons ni n'échangeons aucune base de données avec des tiers à des fins commerciales.</p>
+      </div>
+
+      <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">6. DURÉE DE CONSERVATION</h2>
+      <div class="text-gray-700 leading-relaxed space-y-4 mb-6">
+        <p>
+          <strong>Comptes actifs :</strong> Les données sont conservées tant que le compte est utilisé.
+        </p>
+        <p>
+          <strong>Inactivité :</strong> En l'absence de connexion pendant une durée de 3 ans, le compte et l'intégralité des données associées sont supprimés de nos bases.
+        </p>
+        <p>
+          <strong>Justificatifs de diplômes :</strong> Destruction sous 48h à 72h (après validation du profil).
+        </p>
+      </div>
+
+      <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">7. SÉCURITÉ ET HÉBERGEMENT</h2>
+      <p class="text-gray-700 leading-relaxed mb-6">
+        Les données sont hébergées sur des serveurs sécurisés situés en Union Européenne. Nous mettons en œuvre des mesures techniques rigoureuses pour prévenir tout accès non autorisé, perte ou altération de vos informations.
+      </p>
+
+      <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">8. VOS DROITS</h2>
+      <p class="text-gray-700 leading-relaxed mb-4">
+        Conformément au RGPD, vous disposez des droits suivants sur vos données :
+      </p>
+      <ul class="text-gray-700 leading-relaxed space-y-2 mb-4 list-disc list-inside">
+        <li>Droit d'accès et de rectification.</li>
+        <li>Droit à l'effacement ("droit à l'oubli").</li>
+        <li>Droit à la limitation du traitement.</li>
+        <li>Droit à la portabilité de vos données.</li>
+      </ul>
+      <p class="text-gray-700 leading-relaxed mb-6">
+        Pour exercer ces droits, il vous suffit de nous contacter à : <a href="mailto:contact@prof-connect.fr" class="text-[#fe6618] hover:underline">contact@prof-connect.fr</a>.
+      </p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-t border-stone-200">
+    <div class="max-w-6xl mx-auto px-4 md:px-6 py-10">
+      <div class="flex flex-col md:flex-row md:justify-between gap-8 md:gap-12">
+        <div class="space-y-2">
+          <div class="text-lg font-semibold text-[#fe6618]">ProfConnect</div>
+          <p class="text-sm text-gray-500">© 2026 ProfConnect. Tous droits réservés.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 flex-1 md:max-w-2xl">
+          <!-- Colonne 1 – ProfConnect -->
+          <div class="space-y-3">
+            <h3 class="text-sm font-semibold text-gray-900 mb-3">ProfConnect</h3>
+            <ul class="space-y-2 text-sm text-gray-600">
+              <li>
+                <%= link_to "Pourquoi ProfConnect ?", root_path(anchor: "pourquoi"), class: "hover:text-[#fe6618]" %>
+              </li>
+              <li>
+                <%= link_to "FAQ", root_path(anchor: "faq"), class: "hover:text-[#fe6618]" %>
+              </li>
+              <li>
+                <a href="mailto:contact@prof-connect.fr" class="hover:text-[#fe6618]">contact@prof-connect.fr</a>
+              </li>
+            </ul>
+          </div>
+          <!-- Colonne 2 – Légal -->
+          <div class="space-y-3">
+            <h3 class="text-sm font-semibold text-gray-900 mb-3">Légal</h3>
+            <ul class="space-y-2 text-sm text-gray-600">
+              <li>
+                <%= link_to "Conditions générales", conditions_generales_path, class: "hover:text-[#fe6618]" %>
+              </li>
+              <li>
+                <%= link_to "Politique de confidentialité", politique_de_confidentialite_path, class: "hover:text-[#fe6618]" %>
+              </li>
+              <li>
+                <%= link_to "Mentions légales", mentions_legales_path, class: "hover:text-[#fe6618]" %>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>

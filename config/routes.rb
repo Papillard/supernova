@@ -23,6 +23,9 @@ Rails.application.routes.draw do
 
   # Pages
   get "pages/home"
+  get "conditions-generales", to: "pages#conditions_generales", as: :conditions_generales
+  get "politique-de-confidentialite", to: "pages#politique_de_confidentialite", as: :politique_de_confidentialite
+  get "mentions-legales", to: "pages#mentions_legales", as: :mentions_legales
 
   # Teacher profile
   get "teacher/profile", to: "teacher_profiles#show", as: :teacher_profile
