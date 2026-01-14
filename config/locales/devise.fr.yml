@@ -58,6 +58,16 @@ fr:
       expired: "a expiré, veuillez en demander un(e) nouveau/nouvelle"
       not_found: "introuvable"
       not_locked: "n'était pas verrouillé(e)"
+      taken: "est déjà utilisé(e)"
       not_saved:
         one: "Une erreur a empêché l'enregistrement :"
         other: "%{count} erreurs ont empêché l'enregistrement :"
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            email:
+              taken: "est déjà utilisé"
+      messages:
+        taken: "est déjà utilisé(e)"

@@ -1,20 +1,20 @@
-<div class="flex-none gap-6 items-center">
+<div class="flex-none flex items-center space-x-8">
+  <%= link_to "Annuaire des professeurs", teachers_path, class: "text-sm font-medium text-gray-600 hover:text-gray-900" %>
   <% if current_user.parent? %>
-    <%= link_to requests_path, class: "text-sm font-medium text-gray-600 hover:text-gray-900 px-4 inline-flex items-center gap-1.5" do %>
+    <%= link_to requests_path, class: "text-sm font-medium text-gray-600 hover:text-gray-900 inline-flex items-center gap-1.5" do %>
       Mes demandes
       <% if current_user.has_unread_requests? %>
         <span class="w-2 h-2 bg-[#fe6618] rounded-full"></span>
       <% end %>
     <% end %>
   <% elsif current_user.teacher? %>
-    <%= link_to teacher_requests_path, class: "text-sm font-medium text-gray-600 hover:text-gray-900 px-4 inline-flex items-center gap-1.5" do %>
+    <%= link_to teacher_requests_path, class: "text-sm font-medium text-gray-600 hover:text-gray-900 inline-flex items-center gap-1.5" do %>
       Mes demandes
       <% if current_user.has_unread_requests? %>
         <span class="w-2 h-2 bg-[#fe6618] rounded-full"></span>
       <% end %>
     <% end %>
   <% end %>
-  <%= link_to "Annuaire des professeurs", teachers_path, class: "text-sm font-medium text-gray-600 hover:text-gray-900 px-4" %>
   <div class="dropdown dropdown-end">
     <label tabindex="0" class="btn btn-ghost btn-circle cursor-pointer p-0">
       <% if current_user.teacher? && current_user.teacher %>

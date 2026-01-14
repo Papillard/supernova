@@ -1,8 +1,20 @@
 <div class="container mx-auto max-w-4xl px-4 py-8">
   <div class="space-y-6">
-    <h1 class="hidden md:block text-xl font-bold text-gray-900">
-      Mon profil professeur
-    </h1>
+    <!-- Header avec titre et bouton -->
+    <div class="hidden md:flex items-baseline justify-between mb-[18px]">
+      <h1 class="text-xl font-bold text-gray-900">
+        Mon profil professeur
+      </h1>
+      <% if current_user.teacher.present? %>
+        <%= link_to teacher_path(current_user.teacher), target: "_blank", class: "btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg flex items-center gap-2" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+          </svg>
+          Voir mon profil public
+        <% end %>
+      <% end %>
+    </div>
 
     <!-- Navigation par onglets (caché sur mobile) -->
     <div data-controller="tabs" data-tabs-active-value="<%= params[:current_tab] || 'profil' %>">
@@ -280,21 +292,21 @@
                 <h2 class="text-xl font-bold text-gray-900 mb-4">Plus d'infos sur vos cours particuliers</h2>
 
                 <!-- Formats de cours -->
-                <div class="form-control">
+                <div class="form-control" data-controller="teaching-formats-filter" data-teaching-formats-filter-zones-section-id-value="zones-desservies-section">
                   <label class="label">
                     <span class="label-text">Où voulez-vous donner cours ?</span>
                   </label>
                   <div class="flex flex-col md:flex-row flex-wrap gap-3 md:gap-4">
                     <label class="flex items-center gap-3 cursor-pointer">
-                      <%= check_box_tag "teacher[teaching_formats][]", "online", @teacher.teaching_formats&.include?("online"), { id: "teacher_teaching_formats_online", class: "custom-checkbox" } %>
+                      <%= check_box_tag "teacher[teaching_formats][]", "online", @teacher.teaching_formats&.include?("online"), { id: "teacher_teaching_formats_online", class: "custom-checkbox", data: { teaching_formats_filter_target: "formatCheckbox", action: "change->teaching-formats-filter#updateZonesSection" } } %>
                       <span class="text-sm">En ligne</span>
                     </label>
                     <label class="flex items-center gap-3 cursor-pointer">
-                      <%= check_box_tag "teacher[teaching_formats][]", "at_student_home", @teacher.teaching_formats&.include?("at_student_home"), { id: "teacher_teaching_formats_at_student_home", class: "custom-checkbox" } %>
+                      <%= check_box_tag "teacher[teaching_formats][]", "at_student_home", @teacher.teaching_formats&.include?("at_student_home"), { id: "teacher_teaching_formats_at_student_home", class: "custom-checkbox", data: { teaching_formats_filter_target: "formatCheckbox", action: "change->teaching-formats-filter#updateZonesSection" } } %>
                       <span class="text-sm">Au domicile de l'élève</span>
                     </label>
                     <label class="flex items-center gap-3 cursor-pointer">
-                      <%= check_box_tag "teacher[teaching_formats][]", "at_teacher_home", @teacher.teaching_formats&.include?("at_teacher_home"), { id: "teacher_teaching_formats_at_teacher_home", class: "custom-checkbox" } %>
+                      <%= check_box_tag "teacher[teaching_formats][]", "at_teacher_home", @teacher.teaching_formats&.include?("at_teacher_home"), { id: "teacher_teaching_formats_at_teacher_home", class: "custom-checkbox", data: { teaching_formats_filter_target: "formatCheckbox", action: "change->teaching-formats-filter#updateZonesSection" } } %>
                       <span class="text-sm">À mon domicile</span>
                     </label>
                   </div>
@@ -312,12 +324,12 @@
                 </div>
 
                 <!-- Localisation -->
-                <div class="grid gap-4 md:grid-cols-3" data-controller="google-places-autocomplete">
+                <div class="grid gap-4 md:grid-cols-2" data-controller="google-places-autocomplete">
                   <div class="form-control">
-                    <%= f.label :address, class: "label" do %>
-                      <span class="label-text">Votre adresse</span>
+                    <%= f.label :city, class: "label" do %>
+                      <span class="label-text">Dans quelle ville habitez-vous ?</span>
                     <% end %>
-                    <%= f.text_field :address, class: "input input-bordered w-full", placeholder: "123 rue de la République", data: { google_places_autocomplete_target: "address" } %>
+                    <%= f.text_field :city, class: "input input-bordered w-full", placeholder: "Paris", data: { google_places_autocomplete_target: "city" } %>
                   </div>
                   <div class="form-control">
                     <%= f.label :zip_code, class: "label" do %>
@@ -325,17 +337,30 @@
                     <% end %>
                     <%= f.text_field :zip_code, class: "input input-bordered w-full", placeholder: "75014", data: { google_places_autocomplete_target: "zipCode" } %>
                   </div>
-                  <div class="form-control">
-                    <%= f.label :city, class: "label" do %>
-                      <span class="label-text">Ville</span>
-                    <% end %>
-                    <%= f.text_field :city, class: "input input-bordered w-full", placeholder: "Paris", data: { google_places_autocomplete_target: "city" } %>
+                </div>
+
+                <!-- Zones desservies -->
+                <div id="zones-desservies-section" class="form-control"
+                     data-controller="zone-selector"
+                     data-zone-selector-initial-zones-value="<%= initial_served_zones.to_json %>"
+                     data-zone-selector-all-zones-value="<%= all_served_zones_for_search.to_json %>"
+                     data-zone-selector-selected-value="<%= (@teacher.served_zones || []).to_json %>">
+                  <%= f.label :served_zones, class: "label" do %>
+                    <span class="label-text">Où souhaitez-vous donner cours ?</span>
+                  <% end %>
+                  <%= hidden_field_tag "teacher[served_zones]", (@teacher.served_zones || []).to_json, data: { zone_selector_target: "input" } %>
+                  <div class="relative">
+                      <input type="text"
+                             placeholder="Sélectionnez les zones desservies"
+                             data-zone-selector-target="searchInput"
+                             data-action="input->zone-selector#search focus->zone-selector#toggleDropdown keydown->zone-selector#handleKeydown"
+                             class="input input-bordered w-full" />
+                    <div data-zone-selector-target="dropdown" class="hidden absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-96 overflow-y-auto">
+                      <!-- Contenu généré par JavaScript -->
+                    </div>
                   </div>
-                  <div class="form-control">
-                    <%= f.label :radius_text, class: "label" do %>
-                      <span class="label-text">À quelle distance pouvez-vous vous déplacer ?</span>
-                    <% end %>
-                    <%= f.select :radius_text, options_for_select(TeachersHelper::RADIUS_OPTIONS, @teacher.radius_text), { prompt: "Sélectionner" }, { class: "select select-bordered w-full" } %>
+                  <div data-zone-selector-target="selectedZones" class="mt-3 flex flex-wrap gap-2">
+                    <!-- Zones sélectionnées affichées ici -->
                   </div>
                 </div>
               </div>

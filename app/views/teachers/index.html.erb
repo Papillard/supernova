@@ -20,7 +20,7 @@
       <div class="card-body">
         <h1 class="text-2xl font-bold text-gray-900 mb-4">Trouvez le bon professeur</h1>
         <%= form_with url: teachers_path, method: :get, local: true,
-            data: { controller: "form", turbo_frame: "teachers_list", turbo_action: "replace" },
+            data: { controller: "form format-filter", turbo_frame: "teachers_list", turbo_action: "replace" },
             class: "flex flex-wrap gap-4 items-end" do |f| %>
           <div class="form-control flex-1 min-w-[200px]">
             <%= f.label :level, "Niveau", class: "label" %>
@@ -35,21 +35,41 @@
                   data: { action: "change->form#submit" } } %>
           </div>
           <div class="form-control flex-1 min-w-[200px]">
-            <%= f.label :city, "Ville", class: "label" %>
-            <%= f.select :city, options_for_select(TeachersHelper::CITIES_OPTIONS, params[:city]), {},
-                { class: "select select-bordered w-full",
-                  data: { action: "change->form#submit" } } %>
-          </div>
-          <div class="form-control flex-1 min-w-[200px]">
             <%= f.label :format, "Format", class: "label" %>
             <%= f.select :format, options_for_select([
               ["Tous les formats", ""],
               ["Au domicile de l'élève", "at_student_home"],
               ["Au domicile du professeur", "at_teacher_home"],
-              ["Online", "online"]
+              ["En ligne", "online"]
             ], params[:format]), {},
                 { class: "select select-bordered w-full",
-                  data: { action: "change->form#submit" } } %>
+                  id: "format-select",
+                  data: {
+                    format_filter_target: "format",
+                    action: "change->format-filter#formatChanged change->form#submit"
+                  } } %>
+          </div>
+          <div class="form-control flex-1 min-w-[200px]"
+               data-controller="zone-selector"
+               data-zone-selector-initial-zones-value="<%= initial_served_zones.to_json %>"
+               data-zone-selector-all-zones-value="<%= all_served_zones_for_search.to_json %>"
+               data-zone-selector-selected-value="<%= (params[:zones] ? [params[:zones]] : []).to_json %>"
+               data-zone-selector-single-select-value="true"
+               data-format-filter-target="city">
+            <%= f.label :zones, "Ville ou département", class: "label" %>
+            <% zones_disabled = params[:format] == "online" %>
+            <%= hidden_field_tag "zones", params[:zones] || "", data: { zone_selector_target: "input" } %>
+            <div class="relative">
+              <input type="text"
+                     placeholder="Sélectionnez une zone"
+                     data-zone-selector-target="searchInput"
+                     data-action="input->zone-selector#search focus->zone-selector#toggleDropdown keydown->zone-selector#handleKeydown"
+                     class="input input-bordered w-full <%= zones_disabled ? 'opacity-50 cursor-not-allowed' : '' %>"
+                     disabled="<%= zones_disabled %>" />
+              <div data-zone-selector-target="dropdown" class="hidden absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-96 overflow-y-auto">
+                <!-- Contenu généré par JavaScript -->
+              </div>
+            </div>
           </div>
         <% end %>
       </div>

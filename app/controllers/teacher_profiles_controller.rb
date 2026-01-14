@@ -221,12 +221,21 @@ class TeacherProfilesController < ApplicationController
   end
 
   def normalize_array_params(params_hash)
-    %w[subjects_tags levels exam_tags pedagogy_tags].each do |field|
+    %w[subjects_tags levels exam_tags pedagogy_tags served_zones].each do |field|
       params_hash[field] = params_hash[field].present? ? Array(params_hash[field]).reject(&:blank?) : []
     end
 
     params_hash[:teaching_formats] = params[:teacher][:teaching_formats].present? ?
       Array(params[:teacher][:teaching_formats]).reject(&:blank?) : []
+
+    # Normaliser served_zones si c'est une string JSON
+    if params_hash[:served_zones].is_a?(String)
+      begin
+        params_hash[:served_zones] = JSON.parse(params_hash[:served_zones])
+      rescue JSON::ParserError
+        params_hash[:served_zones] = []
+      end
+    end
 
     # Convertir career_status de la valeur string vers la clé d'enum
     if params_hash[:career_status].present?
@@ -245,14 +254,14 @@ class TeacherProfilesController < ApplicationController
     params.require(:teacher).permit(
       :first_name, :last_name, :gender,
       :academy_name, :school_name, :career_status,
-      :address, :zip_code, :city, :radius_text,
+      :zip_code, :city,
       :support_text, :experience_text, :special_skills_text,
       :interest_text, :exams_raw_text,
       :pricing_text, :target_students_range,
       :email_pro, :email_perso, :phone,
       :profile_image_url, :profile_image_attached, :rgpd_consent, :picture_visible,
       :avatar,
-      subjects_tags: [], levels: [], exam_tags: [], pedagogy_tags: [], teaching_formats: []
+      subjects_tags: [], levels: [], exam_tags: [], pedagogy_tags: [], teaching_formats: [], served_zones: []
     )
   end
 end

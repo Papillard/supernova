@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_13_120000) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_14_101049) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -158,7 +158,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_13_120000) do
     t.bigint "user_id", null: false
     t.string "first_name"
     t.string "last_name"
-    t.string "address"
     t.string "zip_code"
     t.string "city"
     t.string "profile_image_url"
@@ -226,7 +225,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_13_120000) do
     t.text "levels", default: [], array: true
     t.text "subjects_tags", default: [], array: true
     t.text "teaching_formats", default: [], array: true
-    t.string "radius_text"
     t.text "support_text"
     t.text "experience_text"
     t.text "special_skills_text"
@@ -246,9 +244,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_13_120000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "picture_visible", default: false, null: false
-    t.string "address"
     t.string "zip_code"
     t.string "city"
+    t.text "served_zones", default: [], array: true
     t.index ["user_id"], name: "index_teachers_on_user_id", unique: true
   end
 

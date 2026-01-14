@@ -171,7 +171,7 @@ class ParentProfilesController < ApplicationController
 
   def parent_profile_params
     params.require(:parent_profile).permit(
-      :first_name, :last_name, :phone, :address, :zip_code, :city,
+      :first_name, :last_name, :phone, :zip_code, :city,
       :profile_image_url, :avatar
     )
   end

@@ -1,9 +1,9 @@
 import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="google-places-autocomplete"
-// Handles Google Places Autocomplete for address fields
+// Handles Google Places Autocomplete for city and zip code fields
 export default class extends Controller {
-  static targets = ["address", "zipCode", "city"]
+  static targets = ["zipCode", "city"]
 
   connect() {
     // Load Google Places API if not already loaded
@@ -35,39 +35,34 @@ export default class extends Controller {
   }
 
   initializeAutocomplete() {
-    if (!this.hasAddressTarget) {
+    // Use city field for autocomplete
+    if (!this.hasCityTarget) {
       return
     }
 
-    const autocomplete = new google.maps.places.Autocomplete(this.addressTarget, {
-      types: ["address"],
+    const autocomplete = new google.maps.places.Autocomplete(this.cityTarget, {
+      types: ["(cities)"], // Restrict to cities
       componentRestrictions: { country: "fr" } // Restrict to France
     })
 
     autocomplete.addListener("place_changed", () => {
       const place = autocomplete.getPlace()
-      this.fillAddressFields(place)
+      this.fillCityAndZipCode(place)
     })
   }
 
-  fillAddressFields(place) {
+  fillCityAndZipCode(place) {
     if (!place.address_components) {
       return
     }
 
-    let streetNumber = ""
-    let route = ""
     let postalCode = ""
     let city = ""
 
     place.address_components.forEach((component) => {
       const types = component.types
 
-      if (types.includes("street_number")) {
-        streetNumber = component.long_name
-      } else if (types.includes("route")) {
-        route = component.long_name
-      } else if (types.includes("postal_code")) {
+      if (types.includes("postal_code")) {
         postalCode = component.long_name
       } else if (types.includes("locality")) {
         city = component.long_name
@@ -77,20 +72,14 @@ export default class extends Controller {
       }
     })
 
-    // Set address field
-    if (this.hasAddressTarget) {
-      const fullAddress = [streetNumber, route].filter(Boolean).join(" ")
-      this.addressTarget.value = fullAddress || place.formatted_address || ""
+    // Set city (already set by autocomplete, but ensure it's correct)
+    if (this.hasCityTarget && city) {
+      this.cityTarget.value = city
     }
 
     // Set zip code
     if (this.hasZipCodeTarget && postalCode) {
       this.zipCodeTarget.value = postalCode
-    }
-
-    // Set city
-    if (this.hasCityTarget && city) {
-      this.cityTarget.value = city
     }
   }
 

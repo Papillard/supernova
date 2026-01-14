@@ -323,32 +323,214 @@ module TeachersHelper
   def format_location_text(teacher)
     parts = []
 
-    # Adresse complète
+    # Ville et code postal
     if teacher.city.present?
       location_str = teacher.city
       if teacher.zip_code.present?
         location_str += " (#{teacher.zip_code})"
       end
       parts << "Habite à #{location_str}"
-    elsif teacher.address.present?
-      parts << "📍 #{teacher.address}"
-      if teacher.zip_code.present?
-        parts << "(#{teacher.zip_code})"
-      end
     elsif teacher.zip_code.present?
       parts << "📍 #{teacher.zip_code}"
     end
 
-    # Rayon
-    if teacher.radius_text.present?
-      radius_formatted = format_radius_human(teacher.radius_text)
-      if parts.any?
-        parts << "peut donner cours dans un rayon de #{radius_formatted}"
-      else
-        parts << "Rayon d'intervention : #{radius_formatted}"
+    # Zones desservies
+    if teacher.served_zones.present? && teacher.served_zones.any?
+      zones_labels = teacher.served_zones.map do |zone_value|
+        zone = all_served_zones_for_search.find { |z| z[:value] == zone_value }
+        zone ? zone[:label] : zone_value
       end
+      parts << "Zones desservies : #{zones_labels.join(', ')}"
     end
 
     parts.join(", ")
+  end
+
+  # Zones desservies - Structure avec regroupements
+  SERVED_ZONES = {
+    # Île-de-France (affiché au chargement)
+    "ile_de_france" => {
+      label: "Île-de-France",
+      items: {
+        "paris" => { label: "Paris", code: "75", type: "city" },
+        "petite_couronne" => { label: "Petite couronne (92, 93, 94)", codes: ["92", "93", "94"], type: "area" },
+        "grande_couronne" => { label: "Grande couronne (77, 78, 91, 95)", codes: ["77", "78", "91", "95"], type: "area" }
+      }
+    },
+    # Grandes villes (affichées au chargement)
+    "grandes_villes" => {
+      label: "Grandes villes",
+      items: {
+        "lyon" => { label: "Lyon", code: "69", type: "city" },
+        "marseille" => { label: "Marseille", code: "13", type: "city" },
+        "lille" => { label: "Lille", code: "59", type: "city" },
+        "toulouse" => { label: "Toulouse", code: "31", type: "city" },
+        "bordeaux" => { label: "Bordeaux", code: "33", type: "city" },
+        "nantes" => { label: "Nantes", code: "44", type: "city" },
+        "rennes" => { label: "Rennes", code: "35", type: "city" },
+        "strasbourg" => { label: "Strasbourg", code: "67", type: "city" },
+        "montpellier" => { label: "Montpellier", code: "34", type: "city" },
+        "nice" => { label: "Nice", code: "06", type: "city" },
+        "grenoble" => { label: "Grenoble", code: "38", type: "city" },
+        "rouen" => { label: "Rouen", code: "76", type: "city" },
+        "reims" => { label: "Reims", code: "51", type: "city" },
+        "toulon" => { label: "Toulon", code: "83", type: "city" },
+        "saint_etienne" => { label: "Saint-Étienne", code: "42", type: "city" },
+        "tours" => { label: "Tours", code: "37", type: "city" },
+        "clermont_ferrand" => { label: "Clermont-Ferrand", code: "63", type: "city" },
+        "nancy_metz" => { label: "Nancy / Metz", codes: ["54", "57"], type: "area" },
+        "dijon" => { label: "Dijon", code: "21", type: "city" },
+        "angers" => { label: "Angers", code: "49", type: "city" }
+      }
+    },
+    # Départements (affichés uniquement lors de la recherche)
+    "departements" => {
+      label: "Départements",
+      items: {
+        "01" => { label: "Ain (01)", code: "01", type: "department" },
+        "02" => { label: "Aisne (02)", code: "02", type: "department" },
+        "03" => { label: "Allier (03)", code: "03", type: "department" },
+        "04" => { label: "Alpes-de-Haute-Provence (04)", code: "04", type: "department" },
+        "05" => { label: "Hautes-Alpes (05)", code: "05", type: "department" },
+        "06" => { label: "Alpes-Maritimes (06)", code: "06", type: "department" },
+        "07" => { label: "Ardèche (07)", code: "07", type: "department" },
+        "08" => { label: "Ardennes (08)", code: "08", type: "department" },
+        "09" => { label: "Ariège (09)", code: "09", type: "department" },
+        "10" => { label: "Aube (10)", code: "10", type: "department" },
+        "11" => { label: "Aude (11)", code: "11", type: "department" },
+        "12" => { label: "Aveyron (12)", code: "12", type: "department" },
+        "13" => { label: "Bouches-du-Rhône (13)", code: "13", type: "department" },
+        "14" => { label: "Calvados (14)", code: "14", type: "department" },
+        "15" => { label: "Cantal (15)", code: "15", type: "department" },
+        "16" => { label: "Charente (16)", code: "16", type: "department" },
+        "17" => { label: "Charente-Maritime (17)", code: "17", type: "department" },
+        "18" => { label: "Cher (18)", code: "18", type: "department" },
+        "19" => { label: "Corrèze (19)", code: "19", type: "department" },
+        "2A" => { label: "Corse-du-Sud (2A)", code: "2A", type: "department" },
+        "2B" => { label: "Haute-Corse (2B)", code: "2B", type: "department" },
+        "21" => { label: "Côte-d'Or (21)", code: "21", type: "department" },
+        "22" => { label: "Côtes-d'Armor (22)", code: "22", type: "department" },
+        "23" => { label: "Creuse (23)", code: "23", type: "department" },
+        "24" => { label: "Dordogne (24)", code: "24", type: "department" },
+        "25" => { label: "Doubs (25)", code: "25", type: "department" },
+        "26" => { label: "Drôme (26)", code: "26", type: "department" },
+        "27" => { label: "Eure (27)", code: "27", type: "department" },
+        "28" => { label: "Eure-et-Loir (28)", code: "28", type: "department" },
+        "29" => { label: "Finistère (29)", code: "29", type: "department" },
+        "30" => { label: "Gard (30)", code: "30", type: "department" },
+        "31" => { label: "Haute-Garonne (31)", code: "31", type: "department" },
+        "32" => { label: "Gers (32)", code: "32", type: "department" },
+        "33" => { label: "Gironde (33)", code: "33", type: "department" },
+        "34" => { label: "Hérault (34)", code: "34", type: "department" },
+        "35" => { label: "Ille-et-Vilaine (35)", code: "35", type: "department" },
+        "36" => { label: "Indre (36)", code: "36", type: "department" },
+        "37" => { label: "Indre-et-Loire (37)", code: "37", type: "department" },
+        "38" => { label: "Isère (38)", code: "38", type: "department" },
+        "39" => { label: "Jura (39)", code: "39", type: "department" },
+        "40" => { label: "Landes (40)", code: "40", type: "department" },
+        "41" => { label: "Loir-et-Cher (41)", code: "41", type: "department" },
+        "42" => { label: "Loire (42)", code: "42", type: "department" },
+        "43" => { label: "Haute-Loire (43)", code: "43", type: "department" },
+        "44" => { label: "Loire-Atlantique (44)", code: "44", type: "department" },
+        "45" => { label: "Loiret (45)", code: "45", type: "department" },
+        "46" => { label: "Lot (46)", code: "46", type: "department" },
+        "47" => { label: "Lot-et-Garonne (47)", code: "47", type: "department" },
+        "48" => { label: "Lozère (48)", code: "48", type: "department" },
+        "49" => { label: "Maine-et-Loire (49)", code: "49", type: "department" },
+        "50" => { label: "Manche (50)", code: "50", type: "department" },
+        "51" => { label: "Marne (51)", code: "51", type: "department" },
+        "52" => { label: "Haute-Marne (52)", code: "52", type: "department" },
+        "53" => { label: "Mayenne (53)", code: "53", type: "department" },
+        "54" => { label: "Meurthe-et-Moselle (54)", code: "54", type: "department" },
+        "55" => { label: "Meuse (55)", code: "55", type: "department" },
+        "56" => { label: "Morbihan (56)", code: "56", type: "department" },
+        "57" => { label: "Moselle (57)", code: "57", type: "department" },
+        "58" => { label: "Nièvre (58)", code: "58", type: "department" },
+        "59" => { label: "Nord (59)", code: "59", type: "department" },
+        "60" => { label: "Oise (60)", code: "60", type: "department" },
+        "61" => { label: "Orne (61)", code: "61", type: "department" },
+        "62" => { label: "Pas-de-Calais (62)", code: "62", type: "department" },
+        "63" => { label: "Puy-de-Dôme (63)", code: "63", type: "department" },
+        "64" => { label: "Pyrénées-Atlantiques (64)", code: "64", type: "department" },
+        "65" => { label: "Hautes-Pyrénées (65)", code: "65", type: "department" },
+        "66" => { label: "Pyrénées-Orientales (66)", code: "66", type: "department" },
+        "67" => { label: "Bas-Rhin (67)", code: "67", type: "department" },
+        "68" => { label: "Haut-Rhin (68)", code: "68", type: "department" },
+        "69" => { label: "Rhône (69)", code: "69", type: "department" },
+        "70" => { label: "Haute-Saône (70)", code: "70", type: "department" },
+        "71" => { label: "Saône-et-Loire (71)", code: "71", type: "department" },
+        "72" => { label: "Sarthe (72)", code: "72", type: "department" },
+        "73" => { label: "Savoie (73)", code: "73", type: "department" },
+        "74" => { label: "Haute-Savoie (74)", code: "74", type: "department" },
+        "75" => { label: "Paris (75)", code: "75", type: "department" },
+        "76" => { label: "Seine-Maritime (76)", code: "76", type: "department" },
+        "77" => { label: "Seine-et-Marne (77)", code: "77", type: "department" },
+        "78" => { label: "Yvelines (78)", code: "78", type: "department" },
+        "79" => { label: "Deux-Sèvres (79)", code: "79", type: "department" },
+        "80" => { label: "Somme (80)", code: "80", type: "department" },
+        "81" => { label: "Tarn (81)", code: "81", type: "department" },
+        "82" => { label: "Tarn-et-Garonne (82)", code: "82", type: "department" },
+        "83" => { label: "Var (83)", code: "83", type: "department" },
+        "84" => { label: "Vaucluse (84)", code: "84", type: "department" },
+        "85" => { label: "Vendée (85)", code: "85", type: "department" },
+        "86" => { label: "Vienne (86)", code: "86", type: "department" },
+        "87" => { label: "Haute-Vienne (87)", code: "87", type: "department" },
+        "88" => { label: "Vosges (88)", code: "88", type: "department" },
+        "89" => { label: "Yonne (89)", code: "89", type: "department" },
+        "90" => { label: "Territoire de Belfort (90)", code: "90", type: "department" },
+        "91" => { label: "Essonne (91)", code: "91", type: "department" },
+        "92" => { label: "Hauts-de-Seine (92)", code: "92", type: "department" },
+        "93" => { label: "Seine-Saint-Denis (93)", code: "93", type: "department" },
+        "94" => { label: "Val-de-Marne (94)", code: "94", type: "department" },
+        "95" => { label: "Val-d'Oise (95)", code: "95", type: "department" }
+      }
+    },
+    # Outre-mer (affichés uniquement lors de la recherche)
+    "outre_mer" => {
+      label: "Outre-mer",
+      items: {
+        "971" => { label: "Guadeloupe (971)", code: "971", type: "department" },
+        "972" => { label: "Martinique (972)", code: "972", type: "department" },
+        "973" => { label: "Guyane (973)", code: "973", type: "department" },
+        "974" => { label: "La Réunion (974)", code: "974", type: "department" },
+        "976" => { label: "Mayotte (976)", code: "976", type: "department" }
+      }
+    }
+  }.freeze
+
+  # Helper pour obtenir toutes les zones sous forme de liste plate pour la recherche
+  def all_served_zones_for_search
+    zones = []
+    SERVED_ZONES.each do |group_key, group_data|
+      group_data[:items].each do |key, item|
+        zones << {
+          value: "#{group_key}:#{key}",
+          label: item[:label],
+          code: item[:code] || item[:codes],
+          type: item[:type],
+          group: group_data[:label],
+          searchable: "#{item[:label]} #{item[:code] || item[:codes]&.join(' ')}"
+        }
+      end
+    end
+    zones
+  end
+
+  # Helper pour obtenir les zones initiales (Île-de-France + Grandes villes)
+  def initial_served_zones
+    zones = []
+    ["ile_de_france", "grandes_villes"].each do |group_key|
+      group_data = SERVED_ZONES[group_key]
+      group_data[:items].each do |key, item|
+        zones << {
+          value: "#{group_key}:#{key}",
+          label: item[:label],
+          code: item[:code] || item[:codes],
+          type: item[:type],
+          group: group_data[:label]
+        }
+      end
+    end
+    zones
   end
 end

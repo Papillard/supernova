@@ -53,10 +53,9 @@
 
           <div>
             <h3 class="font-semibold text-gray-900 mb-2">Localisation</h3>
-            <p><strong>Adresse:</strong> <%= @teacher.address || "-" %></p>
             <p><strong>Ville:</strong> <%= @teacher.city || "-" %></p>
             <p><strong>Code postal:</strong> <%= @teacher.zip_code || "-" %></p>
-            <p><strong>Rayon:</strong> <%= @teacher.radius_text.present? ? format_radius_human(@teacher.radius_text) : "-" %></p>
+            <p><strong>Zones desservies:</strong> <%= @teacher.served_zones.present? ? @teacher.served_zones.join(", ") : "-" %></p>
           </div>
         </div>
 

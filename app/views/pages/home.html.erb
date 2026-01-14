@@ -1,8 +1,17 @@
 <% content_for(:title) { "ProfConnect | Cours particuliers avec professeurs de l'Éducation nationale" } %>
 
 <div class="min-h-screen bg-white text-gray-900 pb-20 md:pb-0">
+  <!-- Bandeau promotionnel -->
+  <div class="sticky top-0 z-[60] w-full bg-[#FAEBE5] border-b border-[#fe6618]/20">
+    <div class="max-w-full mx-auto px-4 py-2">
+      <p class="text-sm text-center text-[#fe6618] font-medium whitespace-nowrap overflow-hidden text-ellipsis">
+        ⚡ Offre de lancement: accès gratuit pendant 1 an pour les 200 premiers professeurs.
+      </p>
+    </div>
+  </div>
+
   <!-- Mobile Header (visible only on mobile) -->
-  <header class="md:hidden sticky top-0 z-50 bg-white border-b border-stone-200">
+  <header class="md:hidden sticky top-[36px] z-50 bg-white border-b border-stone-200">
     <div class="px-4 py-3 flex items-center justify-between">
       <%= link_to root_path do %>
         <%= image_tag "logo.png", alt: "ProfConnect", style: "height: 40px; width: auto;" %>
@@ -32,7 +41,7 @@
 
   <!-- Desktop Header (hidden on mobile) -->
   <% if user_signed_in? %>
-    <header class="hidden md:block sticky top-0 z-50 bg-white border-b border-stone-200">
+    <header class="hidden md:block sticky top-[36px] z-50 bg-white border-b border-stone-200">
       <div class="navbar max-w-7xl mx-auto px-4 md:px-6">
         <div class="flex-1">
           <%= link_to root_path, class: "flex items-center space-x-2" do %>
@@ -45,7 +54,7 @@
       </div>
     </header>
   <% else %>
-    <header class="hidden md:block sticky top-0 z-50 bg-white border-b border-stone-200">
+    <header class="hidden md:block sticky top-[36px] z-50 bg-white border-b border-stone-200">
       <div class="navbar max-w-7xl mx-auto px-4 md:px-6">
         <div class="flex-1">
           <%= link_to root_path, class: "flex items-center space-x-2" do %>
@@ -74,7 +83,6 @@
               <span class="hero-word">disponibles</span> <span class="hero-word">pour</span> <span class="hero-word">votre</span> <span class="hero-word">enfant.</span>
             </h1>
             <p class="text-xl md:text-2xl text-gray-600 leading-relaxed">Le sérieux de l'école, la proximité du cours particulier.</p>
-            <p class="text-base md:text-sm text-gray-500">Plus de 500 professeurs diplômés de l'Éducation Nationale, partout en France.</p>
             <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-[#fe6618]/10 border border-[#fe6618]/20 rounded-lg">
               <span class="text-xs md:text-sm font-medium text-[#fe6618]">Inscrivez-vous gratuitement sur ProfConnect</span>
             </div>
@@ -333,7 +341,7 @@
               </div>
             </div>
           </article>
-          <article class="card bg-white border border-stone-200 shadow-sm ">
+          <article class="card bg-white border border-stone-200 shadow-sm hidden">
             <div class="card-body space-y-4">
               <div class="text-center">
                 <%= image_tag "boris.jpeg", alt: "Boris Paillard, cofondateur de ProfConnect", class: "h-32 w-32 mx-auto rounded-full object-cover shadow-md" %>
@@ -349,7 +357,7 @@
               </div>
             </div>
           </article>
-          <article class="card bg-white border border-stone-200 shadow-sm ">
+          <article class="card bg-white border border-stone-200 shadow-sm hidden">
             <div class="card-body space-y-4">
               <div class="text-center">
                 <%= image_tag "maxime.jpeg", alt: "Maxime Brunet, cofondateur de ProfConnect", class: "h-32 w-32 mx-auto rounded-full object-cover shadow-md" %>
@@ -373,7 +381,7 @@
     <section class="py-20 md:py-24 bg-gradient-to-r from-gray-900 to-black text-white">
       <div class="container mx-auto max-w-5xl px-6 text-center space-y-6 rounded-2xl py-16">
         <h2 class="text-3xl md:text-4xl font-bold">Offrez à votre enfant l'accompagnement qu'il mérite.</h2>
-        <p class="text-white/90 leading-relaxed">Nos professeurs diplômés de l'Éducation Nationale accompagnent déjà plus de 500 familles partout en France.</p>
+        <p class="text-white/90 leading-relaxed">Nos professeurs diplômés de l'Éducation nationale accompagnent des familles partout en France.</p>
         <div class="flex flex-wrap justify-center gap-4">
           <%= link_to "/teachers",
               class: "btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg",
@@ -416,7 +424,7 @@
 
         <!-- Utilisation de la Plateforme -->
         <div class="space-y-4">
-          <h3 class="text-2xl font-bold text-gray-900">🔍 Utilisation de la Plateforme</h3>
+          <h3 class="text-2xl font-bold text-gray-900">Utilisation de la Plateforme</h3>
           <div class="join join-vertical w-full border border-stone-200 bg-white rounded-lg overflow-hidden">
             <div class="collapse collapse-arrow join-item bg-white">
               <input type="radio" name="faq-usage" id="faq-subjects" />
@@ -438,7 +446,7 @@
 
         <!-- Tarifs et Fonctionnement -->
         <div class="space-y-4">
-          <h3 class="text-2xl font-bold text-gray-900">💰 Tarifs et Fonctionnement</h3>
+          <h3 class="text-2xl font-bold text-gray-900">Tarifs et Fonctionnement</h3>
           <div class="join join-vertical w-full border border-stone-200 bg-white rounded-lg overflow-hidden">
             <div class="collapse collapse-arrow join-item bg-white">
               <input type="radio" name="faq-pricing" id="faq-free" />
@@ -479,6 +487,11 @@
         <%= link_to "Pourquoi ProfConnect ?", "#pourquoi", class: "hover:text-[#fe6618]" %>
         <%= link_to "FAQ", "#faq", class: "hover:text-[#fe6618]" %>
         <a href="mailto:contact@prof-connect.fr" class="hover:text-[#fe6618]">contact@prof-connect.fr</a>
+      </div>
+    </div>
+    <div class="border-t border-stone-200">
+      <div class="max-w-6xl mx-auto px-4 md:px-6 py-4">
+        <p class="text-sm text-gray-500 text-center">© 2026 ProfConnect. Tous droits réservés.</p>
       </div>
     </div>
   </footer>

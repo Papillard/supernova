@@ -30,13 +30,22 @@
 
   <body class="bg-base-100 text-base-content">
     <!-- Flash Messages -->
-    <div id="flash-messages" class="fixed top-16 md:top-20 right-4 z-50 space-y-2 max-w-md">
+    <div id="flash-messages" class="fixed top-20 md:top-24 right-4 z-50 space-y-2 max-w-md">
       <%= render "shared/flash" %>
     </div>
 
     <div class="min-h-screen flex flex-col">
+      <!-- Bandeau promotionnel -->
+      <div class="sticky top-0 z-[60] w-full bg-[#FAEBE5] border-b border-[#fe6618]/20">
+        <div class="max-w-full mx-auto px-4 py-2">
+          <p class="text-sm text-center text-[#fe6618] font-medium whitespace-nowrap overflow-hidden text-ellipsis">
+            ⚡ Offre de lancement: accès gratuit pendant 1 an pour les 200 premiers professeurs.
+          </p>
+        </div>
+      </div>
+
       <!-- Mobile Header (visible only on mobile) -->
-      <header class="md:hidden sticky top-0 z-50 bg-white border-b border-stone-200">
+      <header class="md:hidden sticky top-[36px] z-50 bg-white border-b border-stone-200">
         <div class="px-4 py-3 flex items-center justify-between">
           <%= link_to root_path do %>
             <%= image_tag "logo.png", alt: "ProfConnect", style: "height: 40px; width: auto;" %>
@@ -65,7 +74,7 @@
       </header>
 
       <!-- Desktop Navbar (hidden on mobile) -->
-      <header class="hidden md:block sticky top-0 z-50 bg-white border-b border-stone-200">
+      <header class="hidden md:block sticky top-[36px] z-50 bg-white border-b border-stone-200">
         <div class="navbar max-w-7xl mx-auto px-4 md:px-6">
           <div class="flex-1">
             <%= link_to root_path, class: "flex items-center space-x-2" do %>

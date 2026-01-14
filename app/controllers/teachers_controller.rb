@@ -14,9 +14,11 @@ class TeachersController < ApplicationController
       @teachers = @teachers.where("? = ANY(subjects_tags)", params[:subject])
     end
 
-    # Filtre par ville
-    if params[:city].present?
-      @teachers = @teachers.where("LOWER(city) LIKE ?", "%#{params[:city].downcase}%")
+    # Filtre par zone (ville ou département) - single select
+    if params[:zones].present?
+      zone_value = params[:zones].to_s
+      # Chercher les teachers qui ont cette zone dans served_zones
+      @teachers = @teachers.where("? = ANY(served_zones)", zone_value)
     end
 
     # Filtre par format d'enseignement

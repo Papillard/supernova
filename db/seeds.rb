@@ -21,7 +21,17 @@ end
 def clean_levels(levels)
   return [] if levels.nil?
   valid_levels = ["primaire", "college", "lycee", "prepa", "autre"]
-  levels.select { |l| valid_levels.include?(l) }
+  # Mapping des variations
+  level_mapping = {
+    "lycée" => "lycee",
+    "lycee" => "lycee",
+    "collège" => "college",
+    "college" => "college",
+    "primaire" => "primaire",
+    "prépa" => "prepa",
+    "prepa" => "prepa"
+  }
+  levels.map { |l| level_mapping[l.downcase] || l.downcase }.select { |l| valid_levels.include?(l) }
 end
 
 # Helper pour nettoyer les matières
@@ -33,6 +43,8 @@ def clean_subjects(subjects)
   subject_mapping = {
     "histoire-geographie" => "histoire-geographie",
     "histoire-geo" => "histoire-geographie",
+    "histoire" => "histoire-geographie",
+    "geographie" => "histoire-geographie",
     "hggsp" => "hggsp",
     "emc" => "emc",
     "mathematiques" => "mathematiques",
@@ -160,6 +172,17 @@ teachers_data.each_with_index do |teacher_data, index|
   pedagogy_tags = clean_pedagogy_tags(teacher_data['pedagogy_tags'] || [])
   teaching_formats = clean_teaching_formats(teacher_data['teaching_formats'] || [])
 
+  # Nettoyer career_status
+  career_status = teacher_data['career_status']
+  career_status_mapping = {
+    "certifié" => "certifie",
+    "certifie" => "certifie",
+    "agrégé" => "agrege",
+    "agrege" => "agrege",
+    "prof_des_ecoles" => "prof_des_ecoles"
+  }
+  career_status = career_status_mapping[career_status] || career_status || "certifie"
+
   # Créer ou trouver l'utilisateur
   email_pro = teacher_data['email_pro']
   # Nettoyer l'email : enlever les espaces, null, etc.
@@ -185,6 +208,16 @@ teachers_data.each_with_index do |teacher_data, index|
   # Créer ou mettre à jour le teacher
   teacher = Teacher.find_or_initialize_by(user: user)
 
+  # Nettoyer le numéro de téléphone (enlever parenthèses, espaces, etc.)
+  phone = teacher_data['phone']
+  if phone
+    phone = phone.to_s.gsub(/[^\d+]/, '').strip
+    phone = nil if phone.blank?
+  end
+
+  # Récupérer served_zones (array)
+  served_zones = teacher_data['served_zones'] || []
+
   teacher.assign_attributes(
     first_name: teacher_data['first_name'] || "Prénom",
     last_name: teacher_data['last_name'] || "Nom",
@@ -192,14 +225,13 @@ teachers_data.each_with_index do |teacher_data, index|
     gender: teacher_data['gender'] || "female",
     academy_name: teacher_data['academy_name'],
     school_name: teacher_data['school_name'],
-    career_status: teacher_data['career_status'] || "certifie",
+    career_status: career_status,
     levels: levels,
     subjects_tags: subjects,
     teaching_formats: teaching_formats,
-    address: teacher_data['address'] || teacher_data['base_address'],
     zip_code: teacher_data['zip_code'] || teacher_data['base_zip_code'],
     city: teacher_data['city'] || teacher_data['base_city'],
-    radius_text: teacher_data['radius_text'],
+    served_zones: served_zones,
     support_text: teacher_data['support_text'],
     experience_text: teacher_data['experience_text'],
     special_skills_text: teacher_data['special_skills_text'],
@@ -208,9 +240,10 @@ teachers_data.each_with_index do |teacher_data, index|
     exam_tags: exam_tags,
     pedagogy_tags: pedagogy_tags,
     pricing_text: teacher_data['pricing_text'],
+    target_students_range: teacher_data['target_students_range'],
     email_pro: email_pro,
     email_perso: teacher_data['email_perso'],
-    phone: teacher_data['phone'],
+    phone: phone,
     profile_image_url: random_photo_url(teacher_data['gender'] || "female", index),
     status: teacher_data['status'] || "pending",
     rgpd_consent: teacher_data['rgpd_consent'] || false,

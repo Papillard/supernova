@@ -112,24 +112,13 @@
                 <% end %>
 
                 <!-- Localisation -->
-                <% if @teacher.city.present? || @teacher.radius_text.present? %>
+                <% if @teacher.city.present? %>
                   <p>
                     Je suis basé<% if @teacher.gender == "female" %>e<% end %>
-                    <% if @teacher.city.present? %>
-                      à <strong><%= @teacher.city %></strong>
-                      <% if @teacher.zip_code.present? %>
-                        (<%= @teacher.zip_code %>)
-                      <% end %>
-                    <% end %>
-                    <% if @teacher.radius_text.present? %>
-                      <% if @teacher.city.present? %>
-                        et je peux me déplacer dans un rayon de <%= format_radius_human(@teacher.radius_text).gsub("Se déplace de ", "") %>.
-                      <% else %>
-                        Je peux me déplacer dans un rayon de <%= format_radius_human(@teacher.radius_text).gsub("Se déplace de ", "") %>.
-                      <% end %>
-                    <% else %>
-                      .
-                    <% end %>
+                    à <strong><%= @teacher.city %></strong>
+                    <% if @teacher.zip_code.present? %>
+                      (<%= @teacher.zip_code %>)
+                    <% end %>.
                   </p>
                 <% end %>
 
