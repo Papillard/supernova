@@ -230,30 +230,41 @@
 
                     <!-- Modale Matières -->
                     <div data-selection-modal-target="modal" class="hidden fixed inset-0 z-50 flex items-center justify-center" style="background-color: rgba(0,0,0,0.7);" data-action="click->selection-modal#backdropClick">
-                      <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full mx-4 max-h-[80vh] flex flex-col">
+                      <div class="bg-white rounded-lg shadow-xl max-w-3xl w-full mx-4 max-h-[80vh] flex flex-col">
                         <div class="flex items-center justify-between p-4 border-b">
                           <h3 class="text-lg font-semibold">Sélectionner les matières</h3>
                           <button type="button" data-action="click->selection-modal#close" class="btn btn-sm btn-circle btn-ghost">✕</button>
                         </div>
                         <div class="p-4 overflow-y-auto flex-1">
-                          <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-                            <% TeachersHelper::SUBJECTS_OPTIONS.each do |label, value| %>
-                              <label class="flex items-center gap-3 cursor-pointer p-2 rounded hover:bg-base-200 transition">
-                                <%= check_box_tag "subjects_checkbox_#{value}", value, @teacher.subjects_tags&.include?(value),
-                                    {
-                                      class: "custom-checkbox",
-                                      data: {
-                                        selection_modal_target: "checkbox",
-                                        label: label,
-                                        action: "change->selection-modal#updateSelection"
-                                      }
-                                    } %>
-                                <span class="text-base"><%= label %></span>
-                              </label>
+                          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <% TeachersHelper::SUBJECTS_GROUPED.each do |group_name, subjects| %>
+                              <div class="flex flex-col">
+                                <h4 class="text-sm font-semibold text-gray-700 mb-2"><%= group_name %></h4>
+                                <div class="flex flex-col gap-1">
+                                  <% subjects.each do |label, value| %>
+                                    <label class="flex items-center gap-2 cursor-pointer p-1.5 rounded hover:bg-base-200 transition">
+                                      <%= check_box_tag "subjects_checkbox_#{value}", value, @teacher.subjects_tags&.include?(value),
+                                          {
+                                            class: "custom-checkbox flex-shrink-0",
+                                            data: {
+                                              selection_modal_target: "checkbox",
+                                              label: label,
+                                              action: "change->selection-modal#updateSelection"
+                                            }
+                                          } %>
+                                      <span class="text-sm whitespace-normal"><%= label %></span>
+                                    </label>
+                                  <% end %>
+                                </div>
+                              </div>
                             <% end %>
                           </div>
                         </div>
-                        <div class="p-4 border-t flex justify-end">
+                        <div class="p-4 border-t flex items-center justify-between">
+                          <p class="text-sm text-gray-600">
+                            Votre matière n'est pas dans cette liste ?
+                            <%= link_to "Envoyez-nous un message", "mailto:contact@prof-connect.fr", class: "text-[#fe6618] hover:underline" %>
+                          </p>
                           <button type="button" data-action="click->selection-modal#close" class="btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white">Fermer</button>
                         </div>
                       </div>
@@ -402,7 +413,7 @@
                           <button type="button" data-action="click->selection-modal#close" class="btn btn-sm btn-circle btn-ghost">✕</button>
                         </div>
                         <div class="p-4 overflow-y-auto flex-1">
-                          <div class="grid grid-cols-1 md:grid-cols-4 gap-2">
+                          <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
                             <% TeachersHelper::EXAM_TAGS_OPTIONS.each do |label, value| %>
                               <label class="flex items-center gap-3 cursor-pointer p-2 rounded hover:bg-base-200 transition">
                                 <%= check_box_tag "exam_checkbox_#{value}", value, @teacher.exam_tags&.include?(value),
@@ -453,7 +464,7 @@
                           <button type="button" data-action="click->selection-modal#close" class="btn btn-sm btn-circle btn-ghost">✕</button>
                         </div>
                         <div class="p-4 overflow-y-auto flex-1">
-                          <div class="grid grid-cols-1 md:grid-cols-4 gap-2">
+                          <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
                             <% TeachersHelper::PEDAGOGY_TAGS_OPTIONS.each do |label, value| %>
                               <label class="flex items-center gap-3 cursor-pointer p-2 rounded hover:bg-base-200 transition">
                                 <%= check_box_tag "pedagogy_checkbox_#{value}", value, @teacher.pedagogy_tags&.include?(value),

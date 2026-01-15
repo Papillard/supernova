@@ -20,49 +20,118 @@ module TeachersHelper
   # Matières disponibles (liste unique sans groupement)
   SUBJECTS_OPTIONS = [
     ["Aide aux devoirs", "aide_aux_devoirs"],
+    ["Lecture / Écriture", "lecture_ecriture"],
     ["Mathématiques", "mathematiques"],
     ["Français", "francais"],
     ["Anglais", "anglais"],
-    ["Espagnol", "espagnol"],
-    ["Allemand", "allemand"],
-    ["Italien", "italien"],
     ["Physique-Chimie", "physique-chimie"],
     ["SVT", "svt"],
     ["Histoire-Géographie", "histoire-geographie"],
-    ["HGGSP", "hggsp"],
     ["SES", "ses"],
-    ["EMC", "emc"],
-    ["Technologie", "technologie"],
-    ["SNT", "snt"],
-    ["NSI", "nsi"],
-    ["Lecture / Écriture", "lecture_ecriture"],
+    ["Espagnol", "espagnol"],
+    ["Allemand", "allemand"],
     ["Philosophie", "philosophie"],
-    ["Littérature", "litterature"],
-    ["Géopolitique", "geopolitique"],
+    ["NSI", "nsi"],
+    ["SNT", "snt"],
+    ["SI (Sciences de l'Ingénieur)", "si_sciences_ingenieur"],
+    ["HGGSP", "hggsp"],
     ["HLP", "hlp"],
+    ["LLCE Anglais", "llce_anglais"],
+    ["LLCE Espagnol", "llce_espagnol"],
     ["Économie", "economie"],
     ["Sciences politiques", "sciences_politiques"],
     ["Droit", "droit"],
+    ["Informatique", "informatique"],
+    ["Technologie", "technologie"],
+    ["Littérature", "litterature"],
+    ["Géopolitique", "geopolitique"],
     ["Comptabilité & Gestion", "comptabilite_gestion"],
     ["Finance", "finance"],
     ["Marketing", "marketing"],
     ["Psychologie", "psychologie"],
-    ["Informatique", "informatique"]
+    ["Orientation", "orientation"],
+    ["EPS (Éducation Physique et Sportive)", "eps"],
+    ["Arts plastiques", "arts_plastiques"],
+    ["Éducation musicale", "education_musicale"],
+    ["Latin", "latin"],
+    ["Grec", "grec"],
+    ["LCA (Langues et Cultures de l'Antiquité)", "lca"],
+    ["Italien", "italien"],
+    ["LSF (Langue des Signes Française)", "lsf"]
   ].freeze
+
+  # Groupements de matières pour l'affichage dans la modale
+  SUBJECTS_GROUPED = {
+    "Fondamentaux" => [
+      ["Aide aux devoirs", "aide_aux_devoirs"],
+      ["Lecture / Écriture", "lecture_ecriture"],
+      ["Mathématiques", "mathematiques"],
+      ["Français", "francais"],
+      ["Anglais", "anglais"]
+    ],
+    "Sciences" => [
+      ["Physique-Chimie", "physique-chimie"],
+      ["SVT", "svt"],
+      ["NSI", "nsi"],
+      ["SNT", "snt"],
+      ["SI (Sciences de l'Ingénieur)", "si_sciences_ingenieur"]
+    ],
+    "Sciences humaines & lettres" => [
+      ["Histoire-Géographie", "histoire-geographie"],
+      ["SES", "ses"],
+      ["Philosophie", "philosophie"],
+      ["Littérature", "litterature"],
+      ["HGGSP", "hggsp"],
+      ["HLP", "hlp"],
+      ["Géopolitique", "geopolitique"]
+    ],
+    "Langues" => [
+      ["Espagnol", "espagnol"],
+      ["Allemand", "allemand"],
+      ["Italien", "italien"],
+      ["LLCE Anglais", "llce_anglais"],
+      ["LLCE Espagnol", "llce_espagnol"],
+      ["Latin", "latin"],
+      ["Grec", "grec"],
+      ["LCA (Langues et Cultures de l'Antiquité)", "lca"],
+      ["LSF (Langue des Signes Française)", "lsf"]
+    ],
+    "Économie / Sup / Pro" => [
+      ["Économie", "economie"],
+      ["Sciences politiques", "sciences_politiques"],
+      ["Droit", "droit"],
+      ["Comptabilité & Gestion", "comptabilite_gestion"],
+      ["Finance", "finance"],
+      ["Marketing", "marketing"],
+      ["Informatique", "informatique"]
+    ],
+    "Autres" => [
+      ["Technologie", "technologie"],
+      ["Orientation", "orientation"],
+      ["Psychologie", "psychologie"],
+      ["EPS (Éducation Physique et Sportive)", "eps"],
+      ["Arts plastiques", "arts_plastiques"],
+      ["Éducation musicale", "education_musicale"]
+    ]
+  }.freeze
 
   # Tags examens disponibles (par ordre d'importance)
   EXAM_TAGS_OPTIONS = [
     ["Brevet", "brevet"],
+    ["Bac de français", "bac_francais"],
     ["Bac général", "bac_general"],
-    ["Bac techno", "bac_techno"],
-    ["Bac pro", "bac_pro"],
-    ["Concours IEP / Sciences Po", "concours_ieP_sciences_po"],
-    ["Concours école de commerce", "concours_ecole_commerce"],
-    ["Concours paramédical", "concours_paramedical"],
+    ["Bac technologique", "bac_technologique"],
+    ["Bac professionnel", "bac_professionnel"],
+    ["Grand oral", "grand_oral"],
     ["Parcoursup", "parcoursup"],
-    ["TOEIC", "toeic"],
+    ["Partiels universitaires", "partiels_universitaires"],
+    ["Concours IEP / Sciences Po", "concours_iep_sciences_po"],
+    ["Concours écoles de commerce", "concours_ecoles_commerce"],
+    ["Concours écoles d'ingénieurs", "concours_ecoles_ingenieurs"],
+    ["Concours paramédicaux", "concours_paramedicaux"],
+    ["Cambridge", "cambridge"],
     ["IELTS", "ielts"],
-    ["Cambridge", "cambridge"]
+    ["TOEIC", "toeic"]
   ].freeze
 
   # Options de rayon de déplacement disponibles
@@ -76,21 +145,19 @@ module TeachersHelper
 
   # Tags pédagogie disponibles (par ordre d'importance)
   PEDAGOGY_TAGS_OPTIONS = [
-    ["Aide aux devoirs", "aide_aux_devoirs"],
     ["Remise à niveau", "remise_a_niveau"],
-    ["Méthodologie de travail", "methodologie_travail"],
-    ["Méthodologie", "methodologie"],
-    ["Besoins particuliers", "besoins_particuliers"],
-    ["Organisation", "organisation"],
-    ["Préparation examens", "preparation_examens"],
-    ["Élèves en difficulté", "eleves_en_difficulte"],
-    ["Haut potentiel", "haut_potentiel"],
-    ["Confiance en soi", "confiance_en_soi"],
+    ["Méthodologie & organisation", "methodologie_organisation"],
+    ["Préparation aux examens", "preparation_examens"],
+    ["Préparation aux concours", "preparation_concours"],
     ["Orientation", "orientation"],
     ["Parcoursup", "parcoursup"],
-    ["FLE", "fle"],
+    ["Confiance en soi", "confiance_en_soi"],
+    ["Haut potentiel (HPI)", "haut_potentiel"],
+    ["Besoins particuliers", "besoins_particuliers"],
     ["Élèves TDAH", "eleves_tdah"],
-    ["Élèves à troubles DYS", "eleves_troubles_dys"]
+    ["Troubles DYS", "troubles_dys"],
+    ["Élèves en situation de handicap", "eleves_situation_handicap"],
+    ["FLE (Français Langue Étrangère)", "fle"]
   ].freeze
 
   # Helper pour obtenir les initiales d'un professeur
@@ -248,8 +315,9 @@ module TeachersHelper
 
   # Version courte pour les cards
   EXAM_TAGS_SHORT = {
-    "concours_ieP_sciences_po" => "Sciences Po",
-    "concours_ecole_commerce" => "École commerce"
+    "concours_iep_sciences_po" => "Sciences Po",
+    "concours_ecoles_commerce" => "Écoles commerce",
+    "concours_ecoles_ingenieurs" => "Écoles ingénieurs"
   }.freeze
 
   def format_exam_tag_short(tag)
@@ -268,10 +336,11 @@ module TeachersHelper
 
   # Version courte pour les cards
   PEDAGOGY_TAGS_SHORT = {
-    "methodologie_travail" => "Méthodologie",
+    "methodologie_organisation" => "Méthodologie & organisation",
     "preparation_examens" => "Prépa examens",
-    "eleves_en_difficulte" => "Élèves en difficulté",
-    "besoins_particuliers" => "Besoins particuliers"
+    "preparation_concours" => "Prépa concours",
+    "besoins_particuliers" => "Besoins particuliers",
+    "eleves_situation_handicap" => "Situation handicap"
   }.freeze
 
   def format_pedagogy_tag_short(tag)

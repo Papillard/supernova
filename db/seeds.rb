@@ -46,7 +46,6 @@ def clean_subjects(subjects)
     "histoire" => "histoire-geographie",
     "geographie" => "histoire-geographie",
     "hggsp" => "hggsp",
-    "emc" => "emc",
     "mathematiques" => "mathematiques",
     "maths" => "mathematiques",
     "francais" => "francais",
@@ -65,14 +64,34 @@ def clean_subjects(subjects)
     "sciences_politiques" => "sciences_politiques",
     "litterature" => "litterature",
     "philosophie" => "philosophie",
-    "portugais" => "portugais",
-    "education-musicale" => "education-musicale",
-    "toutes-matieres-primaire" => "toutes_matieres_primaire",
-    "toutes_matieres_primaire" => "toutes_matieres_primaire"
+    "lecture_ecriture" => "lecture_ecriture",
+    "lecture-ecriture" => "lecture_ecriture",
+    "si" => "si_sciences_ingenieur",
+    "sciences-ingenieur" => "si_sciences_ingenieur",
+    "sciences_ingenieur" => "si_sciences_ingenieur",
+    "llce-anglais" => "llce_anglais",
+    "llce_anglais" => "llce_anglais",
+    "llce-espagnol" => "llce_espagnol",
+    "llce_espagnol" => "llce_espagnol",
+    "orientation" => "orientation",
+    "eps" => "eps",
+    "education-physique" => "eps",
+    "arts-plastiques" => "arts_plastiques",
+    "arts_plastiques" => "arts_plastiques",
+    "education-musicale" => "education_musicale",
+    "education_musicale" => "education_musicale",
+    "latin" => "latin",
+    "grec" => "grec",
+    "lca" => "lca",
+    "langues-cultures-antiquite" => "lca",
+    "lsf" => "lsf",
+    "langue-signes-francaise" => "lsf"
   }
   cleaned = subjects.map do |s|
+    # Nettoyer le sujet (enlever espaces, normaliser)
+    cleaned = s.to_s.strip.gsub("_", "-")
     # Essayer le mapping d'abord
-    mapped = subject_mapping[s] || subject_mapping[s.gsub("_", "-")] || s
+    mapped = subject_mapping[cleaned] || subject_mapping[s] || subject_mapping[s.gsub("_", "-")] || s
     # Si pas dans les valeurs valides, essayer de convertir
     if !valid_subjects.include?(mapped)
       # Essayer avec underscore si c'était un tiret
@@ -87,41 +106,96 @@ end
 def clean_exam_tags(tags)
   return [] if tags.nil?
   valid_tags = TeachersHelper::EXAM_TAGS_OPTIONS.map { |_, v| v }
-  # Mapping des anciennes valeurs
+  # Mapping des anciennes valeurs vers les nouvelles
   tag_mapping = {
+    "brevet" => "brevet",
+    "bac_francais" => "bac_francais",
+    "bac-francais" => "bac_francais",
     "bac_general" => "bac_general",
     "bac-general" => "bac_general",
+    "bac_technologique" => "bac_technologique",
+    "bac-technologique" => "bac_technologique",
+    "bac_techno" => "bac_technologique",
+    "bac-techno" => "bac_technologique",
+    "bac_professionnel" => "bac_professionnel",
+    "bac-professionnel" => "bac_professionnel",
+    "bac_pro" => "bac_professionnel",
+    "bac-pro" => "bac_professionnel",
     "grand_oral" => "grand_oral",
     "grand-oral" => "grand_oral",
-    "brevet" => "brevet",
-    "sciences_po" => "concours_ieP_sciences_po",
-    "sciences-po" => "concours_ieP_sciences_po",
-    "ecoles_de_commerce" => "concours_ecole_commerce",
-    "ecoles-de-commerce" => "concours_ecole_commerce"
+    "parcoursup" => "parcoursup",
+    "partiels_universitaires" => "partiels_universitaires",
+    "partiels-universitaires" => "partiels_universitaires",
+    "concours_iep_sciences_po" => "concours_iep_sciences_po",
+    "concours_ieP_sciences_po" => "concours_iep_sciences_po",
+    "concours-iep-sciences-po" => "concours_iep_sciences_po",
+    "sciences_po" => "concours_iep_sciences_po",
+    "sciences-po" => "concours_iep_sciences_po",
+    "concours_ecoles_commerce" => "concours_ecoles_commerce",
+    "concours_ecole_commerce" => "concours_ecoles_commerce",
+    "concours-ecoles-commerce" => "concours_ecoles_commerce",
+    "concours-ecole-commerce" => "concours_ecoles_commerce",
+    "ecoles_de_commerce" => "concours_ecoles_commerce",
+    "ecoles-de-commerce" => "concours_ecoles_commerce",
+    "concours_ecoles_ingenieurs" => "concours_ecoles_ingenieurs",
+    "concours-ecoles-ingenieurs" => "concours_ecoles_ingenieurs",
+    "concours_paramedicaux" => "concours_paramedicaux",
+    "concours_paramedical" => "concours_paramedicaux",
+    "concours-paramedicaux" => "concours_paramedicaux",
+    "concours-paramedical" => "concours_paramedicaux",
+    "cambridge" => "cambridge",
+    "ielts" => "ielts",
+    "toeic" => "toeic"
   }
   tags.map do |t|
-    mapped = tag_mapping[t] || t.gsub("-", "_")
+    cleaned = t.to_s.gsub("-", "_").strip
+    mapped = tag_mapping[cleaned] || tag_mapping[t] || cleaned
     mapped
-  end.select { |t| valid_tags.include?(t) }
+  end.select { |t| valid_tags.include?(t) }.uniq
 end
 
 # Helper pour nettoyer les pedagogy_tags
 def clean_pedagogy_tags(tags)
   return [] if tags.nil?
   valid_tags = TeachersHelper::PEDAGOGY_TAGS_OPTIONS.map { |_, v| v }
-  # Mapping des anciennes valeurs
+  # Mapping des anciennes valeurs vers les nouvelles
   tag_mapping = {
-    "methodologie" => "methodologie_travail",
-    "methodologie_travail" => "methodologie_travail",
-    "eleves_en_difficulte" => "eleves_en_difficulte",
-    "eleves-en-difficulte" => "eleves_en_difficulte",
+    # Anciennes valeurs vers nouvelles
+    "aide_aux_devoirs" => "remise_a_niveau", # Aide aux devoirs -> Remise à niveau
+    "methodologie_travail" => "methodologie_organisation",
+    "methodologie" => "methodologie_organisation",
+    "organisation" => "methodologie_organisation",
+    "preparation_examens" => "preparation_examens",
+    "preparation-examens" => "preparation_examens",
+    "preparation_concours" => "preparation_concours",
+    "preparation-concours" => "preparation_concours",
+    "eleves_en_difficulte" => "besoins_particuliers", # Élèves en difficulté -> Besoins particuliers
+    "eleves-en-difficulte" => "besoins_particuliers",
+    "eleves_troubles_dys" => "troubles_dys", # Ancien nom vers nouveau
+    "eleves-troubles-dys" => "troubles_dys",
+    "troubles-dys" => "troubles_dys",
+    "troubles_dys" => "troubles_dys",
+    "eleves-tdah" => "eleves_tdah",
+    "eleves_tdah" => "eleves_tdah",
+    "tdah" => "eleves_tdah",
+    "haut_potentiel" => "haut_potentiel",
+    "hpi" => "haut_potentiel",
+    "confiance_en_soi" => "confiance_en_soi",
     "orientation" => "orientation",
-    "parcoursup" => "parcoursup"
+    "parcoursup" => "parcoursup",
+    "fle" => "fle",
+    "besoins_particuliers" => "besoins_particuliers",
+    "eleves_situation_handicap" => "eleves_situation_handicap",
+    "situation_handicap" => "eleves_situation_handicap",
+    "handicap" => "eleves_situation_handicap"
   }
   tags.map do |t|
-    mapped = tag_mapping[t] || t.gsub("-", "_")
+    # Nettoyer le tag (enlever tirets, normaliser)
+    cleaned = t.to_s.gsub("-", "_").strip
+    # Essayer le mapping
+    mapped = tag_mapping[cleaned] || tag_mapping[t] || cleaned
     mapped
-  end.select { |t| valid_tags.include?(t) }
+  end.select { |t| valid_tags.include?(t) }.uniq
 end
 
 # Helper pour nettoyer les teaching_formats

@@ -122,6 +122,13 @@
                   </p>
                 <% end %>
 
+                <!-- Zones desservies -->
+                <% if @teacher.served_zones.present? && @teacher.served_zones.any? %>
+                  <p>
+                    Je peux donner cours dans les villes et départements suivants : <strong><%= @teacher.served_zones.join(", ") %></strong>.
+                  </p>
+                <% end %>
+
                 <!-- Tarif -->
                 <% if @teacher.pricing_text.present? %>
                   <p>
