@@ -10,6 +10,43 @@ class Teachers::RegistrationsController < Devise::RegistrationsController
       return
     end
 
+    email = sign_up_params[:email]
+
+    # Chercher un Teacher en pending qui a cet email dans email_pro OU email_perso
+    teacher = Teacher.pending
+                     .where("email_pro = ? OR email_perso = ?", email, email)
+                     .first
+
+    if teacher
+      existing_user = teacher.user
+
+      # Si l'email de signup est différent de l'email du User, le mettre à jour
+      if existing_user.email != email
+        existing_user.email = email
+      end
+
+      # Mettre à jour le mot de passe
+      if existing_user.update(
+        password: sign_up_params[:password],
+        password_confirmation: sign_up_params[:password_confirmation]
+      )
+        # Approuver le teacher
+        teacher.update(status: :approved)
+
+        sign_in(existing_user)
+        set_flash_message! :notice, :signed_up
+        respond_with existing_user, location: after_sign_up_path_for(existing_user)
+        return
+      else
+        build_resource(sign_up_params.merge(role: "teacher"))
+        resource.errors.merge!(existing_user.errors)
+        clean_up_passwords resource
+        set_minimum_password_length
+        respond_with resource
+        return
+      end
+    end
+
     build_resource(sign_up_params.merge(role: "teacher"))
 
     resource.save

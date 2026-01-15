@@ -135,6 +135,9 @@ end
 # Ordre important : supprimer d'abord les dépendances, puis les tables principales
 puts "Nettoyage des données existantes..."
 
+# Désactiver temporairement le callback pour éviter les emails lors de la création
+User.skip_callback(:commit, :after, :send_welcome_email)
+
 # 1. Supprimer les email_events (dépend de requests et users)
 EmailEvent.destroy_all if defined?(EmailEvent)
 
@@ -254,5 +257,8 @@ teachers_data.each_with_index do |teacher_data, index|
 
   puts "✓ #{teacher.display_name} créé"
 end
+
+# Réactiver le callback
+User.set_callback(:commit, :after, :send_welcome_email)
 
 puts "\n✅ #{teachers_data.length} professeurs créés avec succès!"
