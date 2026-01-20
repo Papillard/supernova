@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  # Redirect prof-connect.fr to www.prof-connect.fr in production
+  if Rails.env.production?
+    constraints(host: /\Aprof-connect\.fr\z/i) do
+      match "*path", to: redirect { |params, req| "https://www.prof-connect.fr#{req.fullpath}" }, via: :all
+    end
+  end
 
   # Defines the root path route ("/")
   root "pages#home"
