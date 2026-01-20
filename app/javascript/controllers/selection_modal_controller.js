@@ -11,7 +11,10 @@ export default class extends Controller {
 
   connect() {
     this.handleEscape = this.handleEscape.bind(this)
+    this.handlePrimarySubjectChange = this.handlePrimarySubjectChange.bind(this)
     document.addEventListener("keydown", this.handleEscape)
+    this.element.addEventListener("primary-subject-changed", this.handlePrimarySubjectChange)
+    
     // Initialize from existing hidden inputs
     if (this.hasHiddenInputTarget) {
       const container = this.hiddenInputTarget.parentElement
@@ -30,6 +33,11 @@ export default class extends Controller {
       })
     }
     this.updateButtonText()
+  }
+
+  handlePrimarySubjectChange(event) {
+    // Quand la matière principale change, mettre à jour la sélection
+    this.updateSelection()
   }
 
   open(event) {
@@ -55,6 +63,7 @@ export default class extends Controller {
   }
 
   updateSelection() {
+    // Always read from checkboxes, even if modal is closed
     const selected = []
     this.checkboxTargets.forEach(checkbox => {
       if (checkbox.checked) {
@@ -112,21 +121,31 @@ export default class extends Controller {
 
     // Remove all existing hidden inputs with the same name from the form
     // but keep the initial hidden input (the one with data-selection-modal-target="hiddenInput")
+    // We need to preserve it as a marker for the controller
     const existingInputs = Array.from(form.querySelectorAll(`input[name="${this.hiddenInputTarget.name}"]`))
-      .filter(input => input !== this.hiddenInputTarget && input.value !== "")
+      .filter(input => input !== this.hiddenInputTarget)
 
     existingInputs.forEach(input => input.remove())
 
-    // Add new hidden inputs to the form
-    this.selectedValue.forEach(value => {
-      if (value && value !== "") {
-        const input = document.createElement("input")
-        input.type = "hidden"
-        input.name = this.hiddenInputTarget.name
-        input.value = value
-        form.appendChild(input)
-      }
-    })
+    // Clear the value of the marker input if we have selected values
+    // This ensures we don't send an empty string when we have real values
+    if (this.selectedValue.length > 0) {
+      this.hiddenInputTarget.value = ""
+      // Add new hidden inputs to the form (only non-empty values)
+      this.selectedValue.forEach(value => {
+        if (value && value !== "") {
+          const input = document.createElement("input")
+          input.type = "hidden"
+          input.name = this.hiddenInputTarget.name
+          input.value = value
+          form.appendChild(input)
+        }
+      })
+    } else {
+      // If no values selected, keep the marker input with empty value
+      // This ensures the form always has at least one input for this field
+      this.hiddenInputTarget.value = ""
+    }
   }
 
   updateButtonText() {
@@ -183,5 +202,6 @@ export default class extends Controller {
 
   disconnect() {
     document.removeEventListener("keydown", this.handleEscape)
+    this.element.removeEventListener("primary-subject-changed", this.handlePrimarySubjectChange)
   }
 }

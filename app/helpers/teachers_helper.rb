@@ -143,22 +143,30 @@ module TeachersHelper
     ["Plus de 20 km", "plus_de_20_km"]
   ].freeze
 
-  # Tags pédagogie disponibles (par ordre d'importance)
-  PEDAGOGY_TAGS_OPTIONS = [
-    ["Remise à niveau", "remise_a_niveau"],
-    ["Méthodologie & organisation", "methodologie_organisation"],
+  # Public cible prioritaire (positionnement, card) - Max 2
+  TARGET_AUDIENCE_TAGS_OPTIONS = [
+    ["Élèves en difficulté", "eleves_en_difficulte"],
+    ["Élèves autonomes", "eleves_autonomes_bons_eleves"],
+    ["Élèves visant l'excellence", "eleves_visant_excellence"],
+    ["Élèves à besoins particuliers", "eleves_besoins_particuliers"]
+  ].freeze
+
+  # Accompagnements spécifiques (détail, page prof)
+  SPECIFIC_SUPPORT_OPTIONS = [
     ["Préparation aux examens", "preparation_examens"],
     ["Préparation aux concours", "preparation_concours"],
-    ["Orientation", "orientation"],
-    ["Parcoursup", "parcoursup"],
+    ["Méthodologie & organisation", "methodologie_organisation"],
     ["Confiance en soi", "confiance_en_soi"],
-    ["Haut potentiel (HPI)", "haut_potentiel"],
-    ["Besoins particuliers", "besoins_particuliers"],
-    ["Élèves TDAH", "eleves_tdah"],
+    ["Orientation / Parcoursup", "orientation_parcoursup"],
+    ["FLE (Français Langue Étrangère)", "fle"],
+    ["HPI", "hpi"],
+    ["TDAH", "tdah"],
     ["Troubles DYS", "troubles_dys"],
-    ["Élèves en situation de handicap", "eleves_situation_handicap"],
-    ["FLE (Français Langue Étrangère)", "fle"]
+    ["Élèves en situation de handicap", "eleves_situation_handicap"]
   ].freeze
+
+  # Tags pédagogie disponibles (par ordre d'importance) - DEPRECATED: utiliser TARGET_AUDIENCE_TAGS_OPTIONS et SPECIFIC_SUPPORT_OPTIONS
+  PEDAGOGY_TAGS_OPTIONS = (TARGET_AUDIENCE_TAGS_OPTIONS + SPECIFIC_SUPPORT_OPTIONS).freeze
 
   # Helper pour obtenir les initiales d'un professeur
   def teacher_initials(teacher)
@@ -247,7 +255,7 @@ module TeachersHelper
   # Helper pour formater les formats d'enseignement en français
   def format_teaching_format(format)
     format_mapping = {
-      "at_student_home" => "Au domicile de l'élève",
+      "at_student_home" => "Chez l'élève",
       "at_teacher_home" => "Au domicile du professeur",
       "online" => "En ligne"
     }
@@ -324,14 +332,29 @@ module TeachersHelper
     EXAM_TAGS_SHORT[tag] || format_exam_tag(tag)
   end
 
-  # Helper pour formater un tag pédagogique
+  # Helper pour formater un tag de public cible prioritaire
+  def format_target_audience_tag(tag)
+    option = TARGET_AUDIENCE_TAGS_OPTIONS.find { |_, value| value == tag }
+    option ? option[0] : tag.humanize
+  end
+
+  # Helper pour formater un tag d'accompagnement spécifique
+  def format_specific_support_tag(tag)
+    option = SPECIFIC_SUPPORT_OPTIONS.find { |_, value| value == tag }
+    option ? option[0] : tag.humanize
+  end
+
+  # Helper pour formater un tag pédagogique (compatibilité avec l'ancien code)
   def format_pedagogy_tag(tag)
-    pedagogy_option = PEDAGOGY_TAGS_OPTIONS.find { |_, value| value == tag }
-    if pedagogy_option
-      pedagogy_option[0]
-    else
-      tag.humanize
-    end
+    # Essayer d'abord dans target_audience
+    option = TARGET_AUDIENCE_TAGS_OPTIONS.find { |_, value| value == tag }
+    return option[0] if option
+    
+    # Puis dans specific_support
+    option = SPECIFIC_SUPPORT_OPTIONS.find { |_, value| value == tag }
+    return option[0] if option
+    
+    tag.humanize
   end
 
   # Version courte pour les cards
@@ -386,6 +409,25 @@ module TeachersHelper
 
     # Sinon, capitaliser la première lettre
     value.capitalize
+  end
+
+  # Helper pour formater le statut de carrière avec genre et "Éducation nationale"
+  def format_career_status_with_gender(teacher)
+    return "" if teacher.career_status.blank?
+
+    career_status_formatted = format_career_status(teacher.career_status)
+    return "" if career_status_formatted.blank?
+
+    # Adapter selon le genre
+    prefix = if teacher.gender == "female"
+      "Professeure"
+    elsif teacher.gender == "male"
+      "Professeur"
+    else
+      "Professeur(e)"
+    end
+
+    "#{prefix} #{career_status_formatted.downcase} Éducation nationale"
   end
 
   # Helper pour formater la localisation de manière naturelle
@@ -601,5 +643,196 @@ module TeachersHelper
       end
     end
     zones
+  end
+
+  # Helper pour formater les zones desservies en labels lisibles
+  def format_served_zones_labels(teacher)
+    return [] unless teacher.served_zones.present? && teacher.served_zones.any?
+
+    teacher.served_zones.map do |zone_value|
+      # zone_value peut être "ile_de_france:paris" ou juste "paris"
+      label = nil
+      
+      if zone_value.to_s.include?(":")
+        group_key, key = zone_value.to_s.split(":", 2)
+        group_data = SERVED_ZONES[group_key]
+        if group_data && group_data[:items]
+          # Les clés dans SERVED_ZONES sont des strings
+          item = group_data[:items][key] || group_data[:items][key.to_sym]
+          label = item[:label] if item
+        end
+      else
+        # Chercher dans toutes les zones
+        found_zone = all_served_zones_for_search.find { |z| z[:value].end_with?(":#{zone_value}") || z[:value] == zone_value.to_s }
+        label = found_zone[:label] if found_zone
+      end
+      
+      # Si on a trouvé un label, enlever les codes entre parenthèses et retourner
+      if label
+        label.gsub(/\s*\([^)]*\)/, '').strip
+      else
+        # Fallback : utiliser la valeur brute mais la formater un peu
+        zone_value.to_s.split(":").last.humanize
+      end
+    end.compact
+  end
+
+  # Helper pour construire le sous-titre auto (primary_subject + exam_tags ou target_audience_tags)
+  def build_teacher_subtitle(teacher)
+    parts = []
+    if teacher.primary_subject.present?
+      parts << format_subject_tag(teacher.primary_subject)
+    end
+    if teacher.exam_tags.present?
+      parts.concat(teacher.exam_tags.map { |tag| format_exam_tag(tag) })
+    elsif teacher.target_audience_tags.present?
+      parts.concat(teacher.target_audience_tags.map { |tag| format_target_audience_tag(tag) })
+    end
+    parts.join(" · ")
+  end
+
+  # Helper pour construire "Pourquoi choisir ce professeur" (auto)
+  def build_why_choose_teacher(teacher)
+    reasons = []
+    
+    # Ligne 1 = career_status formaté
+    if teacher.career_status.present?
+      reasons << format_career_status_with_gender(teacher)
+    end
+    
+    # Ligne 2 = exam_tags (si présents)
+    if teacher.exam_tags.present?
+      exam_text = teacher.exam_tags.map { |tag| format_exam_tag(tag) }.join(" et ")
+      reasons << "Préparation au #{exam_text}"
+    end
+    
+    # Ligne 3 = phrase générique fixe
+    reasons << "Accompagnement structuré et sérieux"
+    
+    reasons
+  end
+
+  # Helper pour split about_me en bullets (4-5 max)
+  # Combine intelligemment les phrases normales ET les list items
+  def split_about_me_to_bullets(about_me)
+    return [] if about_me.blank?
+    
+    # Normaliser les retours à la ligne
+    text = about_me.gsub(/\r\n/, "\n").gsub(/\r/, "\n").strip
+    
+    # Pattern pour détecter les bullet points explicites
+    bullet_pattern = /^[\s]*[—\-•*▪▫◦‣⁃]\s+(.+)$/
+    
+    # Séparer le texte en lignes
+    lines = text.split(/\n/)
+    
+    result = []
+    current_paragraph = []
+    
+    lines.each do |line|
+      line = line.strip
+      next if line.blank?
+      
+      # Si c'est un bullet point explicite
+      if line.match?(bullet_pattern)
+        # Si on a accumulé un paragraphe avant, le traiter comme phrase(s)
+        if current_paragraph.any?
+          paragraph_text = current_paragraph.join(" ").strip
+          # Extraire les phrases du paragraphe
+          sentences = extract_sentences(paragraph_text)
+          result.concat(sentences)
+          current_paragraph = []
+        end
+        
+        # Extraire le contenu du bullet point
+        match = line.match(bullet_pattern)
+        if match
+          bullet_content = match[1].strip
+          cleaned = clean_bullet(bullet_content)
+          result << cleaned if cleaned.present?
+        end
+      else
+        # C'est une ligne normale, l'ajouter au paragraphe en cours
+        current_paragraph << line
+      end
+    end
+    
+    # Traiter le dernier paragraphe s'il reste
+    if current_paragraph.any?
+      paragraph_text = current_paragraph.join(" ").strip
+      sentences = extract_sentences(paragraph_text)
+      result.concat(sentences)
+    end
+    
+    # Si on n'a rien trouvé avec cette méthode, utiliser les méthodes de fallback
+    if result.empty?
+      result = fallback_extraction(text)
+    end
+    
+    # Limiter à 5 items et nettoyer
+    result.first(5).map { |item| clean_bullet(item) }.compact.reject(&:blank?)
+  end
+  
+  private
+  
+  # Extraire les phrases d'un texte (séparées par . ! ?)
+  def extract_sentences(text)
+    return [] if text.blank?
+    
+    # Pattern pour détecter les fins de phrases suivies d'une majuscule
+    sentences = text.split(/(?<=[.!?])\s+(?=[A-ZÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞŸ])/)
+      .map(&:strip)
+      .reject(&:blank?)
+    
+    # Si on n'a qu'une seule phrase, la retourner telle quelle
+    if sentences.length == 1
+      [sentences.first]
+    elsif sentences.length > 1
+      sentences
+    else
+      # Si le split n'a pas fonctionné, essayer par paragraphes
+      text.split(/\n\s*\n/).map(&:strip).reject(&:blank?)
+    end
+  end
+  
+  # Méthode de fallback si aucune structure claire n'est détectée
+  def fallback_extraction(text)
+    # 1. Essayer par paragraphes (lignes vides)
+    paragraphs = text.split(/\n\s*\n/).map(&:strip).reject(&:blank?)
+    return paragraphs.first(5) if paragraphs.length > 1
+    
+    # 2. Essayer par phrases
+    sentences = text.split(/(?<=[.!?])\s+(?=[A-ZÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞŸ])/)
+      .map(&:strip)
+      .reject(&:blank?)
+    return sentences.first(5) if sentences.length > 1
+    
+    # 3. Split par retours à la ligne simples
+    lines = text.split(/\n/).map(&:strip).reject(&:blank?)
+    lines.first(5)
+  end
+  
+  # Nettoyer et formater un bullet point
+  def clean_bullet(bullet)
+    return nil if bullet.blank?
+    
+    # Enlever les points finaux (mais garder ! et ?)
+    bullet = bullet.gsub(/\.$/, "").strip
+    
+    # Enlever les tirets/bullets en début de ligne s'il en reste
+    bullet = bullet.gsub(/^[\s]*[—\-•*▪▫◦‣⁃]\s*/, "").strip
+    
+    # Capitaliser intelligemment la première lettre
+    if bullet.present?
+      # Si la première lettre est minuscule, capitaliser
+      if bullet[0].match?(/[a-zàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ]/)
+        bullet = bullet[0].upcase + bullet[1..-1]
+      end
+      
+      # S'assurer qu'il n'y a pas d'espaces multiples
+      bullet = bullet.gsub(/\s+/, " ").strip
+    end
+    
+    bullet.present? ? bullet : nil
   end
 end

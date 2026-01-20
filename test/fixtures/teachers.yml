@@ -15,13 +15,13 @@ one:
   base_city: MyString
   base_zip_code: MyString
   radius_text: MyString
-  support_text: MyText
-  experience_text: MyText
-  special_skills_text: MyText
-  interest_text: MyText
+  about_me: MyText
+  headline: MyString
+  primary_subject: MyString
+  specific_support: MyText
+  target_audience_tags: MyText
   exams_raw_text: MyText
   exam_tags: MyText
-  pedagogy_tags: MyText
   pricing_text: MyText
   target_students_range: MyString
   email_pro: MyString
@@ -31,6 +31,7 @@ one:
   profile_image_attached: false
   status: MyString
   rgpd_consent: false
+  accepted_requests_count: 0
 
 two:
   user: two
@@ -47,13 +48,13 @@ two:
   base_city: MyString
   base_zip_code: MyString
   radius_text: MyString
-  support_text: MyText
-  experience_text: MyText
-  special_skills_text: MyText
-  interest_text: MyText
+  about_me: MyText
+  headline: MyString
+  primary_subject: MyString
+  specific_support: MyText
+  target_audience_tags: MyText
   exams_raw_text: MyText
   exam_tags: MyText
-  pedagogy_tags: MyText
   pricing_text: MyText
   target_students_range: MyString
   email_pro: MyString
@@ -63,3 +64,4 @@ two:
   profile_image_attached: false
   status: MyString
   rgpd_consent: false
+  accepted_requests_count: 0

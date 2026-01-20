@@ -11,11 +11,6 @@ export default class extends Controller {
       this.inputTarget.addEventListener("change", this.handleFileChange.bind(this))
     }
 
-    // Auto-submit when checkbox changes (but without loading indicator)
-    const checkbox = this.element.querySelector('input[type="checkbox"][name*="picture_visible"]')
-    if (checkbox) {
-      checkbox.addEventListener("change", this.handleCheckboxChange.bind(this))
-    }
 
     // Hide loading indicator when form submission ends
     if (this.hasFormTarget) {
@@ -39,12 +34,6 @@ export default class extends Controller {
     }
   }
 
-  handleCheckboxChange() {
-    // Submit form for checkbox change, but without loading indicator
-    if (this.hasFormTarget) {
-      this.formTarget.requestSubmit()
-    }
-  }
 
   handleSubmitEnd() {
     if (this.hasLoadingIndicatorTarget) {

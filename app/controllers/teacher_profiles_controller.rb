@@ -5,7 +5,7 @@ class TeacherProfilesController < ApplicationController
   before_action :set_teacher
 
   def show
-    authorize @teacher
+    authorize @teacher, :edit?
   end
 
   def update
@@ -97,10 +97,13 @@ class TeacherProfilesController < ApplicationController
     respond_to do |format|
       # Nettoyer les valeurs vides (convertir "" en nil pour les champs texte)
       params_hash.each do |key, value|
-        if value.is_a?(String) && value.empty? && !%w[subjects_tags levels exam_tags pedagogy_tags teaching_formats].include?(key.to_s)
+        if value.is_a?(String) && value.empty? && !%w[subjects_tags levels exam_tags specific_support teaching_formats target_audience_tags served_zones].include?(key.to_s)
           params_hash[key] = nil
         end
       end
+      
+      # Debug: logger les served_zones avant sauvegarde
+      Rails.logger.debug "Saving served_zones: #{params_hash[:served_zones].inspect}"
 
       if @teacher.update(params_hash)
         # Recharger pour avoir les données à jour depuis la DB
@@ -134,27 +137,27 @@ class TeacherProfilesController < ApplicationController
             flash[:alert] = "Erreur lors de la mise à jour du profil."
             render :show, status: :unprocessable_entity
           end
-      else
-        # En cas d'erreur, rester sur la page avec les erreurs affichées
-        if params[:stay_on_page].present?
-          @current_tab = params[:current_tab] || "infos-basiques"
-          format.turbo_stream do
-            flash.now[:alert] = "Erreur lors de la mise à jour : #{@teacher.errors.full_messages.join(', ')}"
-            render :show, status: :unprocessable_entity
-          end
-          format.html do
-            flash[:alert] = "Erreur lors de la mise à jour du profil."
-            render :show, status: :unprocessable_entity
-          end
         else
-          format.html do
-            flash[:alert] = "Erreur lors de la mise à jour du profil."
-            render :show, status: :unprocessable_entity
+          # En cas d'erreur, rester sur la page avec les erreurs affichées
+          if params[:stay_on_page].present?
+            @current_tab = params[:current_tab] || "infos-basiques"
+            format.turbo_stream do
+              flash.now[:alert] = "Erreur lors de la mise à jour : #{@teacher.errors.full_messages.join(', ')}"
+              render :show, status: :unprocessable_entity
+            end
+            format.html do
+              flash[:alert] = "Erreur lors de la mise à jour du profil."
+              render :show, status: :unprocessable_entity
+            end
+          else
+            format.html do
+              flash[:alert] = "Erreur lors de la mise à jour du profil."
+              render :show, status: :unprocessable_entity
+            end
           end
         end
       end
     end
-  end
   end
 
   private
@@ -164,28 +167,36 @@ class TeacherProfilesController < ApplicationController
     return if current_user.teacher.present?
 
     # Créer un Teacher vide avec les valeurs minimales requises
+    # Si l'utilisateur s'est inscrit via le formulaire, rgpd_consent devrait être true
+    # Sinon, on le met à false par défaut (cas d'un compte créé autrement)
     teacher = current_user.build_teacher(
       first_name: current_user.first_name.presence || "Prénom",
       last_name: current_user.last_name.presence || "Nom",
       display_name: build_display_name.presence || "Prénom N.",
-      picture_visible: false,
-      gender: :female, # Valeur par défaut, sera modifié dans le formulaire
-      career_status: :certifie, # Valeur par défaut, sera modifié dans le formulaire
       email_pro: current_user.email,
       email_perso: current_user.email,
       status: :pending,
-      rgpd_consent: false
+      rgpd_consent: true # Par défaut true car si l'utilisateur accède au profil, c'est qu'il s'est inscrit via le formulaire
     )
 
     unless teacher.save
+      Rails.logger.error "Erreur lors de la création du teacher: #{teacher.errors.full_messages.join(', ')}"
       flash[:alert] = "Erreur lors de la création de votre profil. Veuillez réessayer."
       redirect_to root_path
       return
     end
+
+    # Recharger l'utilisateur pour que l'association teacher soit disponible
+    current_user.reload
   end
 
   def set_teacher
-    @teacher = current_user.teacher
+    @teacher = current_user.reload.teacher
+    unless @teacher
+      flash[:alert] = "Votre profil professeur n'a pas pu être chargé. Veuillez réessayer."
+      redirect_to root_path
+      return
+    end
   end
 
   def build_display_name
@@ -203,11 +214,8 @@ class TeacherProfilesController < ApplicationController
 
     if params[:teacher].present?
       teacher_params = params[:teacher]
-      params_hash[:picture_visible] = parse_checkbox_value(teacher_params[:picture_visible])
       params_hash[:profile_image_url] = teacher_params[:profile_image_url] if teacher_params[:profile_image_url].present?
       params_hash[:profile_image_attached] = teacher_params[:profile_image_attached] if teacher_params[:profile_image_attached].present?
-    else
-      params_hash[:picture_visible] = false
     end
 
     params_hash
@@ -221,20 +229,54 @@ class TeacherProfilesController < ApplicationController
   end
 
   def normalize_array_params(params_hash)
-    %w[subjects_tags levels exam_tags pedagogy_tags served_zones].each do |field|
-      params_hash[field] = params_hash[field].present? ? Array(params_hash[field]).reject(&:blank?) : []
+    # Normaliser served_zones si c'est une string JSON (AVANT de faire Array())
+    if params_hash[:served_zones].is_a?(String)
+      begin
+        parsed = JSON.parse(params_hash[:served_zones])
+        params_hash[:served_zones] = parsed.is_a?(Array) ? parsed.reject(&:blank?) : []
+      rescue JSON::ParserError
+        params_hash[:served_zones] = []
+      end
+    elsif params_hash[:served_zones].is_a?(Array)
+      # Si c'est déjà un array, juste nettoyer les valeurs vides
+      params_hash[:served_zones] = params_hash[:served_zones].reject(&:blank?)
+    else
+      params_hash[:served_zones] = []
+    end
+
+    # Normaliser target_audience_tags si c'est une string JSON (AVANT de faire Array())
+    if params_hash[:target_audience_tags].is_a?(String)
+      begin
+        parsed = JSON.parse(params_hash[:target_audience_tags])
+        params_hash[:target_audience_tags] = parsed.is_a?(Array) ? parsed.reject(&:blank?) : []
+      rescue JSON::ParserError
+        params_hash[:target_audience_tags] = []
+      end
+    elsif params_hash[:target_audience_tags].is_a?(Array)
+      params_hash[:target_audience_tags] = params_hash[:target_audience_tags].reject(&:blank?)
+    else
+      params_hash[:target_audience_tags] = []
+    end
+
+    # Normaliser les autres champs array et rejeter les valeurs vides
+    %w[subjects_tags levels exam_tags specific_support].each do |field|
+      # Si ce n'est pas déjà un array, le convertir
+      unless params_hash[field].is_a?(Array)
+        params_hash[field] = params_hash[field].present? ? Array(params_hash[field]) : []
+      end
+      # Rejeter les valeurs vides
+      params_hash[field] = params_hash[field].reject(&:blank?)
     end
 
     params_hash[:teaching_formats] = params[:teacher][:teaching_formats].present? ?
       Array(params[:teacher][:teaching_formats]).reject(&:blank?) : []
 
-    # Normaliser served_zones si c'est une string JSON
-    if params_hash[:served_zones].is_a?(String)
-      begin
-        params_hash[:served_zones] = JSON.parse(params_hash[:served_zones])
-      rescue JSON::ParserError
-        params_hash[:served_zones] = []
-      end
+    # Valider et filtrer les valeurs pour ne garder que celles qui sont dans les listes d'options
+    validate_and_filter_array_values(params_hash)
+
+    # Limiter target_audience_tags à 2 éléments maximum
+    if params_hash[:target_audience_tags].present? && params_hash[:target_audience_tags].length > 2
+      params_hash[:target_audience_tags] = params_hash[:target_audience_tags].first(2)
     end
 
     # Convertir career_status de la valeur string vers la clé d'enum
@@ -250,18 +292,65 @@ class TeacherProfilesController < ApplicationController
     end
   end
 
+  def validate_and_filter_array_values(params_hash)
+    # Extraire les valeurs valides des constantes
+    valid_exam_tags = TeachersHelper::EXAM_TAGS_OPTIONS.map { |_, value| value }
+    valid_specific_support = TeachersHelper::SPECIFIC_SUPPORT_OPTIONS.map { |_, value| value }
+    valid_target_audience_tags = TeachersHelper::TARGET_AUDIENCE_TAGS_OPTIONS.map { |_, value| value }
+    valid_subjects = TeachersHelper::SUBJECTS_OPTIONS.map { |_, value| value }
+    valid_levels = TeachersHelper::LEVELS_OPTIONS.map { |_, value| value }
+    valid_teaching_formats = ["online", "at_student_home", "at_teacher_home"]
+
+    # Filtrer exam_tags pour ne garder que les valeurs valides
+    if params_hash[:exam_tags].is_a?(Array)
+      params_hash[:exam_tags] = params_hash[:exam_tags].select { |tag| valid_exam_tags.include?(tag.to_s) }
+    end
+
+    # Filtrer specific_support pour ne garder que les valeurs valides
+    if params_hash[:specific_support].is_a?(Array)
+      params_hash[:specific_support] = params_hash[:specific_support].select { |tag| valid_specific_support.include?(tag.to_s) }
+    end
+
+    # Filtrer target_audience_tags pour ne garder que les valeurs valides
+    if params_hash[:target_audience_tags].is_a?(Array)
+      params_hash[:target_audience_tags] = params_hash[:target_audience_tags].select { |tag| valid_target_audience_tags.include?(tag.to_s) }
+    end
+
+    # Filtrer subjects_tags pour ne garder que les valeurs valides
+    if params_hash[:subjects_tags].is_a?(Array)
+      params_hash[:subjects_tags] = params_hash[:subjects_tags].select { |tag| valid_subjects.include?(tag.to_s) }
+    end
+
+    # Filtrer levels pour ne garder que les valeurs valides
+    if params_hash[:levels].is_a?(Array)
+      params_hash[:levels] = params_hash[:levels].select { |level| valid_levels.include?(level.to_s) }
+    end
+
+    # Filtrer teaching_formats pour ne garder que les valeurs valides
+    if params_hash[:teaching_formats].is_a?(Array)
+      params_hash[:teaching_formats] = params_hash[:teaching_formats].select { |format| valid_teaching_formats.include?(format.to_s) }
+    end
+  end
+
   def teacher_params
-    params.require(:teacher).permit(
+    # Permettre served_zones comme string ou array car il peut arriver comme JSON string
+    permitted = params.require(:teacher).permit(
       :first_name, :last_name, :gender,
       :academy_name, :school_name, :career_status,
       :zip_code, :city,
-      :support_text, :experience_text, :special_skills_text,
-      :interest_text, :exams_raw_text,
+      :about_me, :headline, :primary_subject, :exams_raw_text,
       :pricing_text, :target_students_range,
       :email_pro, :email_perso, :phone,
-      :profile_image_url, :profile_image_attached, :rgpd_consent, :picture_visible,
+      :profile_image_url, :profile_image_attached,
       :avatar,
-      subjects_tags: [], levels: [], exam_tags: [], pedagogy_tags: [], teaching_formats: [], served_zones: []
+      subjects_tags: [], levels: [], exam_tags: [], specific_support: [], teaching_formats: [], target_audience_tags: []
     )
+    
+    # Ajouter served_zones manuellement car il peut être une string JSON
+    if params[:teacher][:served_zones].present?
+      permitted[:served_zones] = params[:teacher][:served_zones]
+    end
+    
+    permitted
   end
 end

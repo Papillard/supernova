@@ -8,7 +8,7 @@
 
     <div class="card bg-white shadow-lg">
       <div class="card-body">
-        <%= form_for(resource, as: resource_name, url: teacher_registration_path, html: { class: "space-y-6" }) do |f| %>
+        <%= form_for(resource, as: resource_name, url: teacher_registration_path, html: { class: "space-y-6", data: { turbo: false } }) do |f| %>
           <%= render "devise/shared/error_messages", resource: resource %>
 
           <div class="grid grid-cols-2 gap-4">

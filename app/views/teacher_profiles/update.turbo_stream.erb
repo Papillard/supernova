@@ -22,12 +22,6 @@
         Upload en cours...
       </div>
     </div>
-    <div class="form-control">
-      <label class="label cursor-pointer justify-start gap-3">
-        <%= avatar_form.check_box :picture_visible, { checked: @teacher.picture_visible, class: "custom-checkbox" }, true, false %>
-        <span class="label-text text-base">Rendre ma photo visible publiquement sur ProfConnect (recommandé)</span>
-      </label>
-    </div>
     <%= hidden_field_tag "avatar_only", "1" %>
   <% end %>
 <% end %>

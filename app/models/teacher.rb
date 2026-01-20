@@ -21,11 +21,13 @@ class Teacher < ApplicationRecord
   # Validations
   validates :first_name, presence: true
   validates :last_name, presence: true
-  validates :gender, presence: true
-  validates :career_status, presence: true
   validates :email_pro, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_blank: true
   validates :status, presence: true
   validates :user_id, uniqueness: true
+  validates :headline, length: { maximum: 120 }, allow_blank: true
+  # primary_subject est optionnel
+  validate :target_audience_tags_max_two
+  validate :validate_array_values
 
   # Associations
   has_many :requests, dependent: :destroy
@@ -35,6 +37,11 @@ class Teacher < ApplicationRecord
   scope :approved, -> { where(status: :approved) }
   scope :with_rgpd_consent, -> { where(rgpd_consent: true) }
   scope :public_visible, -> { approved.with_rgpd_consent }
+
+  # Vérifie si le profil est visible publiquement (validé et avec consentement RGPD)
+  def public_visible?
+    approved? && rgpd_consent?
+  end
 
   # Vérifie si le profil est suffisamment complété pour accéder aux demandes
   # Critères minimum:
@@ -83,12 +90,78 @@ class Teacher < ApplicationRecord
     self.status ||= :pending
     self.rgpd_consent ||= false
     self.profile_image_attached ||= false
-    self.picture_visible ||= false
     self.levels ||= []
     self.subjects_tags ||= []
     self.teaching_formats ||= []
     self.exam_tags ||= []
-    self.pedagogy_tags ||= []
+    self.specific_support ||= []
+    self.target_audience_tags ||= []
+    self.accepted_requests_count ||= 0
+  end
+
+  def target_audience_tags_max_two
+    return unless target_audience_tags.present?
+    if target_audience_tags.length > 2
+      errors.add(:target_audience_tags, "ne peut contenir que 2 éléments maximum")
+    end
+  end
+
+  def validate_array_values
+    # Extraire les valeurs valides des constantes
+    valid_exam_tags = TeachersHelper::EXAM_TAGS_OPTIONS.map { |_, value| value }
+    valid_specific_support = TeachersHelper::SPECIFIC_SUPPORT_OPTIONS.map { |_, value| value }
+    valid_target_audience_tags = TeachersHelper::TARGET_AUDIENCE_TAGS_OPTIONS.map { |_, value| value }
+    valid_subjects = TeachersHelper::SUBJECTS_OPTIONS.map { |_, value| value }
+    valid_levels = TeachersHelper::LEVELS_OPTIONS.map { |_, value| value }
+    valid_teaching_formats = ["online", "at_student_home", "at_teacher_home"]
+
+    # Valider exam_tags
+    if exam_tags.present? && exam_tags.any?
+      invalid_tags = exam_tags.reject { |tag| valid_exam_tags.include?(tag.to_s) }
+      if invalid_tags.any?
+        errors.add(:exam_tags, "contient des valeurs invalides: #{invalid_tags.join(', ')}")
+      end
+    end
+
+    # Valider specific_support
+    if specific_support.present? && specific_support.any?
+      invalid_tags = specific_support.reject { |tag| valid_specific_support.include?(tag.to_s) }
+      if invalid_tags.any?
+        errors.add(:specific_support, "contient des valeurs invalides: #{invalid_tags.join(', ')}")
+      end
+    end
+
+    # Valider target_audience_tags
+    if target_audience_tags.present? && target_audience_tags.any?
+      invalid_tags = target_audience_tags.reject { |tag| valid_target_audience_tags.include?(tag.to_s) }
+      if invalid_tags.any?
+        errors.add(:target_audience_tags, "contient des valeurs invalides: #{invalid_tags.join(', ')}")
+      end
+    end
+
+    # Valider subjects_tags
+    if subjects_tags.present? && subjects_tags.any?
+      invalid_tags = subjects_tags.reject { |tag| valid_subjects.include?(tag.to_s) }
+      if invalid_tags.any?
+        errors.add(:subjects_tags, "contient des valeurs invalides: #{invalid_tags.join(', ')}")
+      end
+    end
+
+    # Valider levels
+    if levels.present? && levels.any?
+      invalid_levels = levels.reject { |level| valid_levels.include?(level.to_s) }
+      if invalid_levels.any?
+        errors.add(:levels, "contient des valeurs invalides: #{invalid_levels.join(', ')}")
+      end
+    end
+
+    # Valider teaching_formats
+    if teaching_formats.present? && teaching_formats.any?
+      invalid_formats = teaching_formats.reject { |format| valid_teaching_formats.include?(format.to_s) }
+      if invalid_formats.any?
+        errors.add(:teaching_formats, "contient des valeurs invalides: #{invalid_formats.join(', ')}")
+      end
+    end
   end
 
   def set_display_name

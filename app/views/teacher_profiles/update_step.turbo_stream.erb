@@ -1,3 +1,37 @@
 <%= turbo_stream.update "flash-messages" do %>
   <%= render "shared/flash" %>
 <% end %>
+
+<%# Mettre à jour les messages d'erreur du formulaire %>
+<%= turbo_stream.replace "error-messages-container" do %>
+  <div id="error-messages-container">
+    <%= render "devise/shared/error_messages", resource: @teacher %>
+  </div>
+<% end %>
+
+<%# Mettre à jour le hidden input des zones desservies avec les nouvelles valeurs %>
+<%= turbo_stream.update "zones-desservies-section" do %>
+  <div id="zones-desservies-section" class="form-control"
+       data-controller="zone-selector"
+       data-zone-selector-initial-zones-value="<%= initial_served_zones.to_json %>"
+       data-zone-selector-all-zones-value="<%= all_served_zones_for_search.to_json %>"
+       data-zone-selector-selected-value="<%= (@teacher.served_zones || []).to_json %>">
+    <%= label_tag "teacher[served_zones]", class: "label" do %>
+      <span class="label-text">Où souhaitez-vous donner cours ?</span>
+    <% end %>
+    <%= hidden_field_tag "teacher[served_zones]", (@teacher.served_zones || []).to_json, data: { zone_selector_target: "input" } %>
+    <div class="relative">
+      <input type="text"
+             placeholder="Sélectionnez les zones desservies"
+             data-zone-selector-target="searchInput"
+             data-action="input->zone-selector#search focus->zone-selector#toggleDropdown keydown->zone-selector#handleKeydown"
+             class="input input-bordered w-full" />
+      <div data-zone-selector-target="dropdown" class="hidden absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-96 overflow-y-auto">
+        <!-- Contenu généré par JavaScript -->
+      </div>
+    </div>
+    <div data-zone-selector-target="selectedZones" class="mt-3 flex flex-wrap gap-2">
+      <!-- Zones sélectionnées affichées ici -->
+    </div>
+  </div>
+<% end %>

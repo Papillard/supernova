@@ -38,7 +38,7 @@
             <%= f.label :format, "Format", class: "label" %>
             <%= f.select :format, options_for_select([
               ["Tous les formats", ""],
-              ["Au domicile de l'élève", "at_student_home"],
+              ["Chez l'élève", "at_student_home"],
               ["Au domicile du professeur", "at_teacher_home"],
               ["En ligne", "online"]
             ], params[:format]), {},

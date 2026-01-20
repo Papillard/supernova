@@ -1,34 +1,3151 @@
 teachers:
   - id: aurelie-adda
-    first_name: "Aurelie"
+    first_name: "Aurélie"
     last_name: "Adda"
-    display_name: "Aurelie A."
+    display_name: "Aurélie A."
     gender: female
+
+    career_status: certifie
     academy_name: "Paris"
     school_name: "Lycée Molière"
-    career_status: certifie
+
+    # Positionnement clair
+    primary_subject: "histoire-geographie"
+    target_audience_tags:
+      - "eleves_autonomes_bons_eleves"
+      - "eleves_visant_excellence"
+
+    # Accroche (champ headline)
+    headline: >
+      Professeure certifiée EN, spécialiste Brevet et Bac,
+      méthode rigoureuse et adaptée à chaque élève
+
+    # Niveaux & matières
     levels: ["college", "lycee"]
-    subjects_tags: ["histoire-geographie", "emc", "hggsp"]
+    subjects_tags: ["histoire-geographie", "hggsp"]
+
+    # Logistique
     teaching_formats: ["at_student_home", "at_teacher_home", "online"]
-    pricing_text: "50 €"
+    pricing_text: "50 € / heure"
     city: "Paris"
     zip_code: "75016"
-    served_zones: ["Paris", "Petite couronne (92,93,94)", "Grande couronne (77,78,91,95)"]
-    support_text: >
-      Méthodologie, compétences écrites (entraînement brevet), compétences orales (entraînement Brevet histoire des arts, entraînement grand oral). Révisions des connaissances tous niveaux (collège lycée). Approfondissement des connaissances, préparations dissertations baccalauréat contrôle continu, examen final…
-    experience_text: >
-      Professeure de la éducation nationale depuis 1996.
-      Dans l'académie de Versailles collège jean Lurçat à Acheres jusqu'en 2007 puis lycée Alain au Vésinet jusqu'en 2016.
-      Puis enseignante au Lycée Charles de Gaulle à Londres jusqu'en 2019.
-      Aujourd'hui en poste au lycée Molière à Paris
-    special_skills_text: >
-      Motivante et à l'écoute des difficultés individuelles. Capable d'aider des élèves de tous niveaux dans la discipline grâce a une expérience diverse et variée des publics.
-      Autrice d'un livre sur parcoursup : «Réussir mon orientation au lycée » Belin 2023
-    exams_raw_text: "Brevet, baccalauréat tronc commun et spéculative HGGSP. Grand oral"
+    served_zones:
+      - "ile_de_france:paris"
+      - "ile_de_france:petite_couronne"
+      - "ile_de_france:grande_couronne"
+
+    # Contenu principal (UN seul champ libre)
+    about_me: >
+      J'accompagne des élèves de collège et de lycée en histoire-géographie,
+      avec un travail approfondi de la méthodologie et des compétences écrites
+      et orales.
+      Les cours sont structurés, progressifs et adaptés au niveau de chaque élève.
+      Je prépare efficacement au Brevet, au Bac et au Grand oral,
+      avec des entraînements réguliers et des objectifs clairs.
+
+    # Expertise structurée
     exam_tags: ["brevet", "bac_general", "grand_oral"]
-    email_pro: "Aurelie.adda@ac-paris.fr"
+    specific_support:
+      - "preparation_examens"
+      - "methodologie_organisation"
+      - "orientation_parcoursup"
+
+    # Contact & statut
+    email_pro: "aurelie.adda@ac-paris.fr"
     email_perso: "addaaurelie@gmail.com"
-    phone: "(068) 716-5046"
+    phone: "06 87 16 50 46"
     rgpd_consent: true
     status: approved
-    picture_visible: false
+
+  - id: laurence-rapidel
+    first_name: "Laurence"
+    last_name: "Rapidel"
+    display_name: "Laurence R."
+    gender: female
+
+    career_status: certifie
+    academy_name: "Paris"
+    school_name: "Collège Molière"
+
+    primary_subject: "mathematiques"
+    target_audience_tags:
+      - "eleves_en_difficulte"
+
+    headline: >
+      Professeure certifiée de mathématiques,
+      accompagnement rigoureux du collège au lycée
+
+    levels: ["college", "lycee"]
+    subjects_tags: []
+
+    teaching_formats: ["at_teacher_home", "online"]
+    pricing_text: "50 € / heure"
+    city: "Paris"
+    zip_code: "75016"
+    served_zones:
+      - "ile_de_france:paris"
+
+    about_me: >
+      J'accompagne des élèves en mathématiques de la 4e à la terminale.
+      Professeure de mathématiques depuis 17 ans,
+      j'aide particulièrement les élèves ayant des blocages ou des difficultés.
+
+    exam_tags: ["brevet", "bac_general"]
+    specific_support:
+      - "preparation_examens"
+
+    email_pro: "laurence.rapidel@ac-paris.fr"
+    email_perso: "laurencerapidel@gmail.com"
+    phone: "06 75 94 06 79"
+    rgpd_consent: true
+    status: approved
+
+  - id: emmanuelle-jean-baptiste
+    first_name: "Emmanuelle"
+    last_name: "Jean-Baptiste"
+    display_name: "Emmanuelle J.-B."
+    gender: female
+
+    career_status: certifie
+    academy_name: "Paris"
+    school_name: "Lycée Colbert"
+
+    primary_subject: "histoire-geographie"
+    target_audience_tags:
+      - "eleves_autonomes_bons_eleves"
+      - "eleves_visant_excellence"
+
+    headline: >
+      Professeure certifiée d'histoire-géographie,
+      spécialiste HGGSP et préparation Sciences Po
+
+    levels: ["lycee"]
+    subjects_tags:
+      - "hggsp"
+      - "sciences_politiques"
+      - "geopolitique"
+      - "anglais"
+
+    teaching_formats: ["at_student_home", "at_teacher_home"]
+    pricing_text: "45 à 60 € / heure"
+    city: "Paris"
+    zip_code: "75018"
+    served_zones:
+      - "ile_de_france:paris"
+
+    about_me: >
+      J'enseigne l'histoire-géographie au lycée après une expérience en collège,
+      et je suis en charge de la spécialité HGGSP, de l'option DGEMC
+      (initiation au droit) et de la DNL anglais.
+      J'accompagne les élèves en histoire, géographie et géopolitique,
+      avec un accent fort sur la méthodologie attendue au lycée
+      et en préparation Sciences Po.
+      À l'écoute des besoins de chaque élève,
+      je vise la (re)motivation, le renforcement des savoirs
+      et l'appropriation durable des méthodes pour réussir.
+
+    exam_tags:
+      - "bac_general"
+      - "concours_iep_sciences_po"
+
+    specific_support:
+      - "preparation_examens"
+      - "preparation_concours"
+      - "methodologie_organisation"
+      - "confiance_en_soi"
+
+    email_pro: "emmanuelle.jean-baptiste@ac-paris.fr"
+    email_perso: "emmanuelle.jean-baptiste@ac-paris.fr"
+    phone: "06 84 06 96 30"
+    rgpd_consent: true
+    status: approved
+
+  - id: chantal-da-silva
+    first_name: "Chantal"
+    last_name: "Da Silva"
+    display_name: "Chantal D. S."
+    gender: female
+
+    career_status: certifie
+    academy_name: "Paris"
+    school_name: "Collège Béranger, Lycée Sophie-Germain, Lycée Molière"
+
+    primary_subject: "histoire-geographie"
+    target_audience_tags:
+      - "eleves_en_difficulte"
+      - "eleves_autonomes_bons_eleves"
+
+    headline: >
+      Professeure certifiée d'histoire-géographie,
+      méthodologie solide et accompagnement personnalisé
+
+    levels: ["college", "lycee"]
+    subjects_tags: []
+
+    teaching_formats: ["online"]
+    pricing_text: "50 € / heure"
+    city: "Paris"
+    zip_code: "94250"
+    served_zones:
+      - "ile_de_france:paris"
+      - "ile_de_france:petite_couronne"
+
+    about_me: >
+      Enseignante en histoire-géographie depuis près de 20 ans
+      dans le secondaire et le supérieur,
+      titulaire d'un DEA d'histoire obtenu en 2022.
+      J'accompagne les élèves de collège et de lycée
+      avec un travail approfondi de la méthodologie
+      et de l'enseignement de la discipline.
+      À l'écoute des difficultés de chaque élève,
+      je cherche avec eux la méthode d'apprentissage
+      qui leur permet de progresser durablement.
+
+    exam_tags:
+      - "brevet"
+      - "bac_general"
+
+    specific_support:
+      - "methodologie_organisation"
+      - "preparation_examens"
+
+    email_pro: "chantal.da-silva@ac-paris.fr"
+    email_perso: "da_silva_chantal@hotmail.com"
+    phone: "06 64 16 42 39"
+    rgpd_consent: true
+    status: approved
+
+  - id: marion-cochet
+    first_name: "Marion"
+    last_name: "Cochet"
+    display_name: "Marion C."
+    gender: female
+
+    career_status: agrege
+    academy_name: "Versailles"
+    school_name: "Institut Notre Dame de Sainte Croix"
+
+    primary_subject: "espagnol"
+    target_audience_tags:
+      - "eleves_autonomes_bons_eleves"
+      - "eleves_visant_excellence"
+
+    headline: >
+      Professeure agrégée d'espagnol,
+      spécialiste prépa ECG, bac et concours écoles de commerce
+
+    levels: ["lycee", "prepa"]
+    subjects_tags:
+      - "litterature"
+      - "geopolitique"
+
+    teaching_formats: ["online"]
+    pricing_text: "60 € / heure"
+    city: "Paris"
+    zip_code: "92200"
+    served_zones:
+      - "ile_de_france:paris"
+      - "ile_de_france:petite_couronne"
+
+    about_me: >
+      Professeure agrégée d'espagnol, titulaire d'un master obtenu en 2002,
+      j'enseigne depuis plus de 20 ans en lycée et en classes préparatoires ECG.
+      Mon expertise couvre la grammaire, la littérature et la géopolitique
+      du monde hispanophone, avec une préparation exigeante et actualisée
+      aux attentes du bac, du Bachibac et des concours des écoles de commerce.
+      Mon enseignement est rigoureux, dynamique et orienté performance.
+
+    exam_tags:
+      - "bac_general"
+      - "concours_ecoles_commerce"
+
+    specific_support:
+      - "preparation_examens"
+      - "preparation_concours"
+
+    email_pro: "marion.cochet1@ac-versailles.fr"
+    email_perso: "carlevaro73@hotmail.com"
+    phone: "06 68 12 19 73"
+    rgpd_consent: true
+    status: approved
+
+  - id: lauranne-chetaneau
+    first_name: "Lauranne"
+    last_name: "Chetaneau"
+    display_name: "Lauranne C."
+    gender: female
+
+    career_status: certifie
+    academy_name: "Versailles"
+    school_name: "Collège Georges Pompidou"
+
+    primary_subject: "mathematiques"
+    target_audience_tags:
+      - "eleves_en_difficulte"
+
+    headline: >
+      Professeure certifiée de mathématiques,
+      accompagnement bienveillant et rigoureux au collège
+
+    levels: ["college"]
+    subjects_tags: []
+
+    teaching_formats: ["at_student_home"]
+    pricing_text: "50 € / heure"
+    city: "Paris"
+    zip_code: "75012"
+    served_zones:
+      - "ile_de_france:paris"
+
+    about_me: >
+      Professeure certifiée de mathématiques au collège depuis 4 ans,
+      titulaire d'un master de mathématiques générales obtenu en 2022.
+      Je donne des cours particuliers depuis mes études,
+      en privilégiant une approche bienveillante et structurée.
+      La rigueur mathématique est au service de la compréhension,
+      afin d'aider chaque élève à progresser efficacement.
+      Je prépare au Brevet et aux épreuves de mathématiques du baccalauréat.
+
+    exam_tags:
+      - "brevet"
+      - "bac_general"
+
+    specific_support:
+      - "preparation_examens"
+
+    email_pro: "lauranne.chetaneau@ac-versailles.fr"
+    email_perso: "lauranne.chetaneau@gmail.com"
+    phone: "06 51 28 97 56"
+    rgpd_consent: true
+    status: approved
+
+  - id: antonio-barbosa
+    first_name: "Antonio"
+    last_name: "Barbosa"
+    display_name: "Antonio B."
+    gender: male
+
+    career_status: certifie
+    academy_name: "Montpellier"
+    school_name: "Collège Federico Garcia Lorca"
+
+    primary_subject: "espagnol"
+    target_audience_tags:
+      - "eleves_en_difficulte"
+      - "eleves_autonomes_bons_eleves"
+
+    headline: >
+      Professeur certifié d'espagnol,
+      plus de 20 ans d'expérience et progression assurée
+
+    levels: ["college", "lycee"]
+    subjects_tags: []
+
+    teaching_formats: ["at_student_home", "at_teacher_home", "online"]
+    pricing_text: "50 € / heure"
+    city: "Nîmes"
+    zip_code: "30000"
+    served_zones:
+      - "departements:30"
+
+    about_me: >
+      Professeur certifié d'espagnol depuis plus de 20 ans,
+      titulaire du CAPES obtenu en 2002.
+      J'ai enseigné en collège REP+ en région parisienne,
+      puis dans le sud de la France depuis 2009.
+      J'ai également dispensé des cours de méthodologie
+      en expression écrite à l'université d'Avignon.
+      À l'écoute, patient et exigeant,
+      je mets l'accent sur le sens, la méthode
+      et la progression solide des élèves.
+
+    exam_tags:
+      - "bac_general"
+
+    specific_support:
+      - "preparation_examens"
+      - "methodologie_organisation"
+
+    email_pro: "antonio.barbosa@ac-montpellier.fr"
+    email_perso: "panoiense@hotmail.fr"
+    phone: "06 18 02 48 42"
+    rgpd_consent: true
+    status: approved
+
+  - id: elodie-escoda
+    first_name: "Elodie"
+    last_name: "Escoda"
+    display_name: "Elodie E."
+    gender: female
+
+    career_status: certifie
+    academy_name: "Versailles"
+    school_name: "Collège Georges Pompidou, Courbevoie"
+
+    primary_subject: "histoire-geographie"
+    target_audience_tags:
+      - "eleves_en_difficulte"
+      - "eleves_autonomes_bons_eleves"
+
+    headline: >
+      Professeure certifiée d'histoire-géographie,
+      spécialiste Brevet et orientation post-3e
+
+    levels: ["college"]
+    subjects_tags: []
+
+    teaching_formats: ["at_student_home", "online"]
+    pricing_text: "50 à 60 € / heure"
+    city: "Paris"
+    zip_code: "75018"
+    served_zones:
+      - "ile_de_france:paris"
+      - "ile_de_france:petite_couronne"
+
+    about_me: >
+      Professeure certifiée d'histoire-géographie depuis plus de 20 ans,
+      titulaire du CAPES obtenu en 2003.
+      Professeure principale de 3e depuis 15 ans,
+      j'accompagne les élèves dans la préparation au DNB,
+      la méthodologie des révisions et l'organisation du travail.
+      Je coordonne également des projets interdisciplinaires
+      et encadre des professeurs stagiaires.
+      Mon objectif est d'aider les élèves à réussir le Brevet
+      et à construire une orientation choisie et cohérente.
+
+    exam_tags:
+      - "brevet"
+
+    specific_support:
+      - "preparation_examens"
+      - "methodologie_organisation"
+      - "orientation_parcoursup"
+
+    email_pro: "elodie.escoda@ac-versailles.fr"
+    email_perso: ""
+    phone: "06 20 98 41 67"
+    rgpd_consent: true
+    status: approved
+
+  - id: sarah-roy
+    first_name: "Sarah"
+    last_name: "Roy"
+    display_name: "Sarah R."
+    gender: female
+
+    career_status: certifie
+    academy_name: "Bordeaux"
+    school_name: "Collège Cantelande"
+
+    primary_subject: "anglais"
+    target_audience_tags:
+      - "eleves_en_difficulte"
+      - "eleves_autonomes_bons_eleves"
+
+    headline: >
+      Professeure certifiée d'anglais,
+      pédagogie différenciée et rigoureuse au collège
+
+    levels: ["college"]
+    subjects_tags: []
+
+    teaching_formats: ["at_student_home"]
+    pricing_text: "50 € / heure"
+    city: "Cestas"
+    zip_code: "33610"
+    served_zones:
+      - "departements:33"
+
+    about_me: >
+      Professeure certifiée d'anglais depuis 2001,
+      titulaire d'une licence obtenue en 2004.
+      J'ai enseigné au collège et au lycée,
+      en filières générales, technologiques et en SEGPA,
+      en région parisienne puis en région bordelaise.
+      Mon approche repose sur la différenciation,
+      la rigueur et la bienveillance,
+      avec une pédagogie par le jeu quand c'est possible.
+      Je transmets des outils méthodologiques efficaces
+      pour aider chaque élève à progresser.
+
+    specific_support:
+      - "methodologie_organisation"
+      - "confiance_en_soi"
+
+    email_pro: "sarah.roy@ac-bordeaux.fr"
+    email_perso: "englishteacherfrombordeaux@yahoo.fr"
+    phone: "06 29 71 33 81"
+    rgpd_consent: true
+    status: approved
+
+  - id: virginie-chaleur-launay
+    first_name: "Virginie"
+    last_name: "Chaleur-Launay"
+    display_name: "Virginie C.-L."
+    gender: female
+
+    career_status: agrege
+    academy_name: "AEFE"
+    school_name: "Lycée français Charles de Gaulle, Londres"
+
+    primary_subject: "histoire-geographie"
+    target_audience_tags:
+      - "eleves_autonomes_bons_eleves"
+      - "eleves_visant_excellence"
+
+    headline: >
+      Professeure agrégée et docteure en histoire,
+      spécialiste HGGSP et préparation aux examens
+
+    levels: ["college", "lycee"]
+    subjects_tags:
+      - "hggsp"
+
+    teaching_formats: ["online"]
+    pricing_text: "50 € / heure"
+    city: "Online"
+    zip_code: ""
+    served_zones: []
+
+    about_me: >
+      Professeure agrégée d'histoire-géographie depuis 25 ans,
+      docteure en histoire, titulaire d'un doctorat obtenu en 2001.
+      J'enseigne en collège et lycée au sein du réseau AEFE,
+      et je suis professeure d'HGGSP.
+      J'accompagne les élèves de la 6e à la Terminale
+      en histoire-géographie et HGGSP,
+      avec un travail structuré de méthodologie générale
+      et disciplinaire.
+      Mon approche repose sur une pédagogie positive,
+      attentive aux besoins individuels,
+      et orientée vers la réussite aux examens.
+
+    exam_tags:
+      - "brevet"
+      - "bac_general"
+      - "grand_oral"
+
+    specific_support:
+      - "preparation_examens"
+      - "methodologie_organisation"
+
+    email_pro: "vchaleur-launay@lyceefrancais.org.uk"
+    email_perso: "virginie.chaleur@gmail.com"
+    phone: ""
+    rgpd_consent: true
+    status: approved
+
+  - id: jennifer-ghislain
+    first_name: "Jennifer"
+    last_name: "Ghislain"
+    display_name: "Jennifer G."
+    gender: female
+
+    career_status: certifie
+    academy_name: "Paris"
+    school_name: "Lycée Innovant de Paris"
+
+    primary_subject: "histoire-geographie"
+    target_audience_tags:
+      - "eleves_autonomes_bons_eleves"
+      - "eleves_visant_excellence"
+
+    headline: >
+      Professeure certifiée d'histoire-géographie,
+      spécialiste HGGSP et accompagnement Parcoursup
+
+    levels: ["lycee"]
+    subjects_tags:
+      - "hggsp"
+
+    teaching_formats: ["online", "at_student_home"]
+    pricing_text: "50 € / heure"
+    city: "Paris"
+    zip_code: "78000"
+    served_zones:
+      - "ile_de_france:paris"
+      - "ile_de_france:petite_couronne"
+
+    about_me: >
+      Professeure d'histoire-géographie-EMC et d'HGGSP,
+      titulaire d'un master recherche en histoire obtenu en 2013.
+      J'enseigne au lycée et suis spécialisée dans la préparation HGGSP
+      et l'accompagnement des élèves de Terminale.
+      Professeure principale et référente de niveau,
+      j'accompagne les élèves sur Parcoursup,
+      la méthode de travail et les attendus du baccalauréat.
+
+    exam_tags:
+      - "bac_general"
+      - "parcoursup"
+
+    specific_support:
+      - "preparation_examens"
+      - "methodologie_organisation"
+      - "orientation_parcoursup"
+
+    email_pro: "jennifer.ghislain@ac-paris.fr"
+    email_perso: ""
+    phone: "06 15 70 02 25"
+    rgpd_consent: true
+    status: approved
+
+  - id: virginie-lintanf
+    first_name: "Virginie"
+    last_name: "Lintanf"
+    display_name: "Virginie L."
+    gender: female
+
+    career_status: agrege
+    academy_name: "Paris"
+    school_name: "Collège Modigliani"
+
+    primary_subject: "histoire-geographie"
+    target_audience_tags:
+      - "eleves_autonomes_bons_eleves"
+      - "eleves_visant_excellence"
+
+    headline: >
+      Professeure agrégée d'histoire-géographie,
+      spécialiste méthodologie et préparation au Brevet
+
+    levels: ["college"]
+    subjects_tags: []
+
+    teaching_formats: ["online"]
+    pricing_text: "60 € / heure"
+    city: "Paris"
+    zip_code: "92190"
+    served_zones:
+      - "ile_de_france:paris"
+      - "ile_de_france:petite_couronne"
+
+    about_me: >
+      Professeure agrégée d'histoire-géographie,
+      titulaire de l'agrégation de géographie obtenue en 2014.
+      J'enseigne depuis 10 ans en collège et lycée
+      et j'interviens comme formatrice académique.
+      J'accompagne les élèves dans la préparation au DNB,
+      le travail méthodologique de la rédaction
+      et la préparation aux examens,
+      y compris pour les candidats individuels.
+
+    exam_tags:
+      - "brevet"
+      - "bac_general"
+
+    specific_support:
+      - "preparation_examens"
+      - "methodologie_organisation"
+
+    email_pro: "virginie.lintanf@ac-paris.fr"
+    email_perso: ""
+    phone: "06 07 10 66 76"
+    rgpd_consent: true
+    status: approved
+
+  - id: celine-bigot
+    first_name: "Céline"
+    last_name: "Bigot"
+    display_name: "Céline B."
+    gender: female
+
+    career_status: certifie
+    academy_name: "Paris"
+    school_name: "Lycée Decour"
+
+    primary_subject: "anglais"
+    target_audience_tags:
+      - "eleves_en_difficulte"
+      - "eleves_autonomes_bons_eleves"
+
+    headline: >
+      Professeure certifiée d'anglais,
+      24 ans d'expérience en collège et lycée
+
+    levels: ["college", "lycee"]
+    subjects_tags: []
+
+    teaching_formats: ["at_student_home", "online"]
+    pricing_text: "50 € / heure"
+    city: "Paris"
+    zip_code: "75018"
+    served_zones:
+      - "ile_de_france:paris"
+
+    about_me: >
+      Professeure certifiée d'anglais depuis 24 ans,
+      formée à l'IUFM en 2001.
+      J'enseigne en collège et en lycée,
+      avec une attention particulière portée
+      aux besoins spécifiques de chaque élève.
+      Mon objectif est de consolider les bases,
+      développer la confiance
+      et préparer efficacement aux attentes du bac.
+
+    exam_tags:
+      - "bac_general"
+
+    specific_support:
+      - "preparation_examens"
+      - "confiance_en_soi"
+
+    email_pro: "celine.bigot1@ac-paris.fr"
+    email_perso: ""
+    phone: "06 20 46 55 44"
+    rgpd_consent: true
+    status: approved
+
+  - id: cecile-addabbo
+    first_name: "Cécile"
+    last_name: "Addabbo"
+    display_name: "Cécile A."
+    gender: female
+
+    career_status: certifie
+    academy_name: "Versailles"
+    school_name: "Collège"
+
+    primary_subject: "education_musicale"
+    target_audience_tags:
+      - "eleves_autonomes_bons_eleves"
+
+    headline: >
+      Professeure certifiée d'éducation musicale,
+      23 ans d'expérience et préparation à l'oral du DNB
+
+    levels: ["college"]
+    subjects_tags: []
+
+    teaching_formats: ["online"]
+    pricing_text: "40 € / heure"
+    city: "Banlieue parisienne"
+    zip_code: "92150"
+    served_zones:
+      - "ile_de_france:petite_couronne"
+
+    about_me: >
+      Professeure certifiée d'éducation musicale,
+      titulaire du CAPES obtenu en 2002.
+      J'enseigne depuis 23 ans en collège
+      et j'ai également une expérience de 10 ans en conservatoire.
+      J'accompagne les élèves dans l'éducation musicale
+      et la préparation à l'oral du DNB,
+      avec une approche structurée et adaptée à chaque profil.
+
+    exam_tags:
+      - "brevet"
+
+    specific_support:
+      - "preparation_examens"
+
+    email_pro: "cecile-marie-th.addabbo@ac-versailles.fr"
+    email_perso: ""
+    phone: "06 75 69 52 41"
+    rgpd_consent: true
+    status: approved
+
+  - id: dominique-thonon
+    first_name: "Dominique"
+    last_name: "Thonon"
+    display_name: "Dominique T."
+    gender: male
+
+    career_status: agrege
+    academy_name: "Versailles"
+    school_name: "Lycée"
+
+    primary_subject: "mathematiques"
+    target_audience_tags:
+      - "eleves_autonomes_bons_eleves"
+      - "eleves_visant_excellence"
+
+    headline: >
+      Professeur agrégé de mathématiques,
+      spécialiste analyse, géométrie et modélisation
+
+    levels: ["lycee"]
+    subjects_tags: []
+
+    teaching_formats: ["online"]
+    pricing_text: "50 € / heure"
+    city: "Paris"
+    zip_code: "92150"
+    served_zones:
+      - "ile_de_france:paris"
+      - "ile_de_france:petite_couronne"
+
+    about_me: >
+      Professeur agrégé de mathématiques,
+      titulaire de l'agrégation obtenue en 2002.
+      J'enseigne dans l'Éducation nationale depuis plus de 20 ans.
+      Spécialiste en analyse, géométrie et modélisation,
+      j'accompagne les élèves de lycée
+      en préparation aux examens
+      avec un travail rigoureux de méthodologie.
+
+    specific_support:
+      - "preparation_examens"
+      - "methodologie_organisation"
+
+    email_pro: "dominique.thonon@ac-versailles.fr"
+    email_perso: ""
+    phone: ""
+    rgpd_consent: true
+    status: approved
+
+  - id: veronique-perrin-widemann
+    first_name: "Véronique"
+    last_name: "Perrin-Widemann"
+    display_name: "Véronique P.-W."
+    gender: female
+
+    career_status: prof_des_ecoles
+    academy_name: "Créteil"
+    school_name: "En disponibilité"
+
+    primary_subject: "aide_aux_devoirs"
+    target_audience_tags:
+      - "eleves_en_difficulte"
+
+    headline: >
+      Professeure des écoles,
+      accompagnement personnalisé en primaire toutes matières
+
+    levels: ["primaire"]
+    subjects_tags: []
+
+    teaching_formats: ["online"]
+    pricing_text: "50 € / heure"
+    city: "Département 68"
+    zip_code: "68190"
+    served_zones:
+      - "departements:68"
+
+    about_me: >
+      Professeure des écoles,
+      titulaire d'une licence en sciences de l'éducation obtenue en 2003.
+      J'accompagne les élèves de primaire dans toutes les matières,
+      avec une attention particulière portée aux besoins individuels.
+      Diplômée éducatrice de jeunes enfants,
+      je propose un accompagnement structuré, bienveillant
+      et adapté au rythme de chaque enfant.
+
+    email_pro: "v.perrin@ac-creteil.fr"
+    email_perso: "veronique.perrin-widemann@laposte.net"
+    phone: "06 22 98 13 10"
+    rgpd_consent: true
+    status: approved
+
+  - id: bertrand-bernheim
+    first_name: "Bertrand"
+    last_name: "Bernheim"
+    display_name: "Bertrand B."
+    gender: male
+
+    career_status: certifie
+    academy_name: "Paris"
+    school_name: "Lycée Molière"
+
+    primary_subject: "anglais"
+    target_audience_tags:
+      - "eleves_autonomes_bons_eleves"
+      - "eleves_visant_excellence"
+
+    headline: >
+      Professeur certifié d'anglais,
+      exigence, rigueur et maîtrise des fondamentaux
+
+    levels: ["college", "lycee"]
+    subjects_tags:
+      - "snt"
+
+    teaching_formats: ["online", "at_student_home"]
+    pricing_text: "50 € / heure"
+    city: "Paris"
+    zip_code: "75116"
+    served_zones:
+      - "ile_de_france:paris"
+
+    about_me: >
+      Professeur certifié d'anglais,
+      titulaire du CAPES obtenu en 1984.
+      J'ai effectué toute ma carrière dans l'enseignement public,
+      en collège et en lycée.
+      J'accompagne les élèves en anglais,
+      notamment en grammaire et en LLCE,
+      ainsi qu'en SNT.
+      Mon approche est structurée,
+      rigoureuse et exigeante sur le travail fourni,
+      avec un objectif clair de progression solide.
+
+    email_pro: "bertrand.bernheim@ac-paris.fr"
+    email_perso: "albertrand.bernheim@hotmail.com"
+    phone: "06 13 53 41 81"
+    rgpd_consent: true
+    status: approved
+
+  - id: lidwine-warchol
+    first_name: "Lidwine"
+    last_name: "Warchol"
+    display_name: "Lidwine W."
+    gender: female
+
+    career_status: agrege
+    academy_name: "Paris"
+    school_name: "Lycée Buffon"
+
+    primary_subject: "histoire-geographie"
+    target_audience_tags:
+      - "eleves_autonomes_bons_eleves"
+      - "eleves_visant_excellence"
+
+    headline: >
+      Professeure agrégée et docteure,
+      spécialiste histoire, géographie et géopolitique
+
+    levels: ["college", "lycee"]
+    subjects_tags:
+      - "geopolitique"
+
+    teaching_formats: ["at_student_home", "at_teacher_home", "online"]
+    pricing_text: "30 à 50 € / heure"
+    city: "Paris"
+    zip_code: "75014"
+    served_zones:
+      - "ile_de_france:paris"
+
+    about_me: >
+      Professeure agrégée et docteure,
+      titulaire d'un doctorat obtenu en 1998.
+      J'enseigne depuis 25 ans et ai travaillé avec des élèves
+      de tous niveaux, notamment comme TZR pendant 15 ans à Paris.
+      J'ai également enseigné en TD à la Sorbonne.
+      J'accompagne les élèves en histoire, géographie et géopolitique,
+      en spécialités, orientation et entraînement à l'oral
+      et aux concours.
+      Reconnue comme bienveillante mais exigeante,
+      je mobilise tous les leviers nécessaires
+      pour faire progresser durablement les élèves.
+
+    exam_tags:
+      - "concours_iep_sciences_po"
+      - "bac_general"
+
+    specific_support:
+      - "preparation_examens"
+      - "preparation_concours"
+      - "orientation_parcoursup"
+      - "confiance_en_soi"
+
+    email_pro: "lidwine.warchol@ac-paris.fr"
+    email_perso: "lidwine.warchol@gmail.com"
+    phone: "06 61 17 68 87"
+    rgpd_consent: true
+    status: approved
+
+  - id: sophie-hobbs
+    first_name: "Sophie"
+    last_name: "Hobbs"
+    display_name: "Sophie H."
+    gender: female
+
+    career_status: certifie
+    academy_name: "Créteil"
+    school_name: "Collège Rabelais"
+
+    primary_subject: "anglais"
+    target_audience_tags:
+      - "eleves_autonomes_bons_eleves"
+
+    headline: >
+      Professeure certifiée d'anglais,
+      préparation examens et pratique orale
+
+    levels: ["college"]
+    subjects_tags: []
+
+    teaching_formats: ["online", "at_teacher_home"]
+    pricing_text: "50 € / heure"
+    city: "Banlieue parisienne"
+    zip_code: "94510"
+    served_zones:
+      - "ile_de_france:petite_couronne"
+
+    about_me: >
+      Professeure certifiée d'anglais,
+      titulaire d'un master 2 et du CAPES obtenus en 2021.
+      J'enseigne au collège et propose un accompagnement
+      en préparation aux examens,
+      au bac et en pratique de la conversation.
+      J'appuie mon enseignement sur des thématiques motivantes,
+      notamment le cinéma et l'histoire,
+      afin de renforcer l'expression orale
+      et la maîtrise de la langue.
+
+    specific_support:
+      - "preparation_examens"
+      - "preparation_concours"
+      - "confiance_en_soi"
+
+    email_pro: "sophiehobbs@gmail.com"
+    email_perso: "sophiehobbs@gmail.com"
+    phone: "06 77 39 07 64"
+    rgpd_consent: true
+    status: approved
+
+  - id: gaelle-quentric
+    first_name: "Gaëlle"
+    last_name: "Quentric"
+    display_name: "Gaëlle Q."
+    gender: female
+
+    career_status: agrege
+    academy_name: "Paris"
+    school_name: "Lycée Molière"
+
+    primary_subject: "svt"
+    target_audience_tags:
+      - "eleves_autonomes_bons_eleves"
+      - "eleves_visant_excellence"
+
+    headline: >
+      Professeure agrégée de SVT,
+      spécialiste Terminale et pédagogie par les sciences cognitives
+
+    levels: ["college", "lycee"]
+    subjects_tags: []
+
+    teaching_formats: ["online", "at_teacher_home"]
+    pricing_text: "80 à 100 € / heure"
+    city: "Paris"
+    zip_code: "75015"
+    served_zones:
+      - "ile_de_france:paris"
+      - "ile_de_france:petite_couronne"
+
+    about_me: >
+      Professeure agrégée de SVT,
+      titulaire de l'agrégation obtenue en 2009.
+      J'enseigne depuis plus de 20 ans,
+      de la 6e à la Terminale spécialité
+      et en enseignement scientifique.
+      Auteure d'ouvrages scolaires
+      et formatrice académique (EAFC),
+      détentrice du CAFFA,
+      je m'appuie sur les sciences cognitives
+      pour favoriser la compréhension
+      et la mémorisation à long terme.
+      J'accompagne les élèves avec exigence
+      vers un haut niveau de maîtrise.
+
+    exam_tags:
+      - "bac_general"
+
+    specific_support:
+      - "preparation_examens"
+      - "methodologie_organisation"
+
+    email_pro: "gaelle.quentric@ac-paris.fr"
+    email_perso: "gaelle.quentric@ac-paris.fr"
+    phone: "06 61 36 89 76"
+    rgpd_consent: true
+    status: approved
+
+  - id: nadege-lefevre
+    first_name: "Nadège"
+    last_name: "Lefèvre"
+    display_name: "Nadège L."
+    gender: female
+
+    career_status: certifie
+    academy_name: "Normandie"
+    school_name: "Lycée Émile Littré"
+
+    primary_subject: "svt"
+    target_audience_tags:
+      - "eleves_autonomes_bons_eleves"
+
+    headline: >
+      Professeure certifiée en biologie,
+      expertise lycée, BTS et biologie médicale
+
+    levels: ["lycee", "prepa"]
+    subjects_tags: []
+
+    teaching_formats: ["online"]
+    pricing_text: "40 € / heure"
+    city: "Avranches"
+    zip_code: "50300"
+    served_zones:
+      - "departements:50"
+
+    about_me: >
+      Professeure certifiée en biologie,
+      titulaire d'un master de recherche obtenu en 2011.
+      J'enseigne la biochimie et le génie biologique
+      depuis 15 ans en lycée, en prépa infirmière et en BTS.
+      Rédactrice de sujets,
+      je prépare les élèves aux exigences académiques
+      avec une approche rigoureuse et appliquée.
+      Je participe également à des projets de sciences participatives,
+      que j'intègre dans mes pratiques pédagogiques.
+
+    specific_support:
+      - "methodologie_organisation"
+      - "preparation_examens"
+
+    email_pro: "nadege.messaoudi@ac-normandie.fr"
+    email_perso: ""
+    phone: "06 19 67 72 51"
+    rgpd_consent: true
+    status: approved
+
+  - id: benjamin-algieri
+    first_name: "Benjamin"
+    last_name: "Algieri"
+    display_name: "Benjamin A."
+    gender: male
+
+    career_status: certifie
+    academy_name: "Paris"
+    school_name: "Collège François Couperin"
+
+    primary_subject: "svt"
+    target_audience_tags:
+      - "eleves_en_difficulte"
+      - "eleves_autonomes_bons_eleves"
+
+    headline: >
+      Professeur certifié de SVT,
+      expertise collège et préparation au Brevet
+
+    levels: ["college"]
+    subjects_tags: []
+
+    teaching_formats: ["at_student_home", "online"]
+    pricing_text: "35 € / heure"
+    city: "Paris"
+    zip_code: "93260"
+    served_zones:
+      - "ile_de_france:paris"
+      - "ile_de_france:petite_couronne"
+
+    about_me: >
+      Professeur certifié de SVT depuis 20 ans,
+      titulaire d'une maîtrise obtenue en 2005.
+      J'ai enseigné au collège et au lycée sur tous les niveaux
+      et j'exerce aujourd'hui en collège.
+      J'accompagne les élèves pour les cours, devoirs,
+      la méthodologie, la préparation des contrôles
+      et le coaching scolaire.
+      Ma pratique s'appuie sur une connaissance fine
+      des programmes et du terrain,
+      avec une approche bienveillante et motivante.
+
+    exam_tags:
+      - "brevet"
+
+    specific_support:
+      - "preparation_examens"
+      - "methodologie_organisation"
+      - "orientation_parcoursup"
+
+    email_pro: "benjamin.algieri@ac-paris.fr"
+    email_perso: "ben34jamin@hotmail.com"
+    phone: ""
+    rgpd_consent: true
+    status: approved
+
+  - id: eddy-chevalier
+    first_name: "Eddy"
+    last_name: "Chevalier"
+    display_name: "Eddy C."
+    gender: male
+
+    career_status: agrege
+    academy_name: "Paris"
+    school_name: "Lycée Molière"
+
+    primary_subject: "anglais"
+    target_audience_tags:
+      - "eleves_autonomes_bons_eleves"
+      - "eleves_visant_excellence"
+
+    headline: >
+      Professeur agrégé et docteur en anglais,
+      spécialiste classes préparatoires littéraires
+
+    levels: ["prepa"]
+    subjects_tags: []
+
+    teaching_formats: ["online", "at_student_home"]
+    pricing_text: "75 € / heure"
+    city: "Paris"
+    zip_code: "92110"
+    served_zones:
+      - "ile_de_france:paris"
+      - "ile_de_france:petite_couronne"
+
+    about_me: >
+      Professeur agrégé d'anglais depuis 18 ans,
+      docteur depuis 2007.
+      J'enseigne en classes préparatoires littéraires
+      depuis plus de 13 ans.
+      Écrivain, auteur de six ouvrages,
+      j'accompagne les élèves selon leurs besoins,
+      avec un haut niveau d'exigence académique
+      et une préparation approfondie aux concours.
+
+    exam_tags:
+      - "concours_iep_sciences_po"
+
+    specific_support:
+      - "preparation_concours"
+      - "methodologie_organisation"
+
+    email_pro: "eddy.chevalier@ac-paris.fr"
+    email_perso: "eddy_chevalier@hotmail.com"
+    phone: "06 60 44 77 56"
+    rgpd_consent: true
+    status: approved
+
+  - id: lucile-barberon
+    first_name: "Lucile"
+    last_name: "Barberon"
+    display_name: "Lucile B."
+    gender: female
+
+    career_status: agrege
+    academy_name: "Paris"
+    school_name: "Lycée Victor Duruy"
+
+    primary_subject: "histoire-geographie"
+    target_audience_tags:
+      - "eleves_autonomes_bons_eleves"
+      - "eleves_besoins_particuliers"
+
+    headline: >
+      Professeure agrégée et docteure en histoire,
+      spécialiste HGGSP et méthodologie au lycée
+
+    levels: ["lycee"]
+    subjects_tags:
+      - "hggsp"
+
+    teaching_formats: ["at_student_home", "online"]
+    pricing_text: "50 € / heure"
+    city: "Paris"
+    zip_code: "93200"
+    served_zones:
+      - "ile_de_france:paris"
+      - "ile_de_france:petite_couronne"
+
+    about_me: >
+      Professeure agrégée et docteure en histoire,
+      titulaire d'un doctorat obtenu en 1998.
+      J'ai une longue expérience en collège
+      et en lycée général comme technologique.
+      J'accompagne les élèves en histoire-géographie
+      et en spécialité HGGSP,
+      avec un travail exigeant de méthodologie.
+      Habituée à m'adapter à tous les niveaux,
+      y compris avec des élèves présentant
+      des troubles d'apprentissage.
+
+    exam_tags:
+      - "brevet"
+      - "bac_general"
+
+    specific_support:
+      - "preparation_examens"
+      - "methodologie_organisation"
+
+    email_pro: "lucile.barberon@ac-paris.fr"
+    email_perso: "lucile.barberon@orange.fr"
+    phone: "06 09 73 31 28"
+    rgpd_consent: true
+    status: approved
+
+  - id: camille-sabathe
+    first_name: "Camille"
+    last_name: "Sabathé"
+    display_name: "Camille S."
+    gender: female
+
+    career_status: certifie
+    academy_name: "Bordeaux"
+    school_name: "Collège Jean Rostand"
+
+    primary_subject: "histoire-geographie"
+    target_audience_tags:
+      - "eleves_autonomes_bons_eleves"
+
+    headline: >
+      Professeure certifiée d'histoire-géographie,
+      accompagnement collège et orientation post-3e
+
+    levels: ["college"]
+    subjects_tags: []
+
+    teaching_formats: ["at_student_home", "online"]
+    pricing_text: "50 € / heure"
+    city: "Dax"
+    zip_code: "40100"
+    served_zones:
+      - "departements:40"
+
+    about_me: >
+      Professeure certifiée d'histoire-géographie,
+      titulaire d'une licence obtenue en 2003.
+      J'enseigne au collège
+      et j'accompagne les élèves
+      dans les cours, la consolidation des bases
+      et l'orientation post-3e.
+      Mon accompagnement est structuré,
+      clair et adapté au profil de chaque élève.
+
+    specific_support:
+      - "methodologie_organisation"
+      - "orientation_parcoursup"
+
+    email_pro: "camille.sabathe1@ac-bordeaux.fr"
+    email_perso: ""
+    phone: ""
+    rgpd_consent: true
+    status: approved
+
+  - id: sophie-jankowski
+    first_name: "Sophie"
+    last_name: "Jankowski"
+    display_name: "Sophie J."
+    gender: female
+
+    career_status: agrege
+    academy_name: "Paris"
+    school_name: "Lycée Molière"
+
+    primary_subject: "francais"
+    target_audience_tags:
+      - "eleves_en_difficulte"
+      - "eleves_visant_excellence"
+
+    headline: >
+      Professeure agrégée et docteure en lettres,
+      accompagnement sur mesure du collège au supérieur
+
+    levels: ["college", "lycee", "prepa"]
+    subjects_tags:
+      - "litterature"
+      - "hlp"
+
+    teaching_formats: ["at_student_home", "at_teacher_home"]
+    pricing_text: "80 € / heure"
+    city: "Paris"
+    zip_code: "78000"
+    served_zones:
+      - "ile_de_france:paris"
+      - "ile_de_france:petite_couronne"
+
+    about_me: >
+      Professeure agrégée de lettres et docteure,
+      titulaire d'un doctorat obtenu en 1990.
+      J'ai enseigné en province puis à Paris,
+      dans des établissements très variés,
+      sur tous les niveaux de la 6e au BTS.
+      J'accompagne les élèves selon leurs besoins,
+      qu'il s'agisse de surmonter de fortes difficultés
+      ou de viser l'excellence,
+      avec exigence et bienveillance.
+
+    exam_tags:
+      - "brevet"
+      - "bac_general"
+      - "partiels_universitaires"
+
+    specific_support:
+      - "preparation_examens"
+      - "methodologie_organisation"
+      - "confiance_en_soi"
+
+    email_pro: "sophie.jankowski@ac-paris.fr"
+    email_perso: "sophiejankowski705@gmail.com"
+    phone: "06 62 43 82 40"
+    rgpd_consent: true
+    status: approved
+
+  - id: ilana-seror
+    first_name: "Ilana"
+    last_name: "Seror"
+    display_name: "Ilana S."
+    gender: female
+
+    career_status: certifie
+    academy_name: "Versailles"
+    school_name: "Collège Henri Wallon"
+
+    primary_subject: "francais"
+    target_audience_tags:
+      - "eleves_en_difficulte"
+      - "eleves_autonomes_bons_eleves"
+
+    headline: >
+      Professeure certifiée de lettres,
+      pédagogie différenciée et préparation aux examens
+
+    levels: ["college"]
+    subjects_tags: []
+
+    teaching_formats: ["online", "at_teacher_home"]
+    pricing_text: "50 € / heure"
+    city: "Paris"
+    zip_code: "92170"
+    served_zones:
+      - "ile_de_france:paris"
+      - "ile_de_france:petite_couronne"
+
+    about_me: >
+      Professeure de lettres depuis 20 ans,
+      titulaire d'un master obtenu en 2005.
+      Passionnée par mon métier,
+      j'adopte une pédagogie différenciée
+      adaptée aux besoins de chaque élève.
+      J'accompagne les collégiens
+      en français, dans la progression,
+      la méthodologie et la préparation aux examens.
+
+    exam_tags:
+      - "brevet"
+      - "bac_francais"
+
+    specific_support:
+      - "preparation_examens"
+      - "methodologie_organisation"
+
+    email_pro: "ilana.seror@ac-versailles.fr"
+    email_perso: "iseror@yahoo.fr"
+    phone: "06 60 95 51 83"
+    rgpd_consent: true
+    status: approved
+
+  - id: valerie-segarra
+    first_name: "Valérie"
+    last_name: "Ségarra"
+    display_name: "Valérie S."
+    gender: female
+
+    career_status: certifie
+    academy_name: "Bordeaux"
+    school_name: "Collège Jean Rostand (Tartas)"
+
+    primary_subject: "francais"
+    target_audience_tags:
+      - "eleves_en_difficulte"
+      - "eleves_autonomes_bons_eleves"
+
+    headline: >
+      Professeure certifiée de lettres modernes,
+      français, FLE et préparation aux examens
+
+    levels: ["primaire", "college"]
+    subjects_tags:
+      - "litterature"
+
+    teaching_formats: ["at_student_home", "online"]
+    pricing_text: "50 € / heure"
+    city: "Dax"
+    zip_code: "40100"
+    served_zones:
+      - "departements:40"
+
+    about_me: >
+      Professeure certifiée de lettres modernes,
+      titulaire d'une maîtrise équivalente master obtenue en 2013.
+      Titulaire du CAPES de lettres modernes, du CRPE,
+      d'une maîtrise de FLE et d'une licence de lettres modernes.
+      J'ai 10 ans d'expérience en primaire
+      et 15 ans en collèges et lycées,
+      ainsi qu'une expérience d'enseignement en faculté.
+      J'accompagne les élèves en français,
+      du primaire au collège,
+      en préparation au DNB, au bac de français
+      et en FLE,
+      avec une pédagogie patiente, bienveillante et exigeante.
+
+    exam_tags:
+      - "brevet"
+      - "bac_francais"
+
+    specific_support:
+      - "preparation_examens"
+      - "fle"
+      - "methodologie_organisation"
+
+    email_pro: "valerie.segarra@ac-bordeaux.fr"
+    email_perso: ""
+    phone: "07 86 35 39 38"
+    rgpd_consent: true
+    status: approved
+
+  - id: sylvie-lepetit
+    first_name: "Sylvie"
+    last_name: "Lepetit"
+    display_name: "Sylvie L."
+    gender: female
+
+    career_status: agrege
+    academy_name: "Créteil"
+    school_name: "Retraitée – anciennement Lycée français de São Paulo"
+
+    primary_subject: "francais"
+    target_audience_tags:
+      - "eleves_en_difficulte"
+      - "eleves_autonomes_bons_eleves"
+
+    headline: >
+      Professeure agrégée de lettres modernes,
+      grande expérience collège et lycée
+
+    levels: ["college", "lycee"]
+    subjects_tags: []
+
+    teaching_formats: ["at_teacher_home"]
+    pricing_text: "60 € / heure"
+    city: "Val-de-Marne"
+    zip_code: "94100"
+    served_zones:
+      - "ile_de_france:petite_couronne"
+
+    about_me: >
+      Professeure agrégée de lettres modernes,
+      titulaire de l'agrégation obtenue en 1985.
+      J'ai enseigné dix ans en collège,
+      quinze ans en lycée dans le Val-de-Marne,
+      et j'ai terminé ma carrière
+      au lycée français de São Paulo.
+      J'accompagne les élèves en français
+      pour la préparation du Brevet
+      et de l'épreuve anticipée de français,
+      avec un travail approfondi
+      sur l'expression écrite et orale,
+      l'orthographe, la grammaire
+      et les méthodes classiques,
+      adaptées aux difficultés de chacun.
+
+    exam_tags:
+      - "brevet"
+      - "bac_francais"
+
+    specific_support:
+      - "preparation_examens"
+      - "methodologie_organisation"
+      - "confiance_en_soi"
+
+    email_pro: "sylvielepetit.hermant@gmail.com"
+    email_perso: "sylvielepetit.hermant@gmail.com"
+    phone: "06 61 33 79 55"
+    rgpd_consent: true
+    status: approved
+
+  - id: corinne-rescalat
+    first_name: "Corinne"
+    last_name: "Rescalat"
+    display_name: "Corinne R."
+    gender: female
+
+    career_status: certifie
+    academy_name: "Paris"
+    school_name: "Collège Molière"
+
+    primary_subject: "francais"
+    target_audience_tags:
+      - "eleves_en_difficulte"
+      - "eleves_autonomes_bons_eleves"
+
+    headline: >
+      Professeure certifiée de lettres modernes,
+      méthodologie solide et préparation aux examens
+
+    levels: ["college"]
+    subjects_tags:
+      - "litterature"
+
+    teaching_formats: ["online"]
+    pricing_text: "50 € collège / 70 € lycée"
+    city: "Paris"
+    zip_code: "75016"
+    served_zones:
+      - "ile_de_france:paris"
+
+    about_me: >
+      Professeure certifiée de lettres modernes,
+      titulaire d'un DEA obtenu en 1997.
+      J'ai enseigné à de nombreux niveaux,
+      de la 6e à la Terminale.
+      Autrice de manuels et de livres,
+      je propose un accompagnement en français
+      axé sur la méthodologie, la remédiation
+      et le soutien personnalisé.
+      Bienveillante et adaptable,
+      j'aide chaque élève à progresser durablement
+      et à réussir les épreuves du Brevet
+      et du bac de français.
+
+    exam_tags:
+      - "brevet"
+      - "bac_francais"
+
+    specific_support:
+      - "preparation_examens"
+      - "methodologie_organisation"
+
+    email_pro: "corinne.rescalat@ac-paris.fr"
+    email_perso: ""
+    phone: "06 09 99 36 17"
+    rgpd_consent: true
+    status: approved
+
+  - id: laurent-jacquet
+    first_name: "Laurent"
+    last_name: "Jacquet"
+    display_name: "Laurent J."
+    gender: male
+
+    career_status: certifie
+    academy_name: "Orléans-Tours"
+    school_name: "Lycée Grandmont de Tours"
+
+    primary_subject: "mathematiques"
+    target_audience_tags:
+      - "eleves_en_difficulte"
+      - "eleves_visant_excellence"
+
+    headline: >
+      Professeur certifié de mathématiques,
+      lycée, BTS et accompagnement méthodologique
+
+    levels: ["lycee", "prepa"]
+    subjects_tags: []
+
+    teaching_formats: ["at_student_home", "online"]
+    pricing_text: "35 € / heure"
+    city: "Tours"
+    zip_code: "37550"
+    served_zones:
+      - "grandes_villes:tours"
+
+    about_me: >
+      Professeur certifié de mathématiques depuis plus de 10 ans,
+      ingénieur ESIEE diplômé en 2012.
+      J'enseigne en lycée général et technologique,
+      y compris la spécialité mathématiques,
+      ainsi qu'en BTS.
+      J'interviens également pour le CNED
+      et à l'IUT de Tours.
+      J'accompagne aussi bien des élèves en difficulté
+      que des profils visant l'excellence,
+      avec une pédagogie claire, patiente
+      et un fort travail méthodologique.
+
+    exam_tags:
+      - "bac_general"
+      - "partiels_universitaires"
+
+    specific_support:
+      - "preparation_examens"
+      - "methodologie_organisation"
+      - "confiance_en_soi"
+
+    email_pro: "laurent.jacquet@ac-orleans-tours.fr"
+    email_perso: "laurent.jacquet@gmail.com"
+    phone: "06 17 80 04 86"
+    rgpd_consent: true
+    status: approved
+
+  - id: nathalie-moguerou
+    first_name: "Nathalie"
+    last_name: "Moguerou"
+    display_name: "Nathalie M."
+    gender: female
+
+    career_status: certifie
+    academy_name: "Rennes"
+    school_name: "—"
+
+    primary_subject: "anglais"
+    target_audience_tags:
+      - "eleves_en_difficulte"
+      - "eleves_visant_excellence"
+
+    headline: >
+      Professeure certifiée d'anglais,
+      25 ans d'expérience, examens et concours
+
+    levels: ["college", "lycee", "autre"]
+    subjects_tags: []
+
+    teaching_formats: ["at_student_home", "at_teacher_home", "online"]
+    pricing_text: "45 € / heure"
+    city: "Brest"
+    zip_code: "29200"
+    served_zones:
+      - "departements:29"
+
+    about_me: >
+      Professeure certifiée d'anglais depuis 25 ans,
+      titulaire du CAPES obtenu en 1995.
+      J'ai enseigné en collège et en lycée
+      et j'accompagne tous les niveaux,
+      du primaire aux adultes.
+      Je prépare au bac, aux concours
+      et aux examens internationaux,
+      avec des cours menés dans la bonne humeur,
+      une pédagogie patiente
+      et une forte écoute des besoins.
+
+    exam_tags:
+      - "bac_general"
+      - "cambridge"
+      - "ielts"
+      - "toeic"
+
+    specific_support:
+      - "preparation_examens"
+      - "preparation_concours"
+      - "confiance_en_soi"
+
+    email_pro: "nathalie.jenninger1@ac-lyon.fr"
+    email_perso: "njenninger@gmail.com"
+    phone: "06 51 88 07 40"
+    rgpd_consent: true
+    status: approved
+
+  - id: mohamed-el-amri
+    first_name: "Mohamed"
+    last_name: "El Amri"
+    display_name: "Mohamed E. A."
+    gender: male
+
+    career_status: certifie
+    academy_name: "Strasbourg"
+    school_name: "Sainte Philomène, Haguenau"
+
+    primary_subject: "mathematiques"
+    target_audience_tags:
+      - "eleves_en_difficulte"
+      - "eleves_autonomes_bons_eleves"
+
+    headline: >
+      Professeur certifié de mathématiques,
+      pédagogie progressive et remise à niveau efficace
+
+    levels: ["college", "lycee"]
+    subjects_tags: []
+
+    teaching_formats: ["at_student_home", "online"]
+    pricing_text: "25 à 30 € / heure"
+    city: "Strasbourg"
+    zip_code: "67500"
+    served_zones:
+      - "grandes_villes:strasbourg"
+      - "departements:67"
+
+    about_me: >
+      Professeur certifié de mathématiques depuis 2003,
+      titulaire d'un doctorat obtenu la même année.
+      J'accompagne chaque année des élèves de la 6e à la Terminale,
+      en adaptant ma pédagogie aux lacunes et aux profils de chacun.
+      Mon travail repose sur l'explication claire des notions,
+      la construction de fiches récapitulatives
+      et des exercices de difficulté progressive.
+      J'aide particulièrement les élèves à raisonner,
+      à prendre des initiatives
+      et à trouver des méthodes de travail efficaces.
+      J'ai également enseigné en établissement privé
+      et donné de nombreux cours particuliers.
+      Mon expérience en physique-chimie
+      me permet aussi d'aider à l'orientation
+      et à la transversalité des apprentissages.
+
+    exam_tags:
+      - "brevet"
+      - "bac_general"
+
+    specific_support:
+      - "preparation_examens"
+      - "methodologie_organisation"
+      - "orientation_parcoursup"
+
+    email_pro: "mohamed.el-amri@ac-strasbourg.fr"
+    email_perso: "elamrim@laposte.net"
+    phone: "06 19 69 49 79"
+    rgpd_consent: true
+    status: approved
+
+  - id: lucas-rosello
+    first_name: "Lucas"
+    last_name: "Rosello"
+    display_name: "Lucas R."
+    gender: male
+
+    career_status: autre
+    academy_name: "Versailles"
+    school_name: "IUT de Sceaux"
+
+    primary_subject: "mathematiques"
+    target_audience_tags:
+      - "eleves_en_difficulte"
+      - "eleves_autonomes_bons_eleves"
+
+    headline: >
+      Professeur en mathématiques et sciences,
+      accompagnement collège, lycée et prépa médecine
+
+    levels: ["college", "lycee", "prepa"]
+    subjects_tags:
+      - "physique-chimie"
+
+    teaching_formats: ["online"]
+    pricing_text: "50 € / heure"
+    city: "Paris"
+    zip_code: "78114"
+    served_zones:
+      - "ile_de_france:paris"
+      - "ile_de_france:petite_couronne"
+
+    about_me: >
+      Professeur contractuel,
+      titulaire d'un master 1 obtenu en 2012.
+      J'interviens en mathématiques, physique et chimie
+      du collège à la prépa médecine.
+      Professeur vacataire à l'IUT de Sceaux,
+      je commence toujours par comprendre
+      les difficultés profondes de l'élève
+      afin de proposer des solutions adaptées.
+      Mon objectif est une progression claire,
+      structurée et durable.
+
+    exam_tags:
+      - "brevet"
+      - "bac_general"
+
+    specific_support:
+      - "preparation_examens"
+      - "methodologie_organisation"
+      - "confiance_en_soi"
+
+    email_pro: "lucas.rosello@gmail.com"
+    email_perso: ""
+    phone: "06 77 45 55 37"
+    rgpd_consent: true
+    status: approved
+
+  - id: pierre-coulet
+    first_name: "Pierre"
+    last_name: "Coulet"
+    display_name: "Pierre C."
+    gender: male
+
+    career_status: certifie
+    academy_name: "Montpellier"
+    school_name: "—"
+
+    primary_subject: "mathematiques"
+    target_audience_tags:
+      - "eleves_autonomes_bons_eleves"
+      - "eleves_visant_excellence"
+
+    headline: >
+      Professeur certifié de mathématiques,
+      collège, lycée et prépa ECG
+
+    levels: ["college", "lycee", "prepa"]
+    subjects_tags: []
+
+    teaching_formats: ["at_student_home", "online"]
+    pricing_text: "40 € / heure"
+    city: "Montpellier"
+    zip_code: "34000"
+    served_zones:
+      - "grandes_villes:montpellier"
+
+    about_me: >
+      Professeur certifié de mathématiques,
+      titulaire d'un master MEEF obtenu en 2014.
+      J'ai enseigné en collège à Paris
+      et je donne des cours particuliers
+      depuis plus de 13 ans à Paris et Montpellier.
+      Mon accompagnement combine rappels théoriques,
+      étude de démonstrations, méthodes,
+      entraînement aux raisonnements
+      et conseils stratégiques pour les épreuves.
+      J'interviens du collège à la prépa ECG,
+      avec un objectif de performance durable.
+
+    exam_tags:
+      - "brevet"
+      - "bac_general"
+      - "concours_ecoles_commerce"
+
+    specific_support:
+      - "preparation_examens"
+      - "preparation_concours"
+      - "methodologie_organisation"
+
+    email_pro: "pierre.coulet@ac-montpellier.fr"
+    email_perso: "prcoulet@gmail.com"
+    phone: "06 07 74 48 10"
+    rgpd_consent: true
+    status: approved
+
+  - id: pauline-gaillard
+    first_name: "Pauline"
+    last_name: "Gaillard"
+    display_name: "Pauline G."
+    gender: female
+
+    career_status: agrege
+    academy_name: "Orléans-Tours"
+    school_name: "Lycée Claude de France"
+
+    primary_subject: "svt"
+    target_audience_tags:
+      - "eleves_autonomes_bons_eleves"
+      - "eleves_visant_excellence"
+
+    headline: >
+      Professeure agrégée de SVT,
+      spécialité, méthode et Grand oral au lycée
+
+    levels: ["lycee"]
+    subjects_tags: []
+
+    teaching_formats: ["online"]
+    pricing_text: "60 € / heure"
+    city: "Online"
+    zip_code: "41120"
+    served_zones: []
+
+    about_me: >
+      Professeure de SVT depuis plus de 10 ans,
+      titulaire d'un master MEEF,
+      du CAPES obtenu en 2013
+      et de l'agrégation obtenue en 2022.
+      J'enseigne en seconde, première et terminale,
+      en SVT et en enseignement scientifique.
+      J'accompagne les élèves en spécialité,
+      méthodologie, Grand oral, orientation
+      et suivi CNED.
+      J'ai également réalisé des colles en classes préparatoires
+      et collaboré avec de nombreuses structures de soutien.
+
+    exam_tags:
+      - "bac_general"
+      - "grand_oral"
+
+    specific_support:
+      - "preparation_examens"
+      - "methodologie_organisation"
+      - "orientation_parcoursup"
+
+    email_pro: "pauline.gaillard@ac-orleans-tours.fr"
+    email_perso: "paulinegaillard@aol.com"
+    phone: "06 81 32 87 09"
+    rgpd_consent: true
+    status: approved
+
+  - id: sophie-pages
+    first_name: "Sophie"
+    last_name: "Pages"
+    display_name: "Sophie P."
+    gender: female
+
+    career_status: certifie
+    academy_name: "Grenoble"
+    school_name: "—"
+
+    primary_subject: "physique-chimie"
+    target_audience_tags:
+      - "eleves_autonomes_bons_eleves"
+      - "eleves_visant_excellence"
+
+    headline: >
+      Professeure certifiée de physique-chimie,
+      préparation bac et concours scientifiques
+
+    levels: ["lycee", "prepa"]
+    subjects_tags: []
+
+    teaching_formats: ["at_teacher_home", "at_student_home", "online"]
+    pricing_text: "80 € / heure"
+    city: "Grenoble"
+    zip_code: "38100"
+    served_zones:
+      - "grandes_villes:grenoble"
+
+    about_me: >
+      Professeure certifiée de physique-chimie,
+      titulaire d'un master de physique obtenu en 2014.
+      J'interviens au lycée et en prépa scientifique,
+      avec un focus sur la préparation au bac
+      et aux concours.
+      Mon accompagnement est structuré,
+      exigeant et orienté performance,
+      avec un suivi ciblé selon les objectifs de l'élève.
+
+    exam_tags:
+      - "bac_general"
+      - "concours_ecoles_ingenieurs"
+
+    specific_support:
+      - "preparation_examens"
+      - "preparation_concours"
+      - "methodologie_organisation"
+
+    email_pro: "pages.sophie.maths-physique@outlook.fr"
+    email_perso: ""
+    phone: "06 50 88 00 91"
+    rgpd_consent: true
+    status: approved
+
+  - id: aurelia-meunier
+    first_name: "Aurélia"
+    last_name: "Meunier"
+    display_name: "Aurélia M."
+    gender: female
+
+    career_status: certifie
+    academy_name: "Nice"
+    school_name: "—"
+
+    primary_subject: "espagnol"
+    target_audience_tags:
+      - "eleves_en_difficulte"
+      - "eleves_autonomes_bons_eleves"
+
+    headline: >
+      Professeure certifiée d'espagnol,
+      approche vivante et progressive tous niveaux
+
+    levels: ["college", "lycee", "prepa"]
+    subjects_tags: []
+
+    teaching_formats: ["online"]
+    pricing_text: "35 € / heure"
+    city: "Toulon"
+    zip_code: "83500"
+    served_zones:
+      - "grandes_villes:toulon"
+
+    about_me: >
+      Professeure certifiée d'espagnol depuis 11 ans,
+      titulaire d'un master 2 obtenu en 2015
+      et bi-admissible à l'agrégation externe.
+      J'enseigne en collège et en lycée
+      et j'interviens également en prépa littéraire.
+      Ma pédagogie s'appuie sur des jeux de théâtre
+      pour développer l'oral, la confiance
+      et la maîtrise de la langue.
+      J'accompagne les élèves à tous les niveaux,
+      du soutien à la préparation aux examens.
+
+    exam_tags:
+      - "brevet"
+      - "bac_general"
+      - "partiels_universitaires"
+
+    specific_support:
+      - "preparation_examens"
+      - "confiance_en_soi"
+
+    email_pro: "aureliameunier14@gmail.com"
+    email_perso: "aureliameunier14@gmail.com"
+    phone: "06 12 38 09 80"
+    rgpd_consent: true
+    status: approved
+
+  - id: elodie-cabanne
+    first_name: "Elodie"
+    last_name: "Cabanne"
+    display_name: "Elodie C."
+    gender: female
+
+    career_status: certifie
+    academy_name: "Versailles"
+    school_name: "Collège Isabelle Autissier"
+
+    primary_subject: "anglais"
+    target_audience_tags:
+      - "eleves_en_difficulte"
+      - "eleves_autonomes_bons_eleves"
+
+    headline: >
+      Professeure certifiée d'anglais,
+      pédagogie claire, orale et méthodologique au collège
+
+    levels: ["college"]
+    subjects_tags: []
+
+    teaching_formats: ["at_teacher_home", "online"]
+    pricing_text: "40 € / heure"
+    city: "Banlieue parisienne"
+    zip_code: "95220"
+    served_zones:
+      - "ile_de_france:petite_couronne"
+
+    about_me: >
+      Professeure certifiée d'anglais,
+      titulaire d'une maîtrise d'anglais obtenue en 2018.
+      J'enseigne depuis 8 ans dans l'Éducation nationale,
+      après 20 ans d'expérience dans le privé.
+      J'accompagne les collégiens en grammaire,
+      méthodologie, discussion orale
+      et préparation aux examens.
+      Mon approche est très pédagogique,
+      patiente et dynamique,
+      pour faire progresser avec confiance.
+
+    exam_tags:
+      - "bac_general"
+
+    specific_support:
+      - "preparation_examens"
+      - "methodologie_organisation"
+      - "confiance_en_soi"
+
+    email_pro: "elodie-josiane.cabanne@ac-versailles.fr"
+    email_perso: ""
+    phone: "06 60 90 10 41"
+    rgpd_consent: true
+    status: approved
+
+  - id: aline-borgel-hayoun
+    first_name: "Aline"
+    last_name: "Borgel-Hayoun"
+    display_name: "Aline B.-H."
+    gender: female
+
+    career_status: certifie
+    academy_name: "Paris"
+    school_name: "Eduquer Demain"
+
+    primary_subject: "svt"
+    target_audience_tags:
+      - "eleves_en_difficulte"
+      - "eleves_autonomes_bons_eleves"
+
+    headline: >
+      Professeure certifiée de SVT,
+      28 ans d'expérience et coaching méthodologique
+
+    levels: ["college", "lycee"]
+    subjects_tags: []
+
+    teaching_formats: ["at_student_home", "at_teacher_home", "online"]
+    pricing_text: "50 € / heure"
+    city: "Paris"
+    zip_code: "92200"
+    served_zones:
+      - "ile_de_france:paris"
+      - "ile_de_france:petite_couronne"
+
+    about_me: >
+      Professeure certifiée de SVT,
+      titulaire d'un master de biologie obtenu en 1999.
+      J'ai 28 ans d'expérience en collège et en lycée.
+      Coach certifiée,
+      je propose un accompagnement en SVT
+      et un coaching méthodologique du travail scolaire.
+      J'aide les élèves à structurer leurs apprentissages,
+      gagner en efficacité
+      et réussir le Brevet et le bac.
+
+    exam_tags:
+      - "brevet"
+      - "bac_general"
+
+    specific_support:
+      - "preparation_examens"
+      - "methodologie_organisation"
+      - "confiance_en_soi"
+
+    email_pro: "ahayoun@ac-paris.fr"
+    email_perso: "borgelaline@gmail.com"
+    phone: "06 18 65 31 98"
+    rgpd_consent: true
+    status: approved
+
+  - id: nathalie-latge
+    first_name: "Nathalie"
+    last_name: "Latge"
+    display_name: "Nathalie L."
+    gender: female
+
+    career_status: certifie
+    academy_name: "Toulouse"
+    school_name: "Lycée Déodat de Séverac"
+
+    primary_subject: "francais"
+    target_audience_tags:
+      - "eleves_en_difficulte"
+      - "eleves_visant_excellence"
+
+    headline: >
+      Professeure certifiée de français,
+      examens, concours et suivi exigeant tous niveaux
+
+    levels: ["primaire", "college", "lycee", "prepa"]
+    subjects_tags:
+      - "litterature"
+
+    teaching_formats: ["online", "at_student_home", "at_teacher_home"]
+    pricing_text: "50 € / heure"
+    city: "Toulouse"
+    zip_code: "31100"
+    served_zones:
+      - "grandes_villes:toulouse"
+
+    about_me: >
+      Professeure certifiée de français en lettres,
+      titulaire d'un master 2 obtenu en 2010.
+      J'ai plus de 20 ans d'expérience pédagogique,
+      dont 15 ans en collège et lycée
+      à l'Éducation nationale
+      et dans l'enseignement supérieur privé.
+      Correctrice au Brevet,
+      correctrice et examinatrice au baccalauréat,
+      j'enseigne également en BTS
+      et en écoles supérieures de commerce.
+      J'accompagne les élèves en suivi annuel,
+      stages ou préparation intensive aux examens
+      et concours,
+      avec des méthodes structurées
+      qui redonnent confiance et motivation.
+
+    exam_tags:
+      - "brevet"
+      - "bac_general"
+
+    specific_support:
+      - "preparation_examens"
+      - "preparation_concours"
+      - "methodologie_organisation"
+      - "confiance_en_soi"
+
+    email_pro: "n.latge@ac-toulouse.fr"
+    email_perso: "nath76484@gmx.fr"
+    phone: "06 59 55 40 17"
+    rgpd_consent: true
+    status: approved
+
+  - id: karine-barsanian
+    first_name: "Karine"
+    last_name: "Barsanian"
+    display_name: "Karine B."
+    gender: female
+
+    career_status: certifie
+    academy_name: "Lyon"
+    school_name: "En disponibilité"
+
+    primary_subject: "mathematiques"
+    target_audience_tags:
+      - "eleves_en_difficulte"
+      - "eleves_autonomes_bons_eleves"
+
+    headline: >
+      Professeure certifiée de mathématiques,
+      méthode, organisation et préparation aux examens
+
+    levels: ["college", "lycee"]
+    subjects_tags: []
+
+    teaching_formats: ["at_student_home", "at_teacher_home", "online"]
+    pricing_text: "58 € / heure"
+    city: "Lyon / Villeurbanne"
+    zip_code: "69100"
+    served_zones:
+      - "grandes_villes:lyon"
+      - "departements:69"
+
+    about_me: >
+      Professeure certifiée de mathématiques,
+      ingénieure diplômée en 2011.
+      Titularisée dans l'Éducation nationale,
+      je suis actuellement en disponibilité
+      et j'enseigne comme professeure particulière
+      via des organismes de soutien
+      et ma propre microentreprise.
+      Mon accompagnement met l'accent
+      sur la méthodologie, la gestion du temps,
+      du stress et l'organisation du travail,
+      afin d'améliorer durablement les résultats.
+      J'accompagne les élèves au collège et au lycée,
+      en préparation du Brevet et du bac.
+
+    exam_tags:
+      - "brevet"
+      - "bac_general"
+
+    specific_support:
+      - "preparation_examens"
+      - "methodologie_organisation"
+      - "confiance_en_soi"
+
+    email_pro: "karine.barsanian@ac-lyon.fr"
+    email_perso: "kbarsanian@yahoo.fr"
+    phone: "06 78 88 10 79"
+    rgpd_consent: true
+    status: approved
+
+  - id: morgan-jullian
+    first_name: "Morgan"
+    last_name: "Jullian"
+    display_name: "Morgan J."
+    gender: male
+
+    career_status: agrege
+    academy_name: "Paris"
+    school_name: "Lycée George Leven"
+
+    primary_subject: "histoire-geographie"
+    target_audience_tags:
+      - "eleves_autonomes_bons_eleves"
+      - "eleves_visant_excellence"
+
+    headline: >
+      Professeur agrégé,
+      préparation examens et concours du collège à la prépa
+
+    levels: ["college", "lycee", "prepa"]
+    subjects_tags:
+      - "francais"
+      - "philosophie"
+      - "ses"
+
+    teaching_formats: ["online"]
+    pricing_text: "50 € / heure"
+    city: "Paris"
+    zip_code: "75002"
+    served_zones:
+      - "ile_de_france:paris"
+      - "ile_de_france:petite_couronne"
+
+    about_me: >
+      Professeur agrégé de géographie,
+      titulaire de l'agrégation obtenue en 2015.
+      J'enseigne depuis 2013 dans l'Éducation nationale
+      en histoire-géographie et en philosophie,
+      du collège à la prépa littéraire et ECG.
+      J'accompagne les élèves en remise à niveau,
+      préparation au Brevet, au bac
+      et aux concours,
+      avec des cours individualisés
+      et strictement alignés sur les programmes.
+
+    exam_tags:
+      - "brevet"
+      - "bac_general"
+      - "concours_ecoles_commerce"
+
+    specific_support:
+      - "preparation_examens"
+      - "preparation_concours"
+      - "methodologie_organisation"
+
+    email_pro: "contact@monsieurleprofesseur.com"
+    email_perso: ""
+    phone: "06 50 88 40 53"
+    rgpd_consent: true
+    status: approved
+
+  - id: nathalie-pianton
+    first_name: "Nathalie"
+    last_name: "Pianton"
+    display_name: "Nathalie P."
+    gender: female
+
+    career_status: certifie
+    academy_name: "Nice"
+    school_name: "En disponibilité"
+
+    primary_subject: "francais"
+    target_audience_tags:
+      - "eleves_en_difficulte"
+      - "eleves_autonomes_bons_eleves"
+
+    headline: >
+      Professeure certifiée de lettres classiques,
+      français, latin et FLE en ligne
+
+    levels: ["college", "lycee", "primaire"]
+    subjects_tags:
+      - "latin"
+      - "fle"
+
+    teaching_formats: ["online"]
+    pricing_text: "35 € / heure"
+    city: "Online"
+    zip_code: "83600"
+    served_zones: []
+
+    about_me: >
+      Professeure certifiée de lettres classiques,
+      titulaire d'une licence et du CAPES obtenus en 2007.
+      J'accompagne les élèves du primaire au lycée
+      en français et en latin,
+      ainsi que les apprenants en FLE.
+      Je suis particulièrement spécialisée
+      dans la préparation au bac de français,
+      mais propose aussi du soutien scolaire
+      et de l'aide aux devoirs.
+      J'interviens entièrement en ligne,
+      avec un accompagnement clair et progressif.
+
+    exam_tags:
+      - "bac_francais"
+
+    specific_support:
+      - "preparation_examens"
+      - "fle"
+      - "methodologie_organisation"
+
+    email_pro: "nathalie.pianton@ac-nice.fr"
+    email_perso: "nathaliepianton@hotmail.com"
+    phone: ""
+    rgpd_consent: true
+    status: approved
+
+  - id: corentin-marot
+    first_name: "Corentin"
+    last_name: "Marot"
+    display_name: "Corentin M."
+    gender: male
+
+    career_status: certifie
+    academy_name: "Toulouse"
+    school_name: "Collège Jean Monnet"
+
+    primary_subject: "svt"
+    target_audience_tags:
+      - "eleves_autonomes_bons_eleves"
+      - "eleves_visant_excellence"
+
+    headline: >
+      Professeur certifié de SVT,
+      spécialiste lycée et spécialité SVT
+
+    levels: ["college", "lycee"]
+    subjects_tags: []
+
+    teaching_formats: ["online"]
+    pricing_text: "50 € / heure"
+    city: "Toulouse"
+    zip_code: "81100"
+    served_zones:
+      - "grandes_villes:toulouse"
+
+    about_me: >
+      Professeur certifié de SVT depuis 23 ans,
+      titulaire d'une maîtrise obtenue en 2001.
+      J'ai 13 ans d'expérience en lycée,
+      dont l'enseignement de la spécialité SVT
+      en première et terminale.
+      Ancien correcteur du baccalauréat,
+      conseiller pédagogique en SVT
+      et intervenant en formation,
+      j'ai travaillé avec tous types de publics,
+      du collège REP+ au lycée en zone prioritaire.
+      Professeur principal en terminale,
+      j'accompagne les élèves avec exigence,
+      méthode et adaptation à chaque profil.
+
+    exam_tags:
+      - "bac_general"
+
+    specific_support:
+      - "preparation_examens"
+      - "methodologie_organisation"
+
+    email_pro: "corentin.marot@ac-toulouse.fr"
+    email_perso: "corentin.marot973@gmail.com"
+    phone: "06 94 13 77 93"
+    rgpd_consent: true
+    status: approved
+
+  - id: marie-yannick-le-borgne
+    first_name: "Marie Yannick"
+    last_name: "Le Borgne"
+    display_name: "Marie Y. L. B."
+    gender: female
+
+    career_status: certifie
+    academy_name: "Nantes"
+    school_name: "Retraitée – ex Lycée Molière Paris, Panthéon-Sorbonne"
+
+    primary_subject: "anglais"
+    target_audience_tags:
+      - "eleves_autonomes_bons_eleves"
+      - "eleves_visant_excellence"
+
+    headline: >
+      Professeure certifiée d'anglais,
+      très grande expérience et préparation aux examens
+
+    levels: ["college", "lycee", "autre"]
+    subjects_tags: []
+
+    teaching_formats: ["at_student_home", "online", "at_teacher_home"]
+    pricing_text: "50 à 70 € / heure"
+    city: "Paris"
+    zip_code: "58400"
+    served_zones:
+      - "ile_de_france:paris"
+      - "ile_de_france:petite_couronne"
+      - "grandes_villes:nantes"
+      - "departements:58"
+
+    about_me: >
+      Professeure certifiée d'anglais depuis 1988,
+      titulaire d'une maîtrise obtenue en 1988.
+      J'ai enseigné au collège, au lycée
+      et en post-bac, y compris en FLE,
+      dans des contextes très variés,
+      jusqu'à ma dernière affectation
+      au lycée Molière et à la Sorbonne.
+      Formatrice d'enseignants pendant plus de 10 ans,
+      j'accompagne en anglais généraliste,
+      littérature, spécialité, méthodologie
+      et préparation à l'oral.
+      Mon enseignement est bienveillant,
+      exigeant et fortement orienté
+      vers la confiance et la maîtrise de l'oral.
+
+    exam_tags:
+      - "brevet"
+      - "bac_general"
+
+    specific_support:
+      - "preparation_examens"
+      - "methodologie_organisation"
+      - "orientation_parcoursup"
+      - "confiance_en_soi"
+
+    email_pro: "myleborgne@gmail.com"
+    email_perso: "myleborgne@gmail.com"
+    phone: "06 12 95 88 25"
+    rgpd_consent: true
+    status: approved
+
+  - id: jean-philippe-hannecart
+    first_name: "Jean-Philippe"
+    last_name: "Hannecart"
+    display_name: "Jean-Ph. H."
+    gender: male
+
+    career_status: agrege
+    academy_name: "Paris"
+    school_name: "Lycée Molière"
+
+    primary_subject: "francais"
+    target_audience_tags:
+      - "eleves_autonomes_bons_eleves"
+      - "eleves_visant_excellence"
+
+    headline: >
+      Professeur agrégé de lettres modernes,
+      méthodologie exigeante et préparation à l'EAF
+
+    levels: ["lycee"]
+    subjects_tags:
+      - "litterature"
+
+    teaching_formats: ["at_student_home", "online"]
+    pricing_text: "70 € / heure"
+    city: "Paris"
+    zip_code: "75003"
+    served_zones:
+      - "ile_de_france:paris"
+
+    about_me: >
+      Professeur agrégé de lettres modernes,
+      titulaire de l'agrégation et d'un DEA
+      de littérature comparée obtenus en 1989.
+      J'ai enseigné le français pendant 20 ans
+      en collège, notamment en REP,
+      puis depuis 6 ans en lycée à Paris.
+      J'accompagne les élèves avec un travail
+      rigoureux de méthodologie
+      et une préparation ciblée
+      à l'épreuve anticipée de français.
+      Exigeant mais encourageant,
+      je veille à renforcer la confiance
+      et l'autonomie des élèves.
+
+    exam_tags:
+      - "brevet"
+      - "bac_francais"
+
+    specific_support:
+      - "preparation_examens"
+      - "methodologie_organisation"
+      - "confiance_en_soi"
+
+    email_pro: "jeanphilippe.hannecart@ac-paris.fr"
+    email_perso: "jiphannecart@hotmail.fr"
+    phone: "06 11 86 40 37"
+    rgpd_consent: true
+    status: approved
+
+  - id: marianne-morin
+    first_name: "Marianne"
+    last_name: "Morin"
+    display_name: "Marianne M."
+    gender: female
+
+    career_status: certifie
+    academy_name: "Paris"
+    school_name: "Institut Sainte-Geneviève"
+
+    primary_subject: "francais"
+    target_audience_tags:
+      - "eleves_autonomes_bons_eleves"
+      - "eleves_visant_excellence"
+
+    headline: >
+      Professeure certifiée,
+      préparation Sciences Po, Grand oral et méthodologie d'excellence
+
+    levels: ["college", "lycee", "prepa"]
+    subjects_tags:
+      - "ses"
+      - "hggsp"
+      - "histoire-geographie"
+
+    teaching_formats: ["online", "at_student_home"]
+    pricing_text: "60 € / heure"
+    city: "Paris"
+    zip_code: "75013"
+    served_zones:
+      - "ile_de_france:paris"
+
+    about_me: >
+      Enseignante certifiée depuis 10 ans,
+      diplômée d'un M2 Sciences Po
+      et d'un Master of Science obtenu en 2022.
+      J'enseigne au collège, au lycée
+      et en classes préparatoires ECG et littéraires.
+      Je suis spécialisée dans la préparation aux concours IEP,
+      au Grand oral,
+      ainsi qu'au bac de français, SES et HGGSP.
+      Mon accompagnement est centré
+      sur la méthodologie de la dissertation,
+      l'argumentation, le commentaire
+      et l'oral,
+      avec une pédagogie 100 % personnalisée.
+
+    exam_tags:
+      - "concours_iep_sciences_po"
+      - "grand_oral"
+      - "bac_francais"
+      - "bac_general"
+
+    specific_support:
+      - "preparation_examens"
+      - "preparation_concours"
+      - "methodologie_organisation"
+      - "confiance_en_soi"
+
+    email_pro: "marianne.morin@ac-paris.fr"
+    email_perso: "marianne.morin@live.fr"
+    phone: "06 70 72 94 83"
+    rgpd_consent: true
+    status: approved
+
+  - id: isabelle-matha
+    first_name: "Isabelle"
+    last_name: "Matha"
+    display_name: "Isabelle M."
+    gender: female
+
+    career_status: certifie
+    academy_name: "Versailles"
+    school_name: "Lycée Saint-Martin de France, Pontoise"
+
+    primary_subject: "ses"
+    target_audience_tags:
+      - "eleves_autonomes_bons_eleves"
+
+    headline: >
+      Professeure certifiée de SES,
+      méthode claire et entraînement au bac
+
+    levels: ["lycee"]
+    subjects_tags: []
+
+    teaching_formats: ["at_student_home", "online"]
+    pricing_text: "50 € / heure"
+    city: "Banlieue parisienne"
+    zip_code: "78630"
+    served_zones:
+      - "ile_de_france:petite_couronne"
+
+    about_me: >
+      Professeure certifiée de SES depuis 8 ans,
+      diplômée d'une école de commerce en 2021.
+      J'ai auparavant travaillé 20 ans en entreprise,
+      ce qui me permet de relier les notions de SES
+      à des situations concrètes.
+      J'accompagne les lycéens en révision de cours,
+      entraînement aux épreuves
+      et méthodologie,
+      avec une approche claire, structurée
+      et à l'écoute des besoins de chacun.
+
+    exam_tags:
+      - "bac_general"
+
+    specific_support:
+      - "preparation_examens"
+      - "methodologie_organisation"
+
+    email_pro: "isabelle.matha@ac-versailles.fr"
+    email_perso: "sol.fjord_8h@icloud.com"
+    phone: "06 58 23 44 65"
+    rgpd_consent: true
+    status: approved
+
+  - id: nolwenn-rouffie
+    first_name: "Nolwenn"
+    last_name: "Rouffie"
+    display_name: "Nolwenn R."
+    gender: female
+
+    career_status: certifie
+    academy_name: "Bordeaux"
+    school_name: "Lycée"
+
+    primary_subject: "espagnol"
+    target_audience_tags:
+      - "eleves_autonomes_bons_eleves"
+      - "eleves_besoins_particuliers"
+
+    headline: >
+      Professeure certifiée d'espagnol et FLE,
+      cours individualisés et préparation aux examens
+
+    levels: ["college", "lycee", "prepa", "autre"]
+    subjects_tags:
+      - "fle"
+
+    teaching_formats: ["at_student_home", "at_teacher_home", "online"]
+    pricing_text: "40 € / heure"
+    city: "Périgueux"
+    zip_code: "24000"
+    served_zones:
+      - "departements:24"
+
+    about_me: >
+      Professeure certifiée avec 15 ans d'ancienneté,
+      titulaire d'une maîtrise obtenue en 2002.
+      J'ai principalement enseigné en sections bilangues
+      et internationales, et j'ai été tutrice.
+      J'accompagne en espagnol du collège à la prépa littéraire,
+      ainsi qu'en FLE pour un public étranger.
+      Mon approche est entièrement individualisée,
+      axée sur la méthodologie, la préparation aux examens,
+      l'entrée à l'université et l'oral professionnel.
+
+    specific_support:
+      - "methodologie_organisation"
+      - "preparation_examens"
+      - "fle"
+
+    email_pro: "nolwenn.rouffie@gmail.com"
+    email_perso: "nolwenn.rouffie@gmail.com"
+    phone: "06 17 57 35 16"
+    rgpd_consent: true
+    status: approved
+
+  - id: marie-parc
+    first_name: "Marie"
+    last_name: "Parc"
+    display_name: "Marie P."
+    gender: female
+
+    career_status: agrege
+    academy_name: "Paris"
+    school_name: "Lycée Molière"
+
+    primary_subject: "philosophie"
+    target_audience_tags:
+      - "eleves_autonomes_bons_eleves"
+      - "eleves_visant_excellence"
+
+    headline: >
+      Professeure agrégée de philosophie,
+      spécialiste bac et spécialité HLP
+
+    levels: ["lycee"]
+    subjects_tags:
+      - "hlp"
+
+    teaching_formats: ["at_student_home", "online"]
+    pricing_text: "65 € / heure"
+    city: "Paris"
+    zip_code: "75016"
+    served_zones:
+      - "ile_de_france:paris"
+
+    about_me: >
+      Professeure agrégée de philosophie,
+      titulaire de l'agrégation obtenue en 1992.
+      J'enseigne depuis plus de 30 ans
+      en lycée général et technologique.
+      J'accompagne les élèves dans la préparation
+      de l'épreuve du baccalauréat en philosophie
+      et en spécialité HLP.
+      Tutrice de professeurs stagiaires
+      et intervenante en khôlles de classes préparatoires,
+      je propose un accompagnement exigeant,
+      structuré et attentif aux besoins de chaque élève.
+
+    exam_tags:
+      - "bac_general"
+
+    specific_support:
+      - "preparation_examens"
+      - "methodologie_organisation"
+
+    email_pro: "marie.parc@laposte.net"
+    email_perso: "marie.parc@laposte.net"
+    phone: "06 11 62 13 42"
+    rgpd_consent: true
+    status: approved
+
+  - id: giovanni-calavita
+    first_name: "Giovanni"
+    last_name: "Calavita"
+    display_name: "Giovanni C."
+    gender: male
+
+    career_status: autre
+    academy_name: "Paris"
+    school_name: "Lycée Molière"
+
+    primary_subject: "italien"
+    target_audience_tags:
+      - "eleves_autonomes_bons_eleves"
+      - "eleves_en_difficulte"
+
+    headline: >
+      Professeur d'italien,
+      spécialité, Esabac et préparation aux examens
+
+    levels: ["college", "lycee"]
+    subjects_tags: []
+
+    teaching_formats: ["online"]
+    pricing_text: "50 € / heure"
+    city: "Paris"
+    zip_code: "93310"
+    served_zones:
+      - "ile_de_france:paris"
+      - "ile_de_france:petite_couronne"
+
+    about_me: >
+      Professeur d'italien,
+      titulaire d'un master MEEF obtenu en 2023.
+      Après 6 ans dans l'Éducation nationale,
+      j'enseigne au collège et au lycée.
+      Je prépare à la spécialité italien,
+      à l'Esabac et aux examens.
+      En parallèle, j'ai donné des cours d'italien
+      à des adultes.
+      Mon approche repose sur l'écoute,
+      la collaboration élève-professeur
+      et l'usage des nouvelles technologies.
+
+    exam_tags:
+      - "brevet"
+      - "bac_general"
+
+    specific_support:
+      - "preparation_examens"
+      - "methodologie_organisation"
+
+    email_pro: "giovanni.calavita1@ac-paris.fr"
+    email_perso: "giovannicalavita@icloud.com"
+    phone: ""
+    rgpd_consent: true
+    status: approved
+
+  - id: azelyne-lancien
+    first_name: "Azélyne"
+    last_name: "Lancien"
+    display_name: "Azélyne L."
+    gender: female
+
+    career_status: certifie
+    academy_name: "Créteil"
+    school_name: "Saint-Michel de Saint-Mandé"
+
+    primary_subject: "francais"
+    target_audience_tags:
+      - "eleves_en_difficulte"
+      - "eleves_autonomes_bons_eleves"
+
+    headline: >
+      Professeure certifiée de français,
+      méthodologie, rédaction et préparation aux examens
+
+    levels: ["primaire", "college", "lycee", "prepa"]
+    subjects_tags: []
+
+    teaching_formats: ["online", "at_teacher_home"]
+    pricing_text: "70 € / heure"
+    city: "Paris"
+    zip_code: "75013"
+    served_zones:
+      - "ile_de_france:paris"
+      - "ile_de_france:petite_couronne"
+
+    about_me: >
+      Professeure certifiée de français,
+      titulaire d'un master MEEF obtenu en 2021.
+      J'enseigne depuis 5 ans au collège et au lycée.
+      J'accompagne aussi les élèves du primaire
+      et les profils de prépa littéraire.
+      Mon travail porte sur la méthodologie,
+      la rédaction et la remise à niveau
+      en orthographe, syntaxe et vocabulaire.
+      Je prépare au Brevet et au baccalauréat de français
+      avec exigence, patience et bienveillance.
+
+    exam_tags:
+      - "brevet"
+      - "bac_francais"
+
+    specific_support:
+      - "preparation_examens"
+      - "methodologie_organisation"
+      - "confiance_en_soi"
+
+    email_pro: "azelyne.lancien@ac-creteil.fr"
+    email_perso: "lanazelyne@gmail.com"
+    phone: "07 88 30 18 53"
+    rgpd_consent: true
+    status: approved
+
+  - id: alexandre-tuzun
+    first_name: "Alexandre"
+    last_name: "Tüzün"
+    display_name: "Alexandre T."
+    gender: male
+
+    career_status: certifie
+    academy_name: "Créteil"
+    school_name: "Collège-Lycée Notre-Dame-des-Missions"
+
+    primary_subject: "histoire-geographie"
+    target_audience_tags:
+      - "eleves_autonomes_bons_eleves"
+      - "eleves_en_difficulte"
+
+    headline: >
+      Professeur certifié d'histoire-géographie,
+      spécialité HGGSP et préparation aux examens
+
+    levels: ["college", "lycee"]
+    subjects_tags:
+      - "hggsp"
+
+    teaching_formats: ["at_student_home", "at_teacher_home", "online"]
+    pricing_text: "50 € / heure"
+    city: "Paris"
+    zip_code: "75013"
+    served_zones:
+      - "ile_de_france:paris"
+      - "ile_de_france:petite_couronne"
+
+    about_me: >
+      Professeur d'histoire-géographie depuis 2021,
+      certifié en 2025 et titulaire d'un master MEEF.
+      Je dispense depuis plusieurs années
+      des cours particuliers en collège et lycée.
+      Spécialiste de la HGGSP au lycée,
+      j'accompagne les élèves dans la préparation
+      du DNB et du baccalauréat.
+      Ma pédagogie est à la fois bienveillante
+      et exigeante,
+      centrée sur la méthodologie
+      et l'apprentissage structuré.
+
+    exam_tags:
+      - "brevet"
+      - "bac_general"
+
+    specific_support:
+      - "preparation_examens"
+      - "methodologie_organisation"
+
+    email_pro: "alexandre.tuzun@ac-creteil.fr"
+    email_perso: "alexandre.tuzun@gmail.com"
+    phone: "06 50 93 42 91"
+    rgpd_consent: true
+    status: approved
+
+  - id: virginie-morgant-valot
+    first_name: "Virginie"
+    last_name: "Morgant Valot"
+    display_name: "Virginie M. V."
+    gender: female
+
+    career_status: certifie
+    academy_name: "Versailles"
+    school_name: "Collège de Nanterre"
+
+    primary_subject: "francais"
+    target_audience_tags:
+      - "eleves_en_difficulte"
+      - "eleves_autonomes_bons_eleves"
+
+    headline: >
+      Professeure certifiée de lettres,
+      méthodologie progressive et préparation aux examens
+
+    levels: ["college", "lycee"]
+    subjects_tags:
+      - "litterature"
+
+    teaching_formats: ["at_student_home", "online"]
+    pricing_text: "50 € / heure"
+    city: "Paris"
+    zip_code: "92150"
+    served_zones:
+      - "ile_de_france:paris"
+      - "ile_de_france:petite_couronne"
+
+    about_me: >
+      Professeure certifiée de lettres,
+      titulaire du CAPES obtenu en 2003.
+      J'enseigne en collège et au lycée,
+      avec un accompagnement en douceur
+      pour reprendre les bases,
+      structurer la méthodologie
+      et préparer efficacement
+      le Brevet et le bac de français.
+      Souriante, rassurante et patiente,
+      j'allie bienveillance et exigence
+      pour redonner confiance
+      et faire progresser durablement.
+
+    exam_tags:
+      - "brevet"
+      - "bac_francais"
+
+    specific_support:
+      - "preparation_examens"
+      - "methodologie_organisation"
+      - "confiance_en_soi"
+
+    email_pro: "virginie.morgant-valot@ac-versailles.fr"
+    email_perso: "valotvirginie@gmail.com"
+    phone: "06 36 66 98 39"
+    rgpd_consent: true
+    status: approved
+
+  - id: helene-zamansky-weber
+    first_name: "Hélène"
+    last_name: "Zamansky-Weber"
+    display_name: "Hélène Z.-W."
+    gender: female
+
+    career_status: certifie
+    academy_name: "Paris"
+    school_name: "Collège Molière"
+
+    primary_subject: "francais"
+    target_audience_tags:
+      - "eleves_besoins_particuliers"
+      - "eleves_en_difficulte"
+
+    headline: >
+      Professeure certifiée de lettres modernes,
+      français langue seconde et accompagnement individualisé
+
+    levels: ["college"]
+    subjects_tags:
+      - "fle"
+
+    teaching_formats: ["at_student_home", "online"]
+    pricing_text: "50 € / heure"
+    city: "Paris"
+    zip_code: "75016"
+    served_zones:
+      - "ile_de_france:paris"
+
+    about_me: >
+      Professeure certifiée,
+      titulaire d'un master 2 obtenu en 2003.
+      J'enseigne depuis 20 ans,
+      en collège en classe ordinaire
+      et en dispositifs UPE2A,
+      d'abord en lycée professionnel
+      puis en collège.
+      Spécialisée en français langue seconde,
+      je prépare au DNB
+      et accompagne les élèves en FLE
+      avec une pédagogie différenciée.
+      Très attentive aux profils individuels,
+      j'ai à cœur de faire réussir chaque élève
+      grâce à un accompagnement structuré
+      et un véritable coaching scolaire.
+
+    exam_tags:
+      - "brevet"
+      - "bac_francais"
+
+    specific_support:
+      - "preparation_examens"
+      - "fle"
+      - "confiance_en_soi"
+
+    email_pro: "helene.zamansky-weber@ac-paris.fr"
+    email_perso: ""
+    phone: "06 64 51 16 68"
+    rgpd_consent: true
+    status: approved
+
+  - id: boris-paillard
+    first_name: "Boris"
+    last_name: "Paillard"
+    display_name: "Boris P."
+    gender: male
+
+    career_status: certifie
+    academy_name: "Paris"
+    school_name: ""
+
+    primary_subject: "mathematiques"
+    target_audience_tags: []
+
+    levels: ["college", "lycee"]
+    subjects_tags: ["mathematiques"]
+
+    teaching_formats: ["online"]
+    pricing_text: ""
+    city: "Paris"
+    zip_code: ""
+    served_zones: []
+
+    about_me: ""
+
+    exam_tags: []
+    specific_support: []
+
+    email_pro: ""
+    email_perso: "boris.paillard@gmail.com"
+    phone: ""
+    rgpd_consent: false
+    status: pending

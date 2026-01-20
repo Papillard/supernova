@@ -38,15 +38,16 @@ namespace :teachers do
       city: "Paris",
       zip_code: "75011",
       served_zones: ["Paris"],
-      support_text: "Cours de mathématiques et programmation pour collège et lycée.",
-      experience_text: "Enseignant au Wagon depuis 2015.",
-      special_skills_text: "Spécialisé en programmation et mathématiques appliquées.",
+      about_me: "Cours de mathématiques et programmation pour collège et lycée.\n\nEnseignant au Wagon depuis 2015.\n\nSpécialisé en programmation et mathématiques appliquées.",
+      headline: "Cours de mathématiques et programmation pour collège et lycée",
+      primary_subject: "mathematiques",
+      specific_support: [],
+      target_audience_tags: [],
       email_pro: email_pro,
       email_perso: email_perso,
       phone: "+33612345678",
       status: :pending,  # ⚠️ Important : en pending
-      rgpd_consent: true,
-      picture_visible: false
+      rgpd_consent: true
     )
 
     if teacher.save!

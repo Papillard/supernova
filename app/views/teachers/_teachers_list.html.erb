@@ -6,120 +6,117 @@
   <% @teachers.each do |teacher| %>
     <%= link_to teacher_path(teacher), class: "card bg-white shadow-sm hover:shadow-md transition cursor-pointer block h-full flex flex-col", data: { turbo_frame: "_top" } do %>
       <div class="card-body flex-1 flex flex-col">
-        <!-- 1) Header -->
+        <!-- Header -->
         <div class="flex items-start gap-3 mb-4">
+          <!-- Photo carrée plus grosse -->
           <div class="flex-shrink-0">
-            <%= render "shared/teacher_avatar", teacher: teacher, size: :medium, for_parent: true %>
+            <% if teacher.profile_image_attached && teacher.profile_image_url.present? && teacher.public_visible? %>
+              <%= image_tag teacher.profile_image_url,
+                  alt: teacher_short_name(teacher),
+                  class: "w-20 h-20 object-cover rounded-lg",
+                  onerror: "this.style.display='none'; this.nextElementSibling.style.display='flex';" %>
+              <div class="hidden w-20 h-20 rounded-lg bg-gray-300 flex items-center justify-center text-gray-600 font-semibold text-xl">
+                <%= teacher_initials(teacher) %>
+              </div>
+            <% else %>
+              <div class="w-20 h-20 rounded-lg bg-gray-300 flex items-center justify-center text-gray-600 font-semibold text-xl">
+                <%= teacher_initials(teacher) %>
+              </div>
+            <% end %>
           </div>
+          
+          <!-- Titre et sous-titre -->
           <div class="flex-1 min-w-0">
-            <h3 class="text-lg font-semibold text-gray-900"><%= teacher_short_name(teacher) %></h3>
+            <h3 class="text-lg font-semibold text-gray-900">
+              <%= teacher_short_name(teacher) %>
+            </h3>
             <% if teacher.city.present? %>
               <p class="text-xs text-gray-500 mt-0.5"><%= teacher.city %></p>
             <% end %>
           </div>
+          
+          <!-- Prix à droite -->
           <div class="flex-shrink-0 text-right">
             <% if teacher.pricing_text.present? %>
-              <%# Extraire le prix (ex: "50€" ou "50€/h" ou "50 € / heure") %>
               <% price_match = teacher.pricing_text.match(/(\d+)\s*€/) %>
               <% if price_match %>
-                <p class="text-xl font-bold text-gray-900"><%= price_match[1] %>€/h</p>
+                <p class="text-xl font-bold text-gray-900"><%= price_match[1] %> €/h</p>
               <% else %>
                 <p class="text-xl font-bold text-gray-900"><%= format_pricing_text(teacher.pricing_text) %></p>
               <% end %>
             <% end %>
-            <% if teacher.career_status.present? %>
-              <span class="badge badge-xs bg-gray-100 text-gray-700 border-gray-300 mt-1">
-                <%= format_career_status(teacher.read_attribute(:career_status)) %>
-              </span>
-            <% end %>
           </div>
         </div>
 
-        <!-- 2) Fit pédagogique -->
-        <div class="mb-3 space-y-1.5">
-          <% if teacher.subjects_tags.present? %>
-            <div class="flex items-center gap-1.5 flex-wrap">
-              <% teacher.subjects_tags.first(2).each do |tag| %>
-                <span class="badge badge-sm bg-[#fe6618]/10 text-[#fe6618] border-[#fe6618]/20"><%= format_subject_tag(tag) %></span>
-              <% end %>
-              <% if teacher.subjects_tags.length > 2 %>
-                <span class="badge badge-sm bg-[#fe6618]/10 text-[#fe6618] border-[#fe6618]/20">+<%= teacher.subjects_tags.length - 2 %></span>
-              <% end %>
-            </div>
-          <% end %>
-          <% if teacher.levels.present? %>
+        <!-- Corps de card -->
+        <div class="mb-4 space-y-2">
+          <!-- 2 badges orange inline : matière principale + premier target_audience -->
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <% if teacher.primary_subject.present? %>
+              <span class="badge badge-sm bg-[#fe6618]/10 text-[#fe6618] border-[#fe6618]/20"><%= format_subject_tag(teacher.primary_subject) %></span>
+            <% end %>
+            <% if teacher.target_audience_tags.present? %>
+              <span class="badge badge-sm bg-[#fe6618]/10 text-[#fe6618] border-[#fe6618]/20"><%= format_target_audience_tag(teacher.target_audience_tags.first) %></span>
+            <% end %>
+          </div>
+          
+          <!-- Career status et niveaux sur une ligne -->
+          <% if teacher.career_status.present? || teacher.levels.present? %>
+            <% parts = []
+               if teacher.career_status.present?
+                 prefix = if teacher.gender == "female"
+                   "Professeure"
+                 elsif teacher.gender == "male"
+                   "Professeur"
+                 else
+                   "Professeur(e)"
+                 end
+                 career_status_text = format_career_status(teacher.career_status).downcase
+                 parts << "#{prefix} #{career_status_text}"
+               end
+               if teacher.levels.present?
+                 parts << teacher.levels.map { |level| format_level_tag(level) }.join(" · ")
+               end
+            %>
             <div class="text-xs text-gray-600">
-              <%= teacher.levels.map { |level| format_level_tag(level) }.join(" • ") %>
+              <%= parts.join(" · ") %>
+            </div>
+          <% end %>
+          
+          <!-- Formats avec icônes -->
+          <% if teacher.teaching_formats.present? %>
+            <div class="flex items-center gap-3 text-xs text-gray-600">
+              <% teacher.teaching_formats.first(2).each_with_index do |format, index| %>
+                <% if index > 0 %> · <% end %>
+                <div class="flex items-center gap-1">
+                  <% if format == "online" %>
+                    <svg class="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" />
+                    </svg>
+                    <span>En ligne</span>
+                  <% elsif format == "at_student_home" %>
+                    <svg class="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                    </svg>
+                    <span>Chez l'élève</span>
+                  <% elsif format == "at_teacher_home" %>
+                    <svg class="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" />
+                    </svg>
+                    <span>Chez le prof</span>
+                  <% end %>
+                </div>
+              <% end %>
             </div>
           <% end %>
         </div>
 
-        <!-- 3) Logistique -->
-        <% if teacher.teaching_formats.present? %>
-          <div class="flex items-center gap-3 mb-3 text-xs text-gray-600">
-            <% formats_displayed = 0 %>
-            <% teacher.teaching_formats.first(3).each do |format| %>
-              <% break if formats_displayed >= 3 %>
-              <% formats_displayed += 1 %>
-              <div class="flex items-center gap-1">
-                <% if format == "online" %>
-                  <svg class="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" />
-                  </svg>
-                  <span>En ligne</span>
-                <% elsif format == "at_student_home" %>
-                  <svg class="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-                  </svg>
-                  <span>Domicile élève</span>
-                <% elsif format == "at_teacher_home" %>
-                  <svg class="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" />
-                  </svg>
-                  <span>Chez le prof</span>
-                <% end %>
-              </div>
-            <% end %>
-          </div>
-        <% end %>
-
-        <!-- 4) Preuves (crédibilité) -->
-        <div class="flex items-center gap-1.5 mb-4">
-          <% badges_count = 0 %>
-          <% if teacher.exam_tags.present? %>
-            <% teacher.exam_tags.first(2).each do |tag| %>
-              <% break if badges_count >= 2 %>
-              <span class="badge badge-sm bg-gray-100 text-gray-700 border-gray-300 text-xs max-w-[45%] truncate"><%= format_exam_tag_short(tag) %></span>
-              <% badges_count += 1 %>
-            <% end %>
-          <% end %>
-          <% if badges_count < 2 && teacher.pedagogy_tags.present? %>
-            <% teacher.pedagogy_tags.first(2 - badges_count).each do |tag| %>
-              <% break if badges_count >= 2 %>
-              <span class="badge badge-sm bg-gray-100 text-gray-700 border-gray-300 text-xs max-w-[45%] truncate"><%= format_pedagogy_tag_short(tag) %></span>
-              <% badges_count += 1 %>
-            <% end %>
-          <% end %>
-          <%# Fallback si pas de tags : expérience %>
-          <% if badges_count == 0 && teacher.experience_text.present? %>
-            <%# Essayer d'extraire une année ou "X ans" %>
-            <% if teacher.experience_text.match?(/(\d+)\s*ans/) %>
-              <% years = teacher.experience_text.match(/(\d+)\s*ans/)[1] %>
-              <span class="badge badge-sm bg-gray-100 text-gray-700 border-gray-300 text-xs"><%= years %> ans d'expérience</span>
-            <% elsif teacher.experience_text.match?(/depuis\s+(\d{4})/i) %>
-              <% year = teacher.experience_text.match(/depuis\s+(\d{4})/i)[1] %>
-              <span class="badge badge-sm bg-gray-100 text-gray-700 border-gray-300 text-xs">Depuis <%= year %></span>
-            <% else %>
-              <span class="badge badge-sm bg-gray-100 text-gray-700 border-gray-300 text-xs">Expérimenté</span>
-            <% end %>
-          <% end %>
-        </div>
-
-        <!-- 5) Action -->
-        <div class="mt-auto pt-4">
-          <span class="btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg btn-sm w-full">
-            Voir le profil
-          </span>
+        <!-- Footer CTA -->
+        <div class="mt-auto pt-4 border-t border-gray-200">
+          <button class="btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg btn-sm w-full">
+            Contacter ce professeur
+          </button>
+          <p class="text-xs text-gray-500 text-center mt-2">Réponse sous 48h · Sans engagement</p>
         </div>
       </div>
     <% end %>

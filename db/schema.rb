@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_14_101049) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_20_144837) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -218,20 +218,15 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_14_101049) do
     t.string "first_name", null: false
     t.string "last_name", null: false
     t.string "display_name", null: false
-    t.string "gender", null: false
+    t.string "gender"
     t.string "academy_name"
     t.string "school_name"
-    t.string "career_status", null: false
+    t.string "career_status"
     t.text "levels", default: [], array: true
     t.text "subjects_tags", default: [], array: true
     t.text "teaching_formats", default: [], array: true
-    t.text "support_text"
-    t.text "experience_text"
-    t.text "special_skills_text"
-    t.text "interest_text"
     t.text "exams_raw_text"
     t.text "exam_tags", default: [], array: true
-    t.text "pedagogy_tags", default: [], array: true
     t.text "pricing_text"
     t.string "target_students_range"
     t.string "email_pro"
@@ -243,10 +238,15 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_14_101049) do
     t.boolean "rgpd_consent", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "picture_visible", default: false, null: false
     t.string "zip_code"
     t.string "city"
     t.text "served_zones", default: [], array: true
+    t.text "about_me"
+    t.string "headline"
+    t.string "primary_subject"
+    t.text "target_audience_tags", default: [], array: true
+    t.integer "accepted_requests_count", default: 0, null: false
+    t.text "specific_support", default: [], array: true
     t.index ["user_id"], name: "index_teachers_on_user_id", unique: true
   end
 

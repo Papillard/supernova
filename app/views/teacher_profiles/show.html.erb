@@ -23,13 +23,13 @@
           <span class="step-number w-5 h-5 rounded-full border border-current flex items-center justify-center text-xs">1</span>
           Profil
         </a>
-        <a data-tabs-target="tab" data-tab-id="preferences-cours" data-action="click->tabs#switch" class="profile-tab px-4 py-3 text-sm font-medium cursor-pointer transition-colors flex items-center gap-2">
-          <span class="step-number w-5 h-5 rounded-full border border-current flex items-center justify-center text-xs">2</span>
-          Préférences
-        </a>
         <a data-tabs-target="tab" data-tab-id="pedagogie" data-action="click->tabs#switch" class="profile-tab px-4 py-3 text-sm font-medium cursor-pointer transition-colors flex items-center gap-2">
-          <span class="step-number w-5 h-5 rounded-full border border-current flex items-center justify-center text-xs">3</span>
+          <span class="step-number w-5 h-5 rounded-full border border-current flex items-center justify-center text-xs">2</span>
           Pédagogie
+        </a>
+        <a data-tabs-target="tab" data-tab-id="preferences-cours" data-action="click->tabs#switch" class="profile-tab px-4 py-3 text-sm font-medium cursor-pointer transition-colors flex items-center gap-2">
+          <span class="step-number w-5 h-5 rounded-full border border-current flex items-center justify-center text-xs">3</span>
+          Préférences
         </a>
         <a data-tabs-target="tab" data-tab-id="validation" data-action="click->tabs#switch" class="profile-tab px-4 py-3 text-sm font-medium cursor-pointer transition-colors flex items-center gap-2">
           <span class="step-number w-5 h-5 rounded-full border border-current flex items-center justify-center text-xs">4</span>
@@ -46,7 +46,9 @@
 
       <!-- Formulaire principal qui englobe tous les panels -->
       <%= form_with model: @teacher, url: teacher_profile_path, method: :patch, local: false, multipart: true, data: { turbo: true }, id: "main-teacher-form", class: "space-y-6" do |f| %>
-        <%= render "devise/shared/error_messages", resource: @teacher %>
+        <div id="error-messages-container">
+          <%= render "devise/shared/error_messages", resource: @teacher %>
+        </div>
 
         <!-- Onglet 1: Profil -->
         <div data-tabs-target="panel" data-panel-id="profil" class="space-y-6">
@@ -75,12 +77,6 @@
                         Upload en cours...
                       </div>
                     </div>
-                    <div class="form-control overflow-hidden">
-                      <label class="flex items-start gap-3 cursor-pointer py-2">
-                        <%= f.check_box :picture_visible, { checked: @teacher.picture_visible, class: "custom-checkbox flex-shrink-0 mt-0.5" }, true, false %>
-                        <span class="text-sm leading-relaxed">Rendre ma photo visible publiquement sur ProfConnect (recommandé)</span>
-                      </label>
-                    </div>
                   </div>
                 </div>
 
@@ -100,9 +96,9 @@
                   </div>
                   <div class="form-control">
                     <%= f.label :email_perso, class: "label" do %>
-                      <span class="label-text">Email personnel</span>
+                      <span class="label-text">Email personnel *</span>
                     <% end %>
-                    <%= f.email_field :email_perso, class: "input input-bordered w-full" %>
+                    <%= f.email_field :email_perso, class: "input input-bordered w-full", required: true %>
                   </div>
                   <div class="form-control">
                     <%= f.label :phone, class: "label" do %>
@@ -112,35 +108,20 @@
                   </div>
                   <div class="form-control">
                     <%= f.label :gender, class: "label" do %>
-                      <span class="label-text">Genre *</span>
+                      <span class="label-text">Genre</span>
                     <% end %>
-                    <%= f.select :gender, options_for_select([["Féminin", "female"], ["Masculin", "male"], ["Non précisé", "other"]], @teacher.gender), { prompt: "Sélectionner" }, { class: "select select-bordered w-full", required: true } %>
+                    <%= f.select :gender, options_for_select([["Féminin", "female"], ["Masculin", "male"], ["Non précisé", "other"]], nil), { prompt: "Sélectionner" }, { class: "select select-bordered w-full" } %>
                   </div>
                   <div class="form-control">
                     <%= f.label :career_status, class: "label" do %>
-                      <span class="label-text">Statut professionnel *</span>
+                      <span class="label-text">Statut professionnel</span>
                     <% end %>
-                    <%
-                      # Convertir la clé de l'enum en valeur pour le select
-                      career_status_value = case @teacher.career_status
-                      when "certifie", :certifie
-                        "certifié"
-                      when "agrege", :agrege
-                        "agrégé"
-                      when "prof_des_ecoles", :prof_des_ecoles
-                        "prof des écoles"
-                      when "autre", :autre
-                        "autre"
-                      else
-                        @teacher.career_status
-                      end
-                    %>
                     <%= f.select :career_status, options_for_select([
                       ["Certifié", "certifié"],
                       ["Agrégé", "agrégé"],
                       ["Prof des écoles", "prof des écoles"],
                       ["Autre", "autre"]
-                    ], career_status_value), { prompt: "Sélectionner" }, { class: "select select-bordered w-full", required: true } %>
+                    ], nil), { prompt: "Sélectionner" }, { class: "select select-bordered w-full" } %>
                   </div>
                   <div class="form-control">
                     <%= f.label :academy_name, class: "label" do %>
@@ -155,13 +136,40 @@
                     <%= f.text_field :school_name, class: "input input-bordered w-full", placeholder: "Lycée Montaigne" %>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
 
-                <!-- Matières et Niveaux -->
+          <!-- Navigation -->
+          <div class="flex">
+            <button type="button" data-action="click->tabs#next" class="btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg w-full md:w-auto md:ml-auto">
+              Suivant →
+            </button>
+          </div>
+        </div>
+
+        <!-- Onglet 2: Pédagogie -->
+        <div data-tabs-target="panel" data-panel-id="pedagogie" class="hidden space-y-6">
+          <div class="card bg-white shadow-sm">
+            <div class="card-body">
+              <div class="space-y-6">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Décrivez vos cours et votre pédagogie</h2>
+
+                <!-- Titre pour votre profil -->
+                <div class="form-control">
+                  <%= f.label :headline, class: "label" do %>
+                    <span class="label-text">Titre pour votre profil (max 120 caractères) *</span>
+                  <% end %>
+                  <%= f.text_field :headline, class: "input input-bordered w-full", maxlength: 120, data: { required_for_step: "pedagogie" }, placeholder: "Ex: Professeur expérimenté en mathématiques pour collège et lycée" %>
+                  <p class="text-sm text-gray-500 mt-1">Cette phrase apparaîtra en premier sur votre profil public et doit être identifiable.</p>
+                </div>
+
+                <!-- Niveaux enseignés et Matière principale sur une rangée -->
                 <div class="grid gap-4 md:grid-cols-2">
-                  <!-- Niveaux - Bouton avec modale -->
+                  <!-- Niveaux enseignés -->
                   <div class="form-control" data-controller="selection-modal" data-selection-modal-field-name-value="levels" data-selection-modal-selected-value="<%= @teacher.levels&.reject(&:blank?)&.to_json || [].to_json %>">
                     <%= f.label :levels, class: "label" do %>
-                      <span class="label-text">Niveaux</span>
+                      <span class="label-text">Niveaux enseignés *</span>
                     <% end %>
                     <button type="button"
                             data-selection-modal-target="button"
@@ -181,7 +189,7 @@
                     <div data-selection-modal-target="modal" class="hidden fixed inset-0 z-50 flex items-center justify-center" style="background-color: rgba(0,0,0,0.7);" data-action="click->selection-modal#backdropClick">
                       <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 max-h-[80vh] flex flex-col">
                         <div class="flex items-center justify-between p-4 border-b">
-                          <h3 class="text-lg font-semibold">Sélectionner les niveaux</h3>
+                          <h3 class="text-lg font-semibold">Sélectionner les niveaux enseignés</h3>
                           <button type="button" data-action="click->selection-modal#close" class="btn btn-sm btn-circle btn-ghost">✕</button>
                         </div>
                         <div class="p-4 overflow-y-auto flex-1">
@@ -209,31 +217,28 @@
                     </div>
                   </div>
 
-                  <!-- Matières - Bouton avec modale -->
-                  <div class="form-control" data-controller="selection-modal" data-selection-modal-field-name-value="subjects_tags" data-selection-modal-selected-value="<%= @teacher.subjects_tags&.reject(&:blank?)&.to_json || [].to_json %>">
-                    <%= f.label :subjects_tags, class: "label" do %>
-                      <span class="label-text">Matières</span>
+                  <!-- Matière principale -->
+                  <div class="form-control" data-controller="single-selection-modal" data-single-selection-modal-field-name-value="primary_subject" data-single-selection-modal-selected-value="<%= @teacher.primary_subject&.to_json || 'null' %>">
+                    <%= f.label :primary_subject, class: "label" do %>
+                      <span class="label-text">Matière principale *</span>
                     <% end %>
                     <button type="button"
-                            data-selection-modal-target="button"
-                            data-action="click->selection-modal#open"
+                            data-single-selection-modal-target="button"
+                            data-action="click->single-selection-modal#open"
                             class="btn btn-outline w-full justify-between">
-                      <span>Sélectionner...</span>
+                      <span><%= @teacher.primary_subject.present? ? TeachersHelper::SUBJECTS_OPTIONS.find { |_, v| v == @teacher.primary_subject }&.first || "Sélectionner..." : "Sélectionner votre matière principale" %></span>
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                       </svg>
                     </button>
-                    <%= hidden_field_tag "teacher[subjects_tags][]", "", data: { selection_modal_target: "hiddenInput" } %>
-                    <% @teacher.subjects_tags&.reject(&:blank?)&.each do |subject| %>
-                      <%= hidden_field_tag "teacher[subjects_tags][]", subject %>
-                    <% end %>
+                    <%= hidden_field_tag "teacher[primary_subject]", @teacher.primary_subject, data: { single_selection_modal_target: "hiddenInput", required_for_step: "pedagogie" }, required: true %>
 
-                    <!-- Modale Matières -->
-                    <div data-selection-modal-target="modal" class="hidden fixed inset-0 z-50 flex items-center justify-center" style="background-color: rgba(0,0,0,0.7);" data-action="click->selection-modal#backdropClick">
+                    <!-- Modale Matière principale -->
+                    <div data-single-selection-modal-target="modal" class="hidden fixed inset-0 z-50 flex items-center justify-center" style="background-color: rgba(0,0,0,0.7);" data-action="click->single-selection-modal#backdropClick">
                       <div class="bg-white rounded-lg shadow-xl max-w-3xl w-full mx-4 max-h-[80vh] flex flex-col">
                         <div class="flex items-center justify-between p-4 border-b">
-                          <h3 class="text-lg font-semibold">Sélectionner les matières</h3>
-                          <button type="button" data-action="click->selection-modal#close" class="btn btn-sm btn-circle btn-ghost">✕</button>
+                          <h3 class="text-lg font-semibold">Sélectionner votre matière principale</h3>
+                          <button type="button" data-action="click->single-selection-modal#close" class="btn btn-sm btn-circle btn-ghost">✕</button>
                         </div>
                         <div class="p-4 overflow-y-auto flex-1">
                           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -243,13 +248,13 @@
                                 <div class="flex flex-col gap-1">
                                   <% subjects.each do |label, value| %>
                                     <label class="flex items-center gap-2 cursor-pointer p-1.5 rounded hover:bg-base-200 transition">
-                                      <%= check_box_tag "subjects_checkbox_#{value}", value, @teacher.subjects_tags&.include?(value),
+                                      <%= radio_button_tag "primary_subject_radio", value, @teacher.primary_subject == value,
                                           {
-                                            class: "custom-checkbox flex-shrink-0",
+                                            class: "radio radio-primary flex-shrink-0",
                                             data: {
-                                              selection_modal_target: "checkbox",
+                                              single_selection_modal_target: "radio",
                                               label: label,
-                                              action: "change->selection-modal#updateSelection"
+                                              action: "change->single-selection-modal#updateSelection"
                                             }
                                           } %>
                                       <span class="text-sm whitespace-normal"><%= label %></span>
@@ -260,133 +265,133 @@
                             <% end %>
                           </div>
                         </div>
-                        <div class="p-4 border-t flex items-center justify-between">
-                          <p class="text-sm text-gray-600">
-                            Votre matière n'est pas dans cette liste ?
-                            <%= link_to "Envoyez-nous un message", "mailto:contact@prof-connect.fr", class: "text-[#fe6618] hover:underline" %>
-                          </p>
-                          <button type="button" data-action="click->selection-modal#close" class="btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white">Fermer</button>
+                        <div class="p-4 border-t flex justify-end">
+                          <button type="button" data-action="click->single-selection-modal#close" class="btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white">Fermer</button>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
 
-          <!-- Navigation -->
-          <div class="flex">
-            <button type="button" data-action="click->tabs#next" class="btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg w-full md:w-auto md:ml-auto">
-              Suivant →
-            </button>
-          </div>
-        </div>
-
-        <!-- Onglet 2: Préférences de cours -->
-        <div data-tabs-target="panel" data-panel-id="preferences-cours" class="hidden space-y-6">
-          <div class="card bg-white shadow-sm">
-            <div class="card-body">
-              <div class="space-y-6">
-                <h2 class="text-xl font-bold text-gray-900 mb-4">Plus d'infos sur vos cours particuliers</h2>
-
-                <!-- Formats de cours -->
-                <div class="form-control" data-controller="teaching-formats-filter" data-teaching-formats-filter-zones-section-id-value="zones-desservies-section">
-                  <label class="label">
-                    <span class="label-text">Où voulez-vous donner cours ?</span>
-                  </label>
-                  <div class="flex flex-col md:flex-row flex-wrap gap-3 md:gap-4">
-                    <label class="flex items-center gap-3 cursor-pointer">
-                      <%= check_box_tag "teacher[teaching_formats][]", "online", @teacher.teaching_formats&.include?("online"), { id: "teacher_teaching_formats_online", class: "custom-checkbox", data: { teaching_formats_filter_target: "formatCheckbox", action: "change->teaching-formats-filter#updateZonesSection" } } %>
-                      <span class="text-sm">En ligne</span>
-                    </label>
-                    <label class="flex items-center gap-3 cursor-pointer">
-                      <%= check_box_tag "teacher[teaching_formats][]", "at_student_home", @teacher.teaching_formats&.include?("at_student_home"), { id: "teacher_teaching_formats_at_student_home", class: "custom-checkbox", data: { teaching_formats_filter_target: "formatCheckbox", action: "change->teaching-formats-filter#updateZonesSection" } } %>
-                      <span class="text-sm">Au domicile de l'élève</span>
-                    </label>
-                    <label class="flex items-center gap-3 cursor-pointer">
-                      <%= check_box_tag "teacher[teaching_formats][]", "at_teacher_home", @teacher.teaching_formats&.include?("at_teacher_home"), { id: "teacher_teaching_formats_at_teacher_home", class: "custom-checkbox", data: { teaching_formats_filter_target: "formatCheckbox", action: "change->teaching-formats-filter#updateZonesSection" } } %>
-                      <span class="text-sm">À mon domicile</span>
-                    </label>
-                  </div>
-                </div>
-
-                <!-- Tarif -->
-                <div class="form-control">
-                  <%= f.label :pricing_text, class: "label" do %>
-                    <span class="label-text">Votre tarif horaire *</span>
+                <!-- Autres matières enseignées -->
+                <div class="form-control" data-controller="selection-modal" data-selection-modal-field-name-value="subjects_tags" data-selection-modal-selected-value="<%= @teacher.subjects_tags&.reject(&:blank?)&.to_json || [].to_json %>">
+                  <%= f.label :subjects_tags, class: "label" do %>
+                    <span class="label-text">Autres matières enseignées</span>
                   <% end %>
-                  <%= f.select :pricing_text, options_for_select((25..100).step(5).map { |price| ["#{price}€", "#{price}€"] }, @teacher.pricing_text), { prompt: "Sélectionner un tarif" }, { class: "select select-bordered w-full" } %>
-                  <p class="text-sm text-gray-500 mt-2">
-                    En tant que professeur diplômé, nous vous invitons à proposer des tarifs valorisant votre expertise. Ceux-ci peuvent être ajustés selon votre zone géographique, la classe ou le grade de l'élève et la préparation éventuelle aux examens.
-                  </p>
-                </div>
-
-                <!-- Localisation -->
-                <div class="grid gap-4 md:grid-cols-2" data-controller="google-places-autocomplete">
-                  <div class="form-control">
-                    <%= f.label :city, class: "label" do %>
-                      <span class="label-text">Dans quelle ville habitez-vous ?</span>
-                    <% end %>
-                    <%= f.text_field :city, class: "input input-bordered w-full", placeholder: "Paris", data: { google_places_autocomplete_target: "city" } %>
-                  </div>
-                  <div class="form-control">
-                    <%= f.label :zip_code, class: "label" do %>
-                      <span class="label-text">Code postal</span>
-                    <% end %>
-                    <%= f.text_field :zip_code, class: "input input-bordered w-full", placeholder: "75014", data: { google_places_autocomplete_target: "zipCode" } %>
-                  </div>
-                </div>
-
-                <!-- Zones desservies -->
-                <div id="zones-desservies-section" class="form-control"
-                     data-controller="zone-selector"
-                     data-zone-selector-initial-zones-value="<%= initial_served_zones.to_json %>"
-                     data-zone-selector-all-zones-value="<%= all_served_zones_for_search.to_json %>"
-                     data-zone-selector-selected-value="<%= (@teacher.served_zones || []).to_json %>">
-                  <%= f.label :served_zones, class: "label" do %>
-                    <span class="label-text">Où souhaitez-vous donner cours ?</span>
+                  <button type="button"
+                          data-selection-modal-target="button"
+                          data-action="click->selection-modal#open"
+                          class="btn btn-outline w-full justify-between">
+                    <span>Sélectionner...</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  <%= hidden_field_tag "teacher[subjects_tags][]", "", data: { selection_modal_target: "hiddenInput" } %>
+                  <% @teacher.subjects_tags&.reject(&:blank?)&.each do |subject| %>
+                    <%= hidden_field_tag "teacher[subjects_tags][]", subject %>
                   <% end %>
-                  <%= hidden_field_tag "teacher[served_zones]", (@teacher.served_zones || []).to_json, data: { zone_selector_target: "input" } %>
-                  <div class="relative">
-                      <input type="text"
-                             placeholder="Sélectionnez les zones desservies"
-                             data-zone-selector-target="searchInput"
-                             data-action="input->zone-selector#search focus->zone-selector#toggleDropdown keydown->zone-selector#handleKeydown"
-                             class="input input-bordered w-full" />
-                    <div data-zone-selector-target="dropdown" class="hidden absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-96 overflow-y-auto">
-                      <!-- Contenu généré par JavaScript -->
+
+                  <!-- Modale Matières -->
+                  <div data-selection-modal-target="modal" class="hidden fixed inset-0 z-50 flex items-center justify-center" style="background-color: rgba(0,0,0,0.7);" data-action="click->selection-modal#backdropClick">
+                    <div class="bg-white rounded-lg shadow-xl max-w-3xl w-full mx-4 max-h-[80vh] flex flex-col">
+                      <div class="flex items-center justify-between p-4 border-b">
+                        <h3 class="text-lg font-semibold">Sélectionner les matières enseignées</h3>
+                        <button type="button" data-action="click->selection-modal#close" class="btn btn-sm btn-circle btn-ghost">✕</button>
+                      </div>
+                      <div class="p-4 overflow-y-auto flex-1">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                          <% TeachersHelper::SUBJECTS_GROUPED.each do |group_name, subjects| %>
+                            <div class="flex flex-col">
+                              <h4 class="text-sm font-semibold text-gray-700 mb-2"><%= group_name %></h4>
+                              <div class="flex flex-col gap-1">
+                                <% subjects.each do |label, value| %>
+                                  <% is_primary_subject = value == @teacher.primary_subject %>
+                                  <label class="flex items-center gap-2 cursor-pointer p-1.5 rounded hover:bg-base-200 transition <%= 'hidden' if is_primary_subject %>" data-subject-value="<%= value %>">
+                                    <%= check_box_tag "subjects_checkbox_#{value}", value, @teacher.subjects_tags&.include?(value) && !is_primary_subject,
+                                        {
+                                          class: "custom-checkbox flex-shrink-0",
+                                          disabled: is_primary_subject,
+                                          data: {
+                                            selection_modal_target: "checkbox",
+                                            label: label,
+                                            subject_value: value,
+                                            action: "change->selection-modal#updateSelection"
+                                          }
+                                        } %>
+                                    <span class="text-sm whitespace-normal"><%= label %></span>
+                                  </label>
+                                <% end %>
+                              </div>
+                            </div>
+                          <% end %>
+                        </div>
+                      </div>
+                      <div class="p-4 border-t flex items-center justify-between">
+                        <p class="text-sm text-gray-600">
+                          Votre matière n'est pas dans cette liste ?
+                          <%= link_to "Envoyez-nous un message", "mailto:contact@prof-connect.fr", class: "text-[#fe6618] hover:underline" %>
+                        </p>
+                        <button type="button" data-action="click->selection-modal#close" class="btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white">Fermer</button>
+                      </div>
                     </div>
                   </div>
-                  <div data-zone-selector-target="selectedZones" class="mt-3 flex flex-wrap gap-2">
-                    <!-- Zones sélectionnées affichées ici -->
-                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
 
-          <!-- Navigation -->
-          <div class="flex gap-3">
-            <button type="button" data-action="click->tabs#previous" class="btn btn-outline flex-1 md:flex-none">
-              ← Précédent
-            </button>
-            <button type="button" data-action="click->tabs#next" class="btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg flex-1 md:flex-none md:ml-auto">
-              Suivant →
-            </button>
-          </div>
-        </div>
-
-        <!-- Onglet 3: Pédagogie -->
-        <div data-tabs-target="panel" data-panel-id="pedagogie" class="hidden space-y-6">
-          <div class="card bg-white shadow-sm">
-            <div class="card-body">
-              <div class="space-y-6">
-                <h2 class="text-xl font-bold text-gray-900 mb-4">Décrivez votre expérience et pédagogie</h2>
-
-                <!-- Examens préparés et Types d'accompagnement sur une rangée -->
+                <!-- Public cible et Examens préparés sur une rangée -->
                 <div class="grid gap-4 md:grid-cols-2">
-                  <!-- Examens préparés - Modal -->
+                  <!-- Public cible -->
+                  <div class="form-control" data-controller="selection-modal" data-selection-modal-field-name-value="target_audience_tags" data-selection-modal-selected-value="<%= @teacher.target_audience_tags&.reject(&:blank?)&.to_json || [].to_json %>">
+                    <%= f.label :target_audience_tags, class: "label" do %>
+                      <span class="label-text">Types d'élèves (max. 2)</span>
+                    <% end %>
+                    <button type="button"
+                            data-selection-modal-target="button"
+                            data-action="click->selection-modal#open"
+                            class="btn btn-outline w-full justify-between">
+                      <span>Sélectionner (max 2)...</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                    <%= hidden_field_tag "teacher[target_audience_tags][]", "", data: { selection_modal_target: "hiddenInput" } %>
+                    <% @teacher.target_audience_tags&.reject(&:blank?)&.each do |tag| %>
+                      <%= hidden_field_tag "teacher[target_audience_tags][]", tag %>
+                    <% end %>
+
+                    <!-- Modale Public cible -->
+                    <div data-selection-modal-target="modal" class="hidden fixed inset-0 z-50 flex items-center justify-center" style="background-color: rgba(0,0,0,0.7);" data-action="click->selection-modal#backdropClick">
+                      <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 max-h-[80vh] flex flex-col">
+                        <div class="flex items-center justify-between p-4 border-b">
+                          <h3 class="text-lg font-semibold">À quels types d'élèves s'adressent principalement mes cours ? (max. 2 choix)</h3>
+                          <button type="button" data-action="click->selection-modal#close" class="btn btn-sm btn-circle btn-ghost">✕</button>
+                        </div>
+                        <div class="p-4 overflow-y-auto flex-1">
+                          <div class="space-y-2">
+                            <% TeachersHelper::TARGET_AUDIENCE_TAGS_OPTIONS.each do |label, value| %>
+                              <label class="flex items-center gap-3 cursor-pointer p-2 rounded hover:bg-base-200 transition">
+                                <%= check_box_tag "target_audience_checkbox_#{value}", value, @teacher.target_audience_tags&.include?(value),
+                                    {
+                                      class: "custom-checkbox",
+                                      data: {
+                                        selection_modal_target: "checkbox",
+                                        label: label,
+                                        action: "change->selection-modal#updateSelection"
+                                      }
+                                    } %>
+                                <span class="text-base"><%= label %></span>
+                              </label>
+                            <% end %>
+                          </div>
+                        </div>
+                        <div class="p-4 border-t flex justify-end">
+                          <button type="button" data-action="click->selection-modal#close" class="btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white">Fermer</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Examens préparés -->
                   <div class="form-control" data-controller="selection-modal" data-selection-modal-field-name-value="exam_tags" data-selection-modal-selected-value="<%= @teacher.exam_tags&.reject(&:blank?)&.to_json || [].to_json %>">
                     <%= f.label :exam_tags, class: "label" do %>
                       <span class="label-text">Examens préparés</span>
@@ -436,38 +441,50 @@
                       </div>
                     </div>
                   </div>
+                </div>
 
-                  <!-- Types d'accompagnement - Modal -->
-                  <div class="form-control" data-controller="selection-modal" data-selection-modal-field-name-value="pedagogy_tags" data-selection-modal-selected-value="<%= @teacher.pedagogy_tags&.reject(&:blank?)&.to_json || [].to_json %>">
-                    <%= f.label :pedagogy_tags, class: "label" do %>
-                      <span class="label-text">Types d'accompagnement</span>
-                    <% end %>
-                    <button type="button"
-                            data-selection-modal-target="button"
-                            data-action="click->selection-modal#open"
-                            class="btn btn-outline w-full justify-between">
-                      <span>Sélectionner...</span>
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </button>
-                    <%= hidden_field_tag "teacher[pedagogy_tags][]", "", data: { selection_modal_target: "hiddenInput" } %>
-                    <% @teacher.pedagogy_tags&.reject(&:blank?)&.each do |tag| %>
-                      <%= hidden_field_tag "teacher[pedagogy_tags][]", tag %>
-                    <% end %>
+                <!-- Ce que je propose -->
+                <div class="form-control">
+                  <%= f.label :about_me, class: "label" do %>
+                    <span class="label-text">Ce que je propose</span>
+                  <% end %>
+                  <%= f.text_area :about_me, 
+                      class: "textarea textarea-bordered w-full", 
+                      rows: 8,
+                      placeholder: "Décrivez en quelques lignes ce que vous proposez à vos élèves :\n\n– votre approche pédagogique\n– pour quels élèves (niveau, objectifs)\n– comment se déroulent les cours\n\n5 à 8 lignes suffisent." %>
+                </div>
 
-                    <!-- Modale Types d'accompagnement -->
-                    <div data-selection-modal-target="modal" class="hidden fixed inset-0 z-50 flex items-center justify-center" style="background-color: rgba(0,0,0,0.7);" data-action="click->selection-modal#backdropClick">
-                      <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full mx-4 max-h-[80vh] flex flex-col">
-                        <div class="flex items-center justify-between p-4 border-b">
-                          <h3 class="text-lg font-semibold">Sélectionner les types d'accompagnement</h3>
-                          <button type="button" data-action="click->selection-modal#close" class="btn btn-sm btn-circle btn-ghost">✕</button>
-                        </div>
+                <!-- Accompagnements spécifiques -->
+                <div class="form-control" data-controller="selection-modal" data-selection-modal-field-name-value="specific_support" data-selection-modal-selected-value="<%= @teacher.specific_support&.reject(&:blank?)&.to_json || [].to_json %>">
+                  <%= f.label :specific_support, class: "label" do %>
+                    <span class="label-text">Avez-vous des accompagnements ou expertises spécifiques ?</span>
+                  <% end %>
+                  <button type="button"
+                          data-selection-modal-target="button"
+                          data-action="click->selection-modal#open"
+                          class="btn btn-outline w-full justify-between">
+                    <span>Sélectionner...</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  <%= hidden_field_tag "teacher[specific_support][]", "", data: { selection_modal_target: "hiddenInput" } %>
+                  <% @teacher.specific_support&.reject(&:blank?)&.each do |tag| %>
+                    <%= hidden_field_tag "teacher[specific_support][]", tag %>
+                  <% end %>
+
+                  <!-- Modale Accompagnements spécifiques -->
+                  <div data-selection-modal-target="modal" class="hidden fixed inset-0 z-50 flex items-center justify-center" style="background-color: rgba(0,0,0,0.7);" data-action="click->selection-modal#backdropClick">
+                    <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 max-h-[80vh] flex flex-col">
+                      <div class="flex items-center justify-between p-4 border-b">
+                        <h3 class="text-lg font-semibold">Avez-vous des accompagnements ou expertises spécifiques ?</h3>
+                        <button type="button" data-action="click->selection-modal#close" class="btn btn-sm btn-circle btn-ghost">✕</button>
+                      </div>
                         <div class="p-4 overflow-y-auto flex-1">
-                          <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
-                            <% TeachersHelper::PEDAGOGY_TAGS_OPTIONS.each do |label, value| %>
+                          <div class="space-y-2">
+                            <% TeachersHelper::SPECIFIC_SUPPORT_OPTIONS.each do |label, value| %>
                               <label class="flex items-center gap-3 cursor-pointer p-2 rounded hover:bg-base-200 transition">
-                                <%= check_box_tag "pedagogy_checkbox_#{value}", value, @teacher.pedagogy_tags&.include?(value),
+                                <%= check_box_tag "specific_support_checkbox_#{value}", value, @teacher.specific_support&.include?(value),
                                     {
                                       class: "custom-checkbox",
                                       data: {
@@ -481,36 +498,105 @@
                             <% end %>
                           </div>
                         </div>
-                        <div class="p-4 border-t flex justify-end">
-                          <button type="button" data-action="click->selection-modal#close" class="btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white">Fermer</button>
-                        </div>
+                      <div class="p-4 border-t flex justify-end">
+                        <button type="button" data-action="click->selection-modal#close" class="btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white">Fermer</button>
                       </div>
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
 
-                <!-- Approche pédagogique -->
-                <div class="form-control">
-                  <%= f.label :support_text, class: "label" do %>
-                    <span class="label-text">Votre approche pédagogique</span>
-                  <% end %>
-                  <%= f.text_area :support_text, class: "textarea textarea-bordered w-full", rows: 3, placeholder: "Décrivez votre manière d'enseigner, votre méthode et ce qui vous distingue." %>
+          <!-- Navigation -->
+          <div class="flex gap-3">
+            <button type="button" data-action="click->tabs#previous" class="btn btn-outline flex-1 md:flex-none">
+              ← Précédent
+            </button>
+            <button type="button" data-action="click->tabs#next" class="btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg flex-1 md:flex-none md:ml-auto">
+              Suivant →
+            </button>
+          </div>
+        </div>
+
+        <!-- Onglet 3: Préférences de cours -->
+        <div data-tabs-target="panel" data-panel-id="preferences-cours" class="hidden space-y-6">
+          <div class="card bg-white shadow-sm">
+            <div class="card-body">
+              <div class="space-y-6">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Plus d'infos sur vos cours particuliers</h2>
+
+                <!-- Formats de cours -->
+                <div class="form-control" data-controller="teaching-formats-filter" data-teaching-formats-filter-zones-section-id-value="zones-desservies-section">
+                  <label class="label">
+                    <span class="label-text">Où voulez-vous donner cours ? *</span>
+                  </label>
+                  <div class="flex flex-col md:flex-row flex-wrap gap-3 md:gap-4">
+                    <label class="flex items-center gap-3 cursor-pointer">
+                      <%= check_box_tag "teacher[teaching_formats][]", "online", @teacher.teaching_formats&.include?("online"), { id: "teacher_teaching_formats_online", class: "custom-checkbox", data: { teaching_formats_filter_target: "formatCheckbox", action: "change->teaching-formats-filter#updateZonesSection" } } %>
+                      <span class="text-sm">En ligne</span>
+                    </label>
+                    <label class="flex items-center gap-3 cursor-pointer">
+                      <%= check_box_tag "teacher[teaching_formats][]", "at_student_home", @teacher.teaching_formats&.include?("at_student_home"), { id: "teacher_teaching_formats_at_student_home", class: "custom-checkbox", data: { teaching_formats_filter_target: "formatCheckbox", action: "change->teaching-formats-filter#updateZonesSection" } } %>
+                      <span class="text-sm">Au domicile de l'élève</span>
+                    </label>
+                    <label class="flex items-center gap-3 cursor-pointer">
+                      <%= check_box_tag "teacher[teaching_formats][]", "at_teacher_home", @teacher.teaching_formats&.include?("at_teacher_home"), { id: "teacher_teaching_formats_at_teacher_home", class: "custom-checkbox", data: { teaching_formats_filter_target: "formatCheckbox", action: "change->teaching-formats-filter#updateZonesSection" } } %>
+                      <span class="text-sm">À mon domicile</span>
+                    </label>
+                  </div>
                 </div>
 
-                <!-- Expérience -->
+                <!-- Tarif -->
                 <div class="form-control">
-                  <%= f.label :experience_text, class: "label" do %>
-                    <span class="label-text">Votre expérience</span>
+                  <%= f.label :pricing_text, class: "label" do %>
+                    <span class="label-text">Votre tarif horaire *</span>
                   <% end %>
-                  <%= f.text_area :experience_text, class: "textarea textarea-bordered w-full", rows: 3, placeholder: "Présentez brièvement votre parcours et votre expérience d'enseignement." %>
+                  <%= f.select :pricing_text, options_for_select((25..100).step(5).map { |price| ["#{price}€", "#{price}€"] }, @teacher.pricing_text), { prompt: "Sélectionner un tarif" }, { class: "select select-bordered w-full", data: { required_for_step: "preferences-cours" } } %>
+                  <p class="text-sm text-gray-500 mt-2">
+                    En tant que professeur diplômé, nous vous invitons à proposer des tarifs valorisant votre expertise. Ceux-ci peuvent être ajustés selon votre zone géographique, la classe ou le grade de l'élève et la préparation éventuelle aux examens.
+                  </p>
                 </div>
 
-                <!-- Compétences spécifiques -->
-                <div class="form-control">
-                  <%= f.label :special_skills_text, class: "label" do %>
-                    <span class="label-text">Vos compétences spécifiques</span>
+                <!-- Localisation -->
+                <div class="grid gap-4 md:grid-cols-2" data-controller="google-places-autocomplete">
+                  <div class="form-control">
+                    <%= f.label :city, class: "label" do %>
+                      <span class="label-text">Dans quelle ville habitez-vous ?</span>
+                    <% end %>
+                    <%= f.text_field :city, class: "input input-bordered w-full", placeholder: "Paris", data: { google_places_autocomplete_target: "city" } %>
+                  </div>
+                  <div class="form-control">
+                    <%= f.label :zip_code, class: "label" do %>
+                      <span class="label-text">Code postal</span>
+                    <% end %>
+                    <%= f.text_field :zip_code, class: "input input-bordered w-full", placeholder: "75014", data: { google_places_autocomplete_target: "zipCode" } %>
+                  </div>
+                </div>
+
+                <!-- Zones desservies -->
+                <div id="zones-desservies-section" class="form-control"
+                     data-controller="zone-selector"
+                     data-zone-selector-initial-zones-value="<%= initial_served_zones.to_json %>"
+                     data-zone-selector-all-zones-value="<%= all_served_zones_for_search.to_json %>"
+                     data-zone-selector-selected-value="<%= (@teacher.served_zones || []).to_json %>">
+                  <%= f.label :served_zones, class: "label" do %>
+                    <span class="label-text">Où souhaitez-vous donner cours ?</span>
                   <% end %>
-                  <%= f.text_area :special_skills_text, class: "textarea textarea-bordered w-full", rows: 3, placeholder: "Exemples: élèves en difficulté, préparation intensive, pédagogie adaptée…" %>
+                  <%= hidden_field_tag "teacher[served_zones]", (@teacher.served_zones || []).to_json, data: { zone_selector_target: "input" } %>
+                  <div class="relative">
+                      <input type="text"
+                             placeholder="Sélectionnez les zones desservies"
+                             data-zone-selector-target="searchInput"
+                             data-action="input->zone-selector#search focus->zone-selector#toggleDropdown keydown->zone-selector#handleKeydown"
+                             class="input input-bordered w-full" />
+                    <div data-zone-selector-target="dropdown" class="hidden absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-96 overflow-y-auto">
+                      <!-- Contenu généré par JavaScript -->
+                    </div>
+                  </div>
+                  <div data-zone-selector-target="selectedZones" class="mt-3 flex flex-wrap gap-2">
+                    <!-- Zones sélectionnées affichées ici -->
+                  </div>
                 </div>
               </div>
             </div>

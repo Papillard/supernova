@@ -7,8 +7,8 @@
   show_photo = false
   if teacher.profile_image_attached && teacher.profile_image_url.present?
     # Côté prof : toujours afficher la photo si elle existe
-    # Côté parent : afficher seulement si picture_visible == true
-    show_photo = !for_parent || teacher.picture_visible
+    # Côté parent : afficher si le profil est validé (approved) et visible dans l'annuaire (public_visible)
+    show_photo = !for_parent || teacher.public_visible?
   end
 
   # Tailles

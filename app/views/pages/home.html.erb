@@ -207,14 +207,14 @@
         </div>
         <div class="grid gap-6 md:grid-cols-3">
           <% teachers = [
-            { name: "Claire M.", subject: "Français", academy: "Académie de Paris", badges: ["Parcoursup", "Bac français"], summary: "Professeure certifiée, littérature et méthodologie pour lycéens et étudiants." },
-            { name: "Ahmed B.", subject: "Mathématiques", academy: "Académie de Lyon", badges: ["Brevet", "Bac S"], summary: "Enseignant de lycée, remise à niveau et préparation intensive en maths." },
-            { name: "Sophie L.", subject: "Physique-Chimie", academy: "Académie de Toulouse", badges: ["Laboratoire", "Bac STI2D"], summary: "Professeure titulaire, approche expérimentale et coaching aux épreuves pratiques." }
+            { name: "Laurence R.", subject: "Mathématiques", academy: "Académie de Paris", badges: ["Brevet", "Bac"], image: "laurence-r.jpg", summary: "Professeure certifiée de mathématiques, accompagnement rigoureux du collège au lycée." },
+            { name: "Antonio B.", subject: "Espagnol", academy: "Académie de Montpellier", badges: ["Bac", "Méthodologie"], image: "antonio-b.jpg", summary: "Professeur certifié d'espagnol, plus de 20 ans d'expérience et progression assurée." },
+            { name: "Aurélie A.", subject: "Histoire-Géographie", academy: "Académie de Paris", badges: ["Brevet", "Bac"], image: "aurelie-a.jpg", summary: "Professeure certifiée EN, spécialiste Brevet et Bac, méthode rigoureuse et adaptée à chaque élève." }
           ] %>
           <% teachers.each do |teacher| %>
             <div class="card bg-white border border-stone-200 shadow-sm ">
               <div class="card-body space-y-4 text-center">
-                <%= image_tag "teacher.jpg", alt: "#{teacher[:name]} – professeur certifié", class: "h-32 w-32 mx-auto rounded-full object-cover shadow-md" %>
+                <%= image_tag teacher[:image], alt: "#{teacher[:name]} – professeur certifié", class: "h-32 w-32 mx-auto rounded-full object-cover shadow-md" %>
                 <div>
                   <h3 class="text-xl font-semibold text-gray-900"><%= teacher[:name] %></h3>
                   <p class="text-sm text-gray-600"><%= teacher[:subject] %> · <%= teacher[:academy] %></p>
