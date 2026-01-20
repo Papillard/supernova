@@ -93,8 +93,17 @@ end
 # Nettoyer les données existantes
 puts "Nettoyage des données existantes..."
 
+# Désactiver les callbacks d'envoi de mails
+# Note: DISABLE_MAILERS=1 en prod protège aussi, mais on double la sécurité
 User.skip_callback(:commit, :after, :send_welcome_email)
-Teacher.skip_callback(:after, :commit, :send_welcome_email_if_approved)
+
+# Pour Teacher, on surcharge temporairement la méthode (plus simple que skip_callback pour after_update_commit)
+Teacher.class_eval do
+  alias_method :send_welcome_email_if_approved_original, :send_welcome_email_if_approved
+  def send_welcome_email_if_approved
+    # Ne rien faire pendant le seed
+  end
+end
 
 EmailEvent.destroy_all if defined?(EmailEvent)
 Message.destroy_all
@@ -215,8 +224,13 @@ teachers_data.each_with_index do |data, index|
   end
 end
 
+# Réactiver les callbacks
 User.set_callback(:commit, :after, :send_welcome_email)
-Teacher.set_callback(:after, :commit, :send_welcome_email_if_approved)
+
+# Restaurer la méthode originale pour Teacher
+Teacher.class_eval do
+  alias_method :send_welcome_email_if_approved, :send_welcome_email_if_approved_original
+end
 
 puts "\n" + "="*60
 puts "✅ Traitement terminé!"
