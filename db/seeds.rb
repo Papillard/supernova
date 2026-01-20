@@ -94,6 +94,7 @@ end
 puts "Nettoyage des données existantes..."
 
 User.skip_callback(:commit, :after, :send_welcome_email)
+Teacher.skip_callback(:update, :commit, :send_welcome_email_if_approved)
 
 EmailEvent.destroy_all if defined?(EmailEvent)
 Message.destroy_all
@@ -215,6 +216,7 @@ teachers_data.each_with_index do |data, index|
 end
 
 User.set_callback(:commit, :after, :send_welcome_email)
+Teacher.set_callback(:update, :commit, :send_welcome_email_if_approved)
 
 puts "\n" + "="*60
 puts "✅ Traitement terminé!"
