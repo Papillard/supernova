@@ -244,6 +244,11 @@
                 <%= link_to "Compléter mon profil pour créer une demande", parent_profile_path, class: "btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg w-full mb-2" %>
               <% end %>
             <% end %>
+
+            <!-- CTA pour le professeur connecté qui regarde sa propre page -->
+            <% if current_user.teacher? && current_user.teacher == @teacher %>
+              <%= link_to "Compléter mon profil", teacher_profile_path, class: "btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg w-full mb-2" %>
+            <% end %>
           </div>
         </div>
       </div>
