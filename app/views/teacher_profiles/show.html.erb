@@ -110,18 +110,13 @@
                     <%= f.label :gender, class: "label" do %>
                       <span class="label-text">Genre</span>
                     <% end %>
-                    <%= f.select :gender, options_for_select([["Féminin", "female"], ["Masculin", "male"], ["Non précisé", "other"]], nil), { prompt: "Sélectionner" }, { class: "select select-bordered w-full" } %>
+                    <%= f.select :gender, options_for_select([["Féminin", "female"], ["Masculin", "male"], ["Non précisé", "other"]], @teacher.gender), { prompt: "Sélectionner" }, { class: "select select-bordered w-full" } %>
                   </div>
                   <div class="form-control">
                     <%= f.label :career_status, class: "label" do %>
                       <span class="label-text">Statut professionnel</span>
                     <% end %>
-                    <%= f.select :career_status, options_for_select([
-                      ["Certifié", "certifié"],
-                      ["Agrégé", "agrégé"],
-                      ["Prof des écoles", "prof des écoles"],
-                      ["Autre", "autre"]
-                    ], nil), { prompt: "Sélectionner" }, { class: "select select-bordered w-full" } %>
+                    <%= f.select :career_status, options_for_select(career_status_options, normalize_career_status_for_select(@teacher.career_status)), { prompt: "Sélectionner" }, { class: "select select-bordered w-full" } %>
                   </div>
                   <div class="form-control">
                     <%= f.label :academy_name, class: "label" do %>

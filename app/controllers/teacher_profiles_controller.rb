@@ -102,10 +102,10 @@ class TeacherProfilesController < ApplicationController
         end
       end
       
-      # Debug: logger les served_zones avant sauvegarde
-      Rails.logger.debug "Saving served_zones: #{params_hash[:served_zones].inspect}"
-
-      if @teacher.update(params_hash)
+      # Mettre à jour le teacher avec tous les params (career_status est déjà normalisé)
+      update_success = @teacher.update(params_hash)
+      
+      if update_success
         # Recharger pour avoir les données à jour depuis la DB
         @teacher.reload
 
@@ -279,16 +279,43 @@ class TeacherProfilesController < ApplicationController
       params_hash[:target_audience_tags] = params_hash[:target_audience_tags].first(2)
     end
 
-    # Convertir career_status de la valeur string vers la clé d'enum
-    if params_hash[:career_status].present?
-      career_status_mapping = {
-        "certifié" => :certifie,
-        "agrégé" => :agrege,
-        "prof des écoles" => :prof_des_ecoles,
-        "autre" => :autre
-      }
-      mapped_value = career_status_mapping[params_hash[:career_status]]
-      params_hash[:career_status] = mapped_value if mapped_value
+    # Normaliser career_status vers les clés stockées en DB (certifie, agrege, etc.)
+    # On stocke les clés sans accent en DB, l'affichage avec accent est géré dans les helpers
+    if params_hash.key?(:career_status)
+      raw_value = params_hash[:career_status]
+      
+      if raw_value.present?
+        raw_value = raw_value.to_s.strip
+        
+        # Récupérer les valeurs valides (clés) depuis le modèle
+        valid_values = Teacher::CAREER_STATUS_VALUES.values
+        valid_keys = Teacher::CAREER_STATUS_VALUES.keys.map(&:to_s)
+        
+        # Normaliser vers une clé valide
+        normalized_value = if valid_values.include?(raw_value) || valid_keys.include?(raw_value.downcase)
+          raw_value.downcase
+        else
+          # Mapping pour convertir les valeurs avec accent vers les clés (rétrocompatibilité)
+          {
+            "certifié" => "certifie",
+            "certifie" => "certifie",
+            "agrégé" => "agrege",
+            "agrege" => "agrege",
+            "prof des écoles" => "prof_des_ecoles",
+            "prof_des_ecoles" => "prof_des_ecoles",
+            "autre" => "autre"
+          }[raw_value.downcase]
+        end
+        
+        if normalized_value && valid_values.include?(normalized_value)
+          params_hash[:career_status] = normalized_value
+        else
+          Rails.logger.error "Career status value '#{raw_value}' is not valid. Valid values: #{valid_values.inspect}"
+          params_hash.delete(:career_status)
+        end
+      else
+        params_hash[:career_status] = nil
+      end
     end
   end
 
@@ -343,13 +370,9 @@ class TeacherProfilesController < ApplicationController
       :email_pro, :email_perso, :phone,
       :profile_image_url, :profile_image_attached,
       :avatar,
+      :served_zones,
       subjects_tags: [], levels: [], exam_tags: [], specific_support: [], teaching_formats: [], target_audience_tags: []
     )
-    
-    # Ajouter served_zones manuellement car il peut être une string JSON
-    if params[:teacher][:served_zones].present?
-      permitted[:served_zones] = params[:teacher][:served_zones]
-    end
     
     permitted
   end

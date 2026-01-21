@@ -381,34 +381,133 @@ module TeachersHelper
     "#{pricing_text} / heure"
   end
 
+  # Options pour le select career_status (utilisé dans les formulaires)
+  # On envoie les clés (certifie, agrege) mais on affiche avec accents
+  def career_status_options
+    Teacher::CAREER_STATUS_VALUES.map do |key, value|
+      display_value = Teacher::CAREER_STATUS_DISPLAY[key]
+      [format_career_status(display_value), value]
+    end
+  end
+
+  # Normalise la valeur de career_status pour la dropdown
+  # Convertit les anciennes valeurs avec accent vers les clés sans accent
+  def normalize_career_status_for_select(career_status_value)
+    return nil if career_status_value.blank?
+    
+    value = career_status_value.to_s.strip
+    valid_values = Teacher::CAREER_STATUS_VALUES.values
+    valid_keys = Teacher::CAREER_STATUS_VALUES.keys.map(&:to_s)
+    
+    # Si c'est déjà une clé valide (stockée en DB), la retourner
+    return value if valid_values.include?(value) || valid_keys.include?(value.downcase)
+    
+    # Mapping pour rétrocompatibilité (anciennes valeurs avec accents -> clés)
+    retro_mapping = {
+      "certifié" => "certifie",
+      "certifie" => "certifie",
+      "agrégé" => "agrege",
+      "agrege" => "agrege",
+      "prof des écoles" => "prof_des_ecoles",
+      "prof_des_ecoles" => "prof_des_ecoles",
+      "autre" => "autre"
+    }
+    
+    retro_mapping[value.downcase] || value
+  end
+
   # Helper pour formater le statut de carrière avec les accents corrects
+  # On reçoit une clé (certifie, agrege) et on retourne l'affichage avec accent
   def format_career_status(career_status)
     return "" if career_status.blank?
 
-    # Convertir en string
-    value = career_status.is_a?(String) ? career_status : career_status.to_s
+    value = career_status.to_s
+    key = value.to_sym
 
-    # Mapping pour gérer les cas avec et sans accent (au cas où les données en DB varient)
-    mapping = {
-      # Valeurs avec accent (valeurs normales de l'enum)
-      "certifié" => "Certifié",
-      "agrégé" => "Agrégé",
-      "prof des écoles" => "Prof des écoles",
-      "autre" => "Autre",
-      # Valeurs sans accent (cas de données anciennes ou clés)
-      "certifie" => "Certifié",
-      "agrege" => "Agrégé",
-      "prof_des_ecoles" => "Prof des écoles"
-    }
+    # Si c'est une clé valide, utiliser le mapping d'affichage
+    if Teacher::CAREER_STATUS_VALUES.key?(key)
+      display_value = Teacher::CAREER_STATUS_DISPLAY[key]
+      case display_value
+      when "certifié" then "Certifié"
+      when "agrégé" then "Agrégé"
+      when "prof des écoles" then "Prof des écoles"
+      when "autre" then "Autre"
+      else display_value.capitalize
+      end
+    else
+      # Rétrocompatibilité : convertir les anciennes valeurs avec accent vers les clés
+      retro_key = {
+        "certifié" => :certifie,
+        "certifie" => :certifie,
+        "agrégé" => :agrege,
+        "agrege" => :agrege,
+        "prof des écoles" => :prof_des_ecoles,
+        "prof_des_ecoles" => :prof_des_ecoles,
+        "autre" => :autre
+      }[value.downcase]
 
-    # Chercher dans le mapping (insensible à la casse)
-    result = mapping[value] || mapping[value.downcase]
+      if retro_key && Teacher::CAREER_STATUS_DISPLAY[retro_key]
+        display_value = Teacher::CAREER_STATUS_DISPLAY[retro_key]
+        case display_value
+        when "certifié" then "Certifié"
+        when "agrégé" then "Agrégé"
+        when "prof des écoles" then "Prof des écoles"
+        when "autre" then "Autre"
+        else display_value.capitalize
+        end
+      else
+        value.capitalize
+      end
+    end
+  end
 
-    # Si trouvé, retourner le résultat
-    return result if result
-
-    # Sinon, capitaliser la première lettre
-    value.capitalize
+  # Helper pour formater le statut de carrière avec genre (pour les cartes)
+  # Retourne "" pour "autre", formate les autres selon le genre
+  def format_career_status_for_card(teacher)
+    return "" if teacher.career_status.blank?
+    
+    career_status_key = teacher.career_status.to_s
+    
+    # Ne rien afficher pour "autre"
+    return "" if career_status_key == "autre"
+    
+    # Adapter le prefix selon le genre
+    prefix = if teacher.gender == "female"
+      "Professeure"
+    elsif teacher.gender == "male"
+      "Professeur"
+    else
+      "Professeur(e)"
+    end
+    
+    # Récupérer la valeur d'affichage depuis le mapping
+    key = career_status_key.to_sym
+    display_value = Teacher::CAREER_STATUS_DISPLAY[key] || career_status_key
+    
+    # Formater selon le career_status avec accord au féminin
+    case display_value
+    when "certifié"
+      if teacher.gender == "female"
+        "#{prefix} certifiée"
+      elsif teacher.gender == "male"
+        "#{prefix} certifié"
+      else
+        "#{prefix} certifié(e)"
+      end
+    when "agrégé"
+      if teacher.gender == "female"
+        "#{prefix} agrégée"
+      elsif teacher.gender == "male"
+        "#{prefix} agrégé"
+      else
+        "#{prefix} agrégé(e)"
+      end
+    when "prof des écoles"
+      "#{prefix} des écoles"
+    else
+      # Fallback pour les valeurs non reconnues
+      "#{prefix} #{format_career_status(career_status_key).downcase}"
+    end
   end
 
   # Helper pour formater le statut de carrière avec genre et "Éducation nationale"

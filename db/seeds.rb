@@ -142,12 +142,29 @@ teachers_data.each_with_index do |data, index|
     teaching_formats = normalize_teaching_formats(data['teaching_formats'] || [])
     served_zones = normalize_served_zones(data['served_zones'] || [])
 
-    # Normaliser career_status
-    career_status = case data['career_status'].to_s.downcase
-    when "certifié", "certifie" then "certifie"
-    when "agrégé", "agrege" then "agrege"
-    when "prof_des_ecoles", "prof des écoles" then "prof_des_ecoles"
-    else data['career_status'] || "certifie"
+    # Normaliser career_status vers les clés stockées en DB (certifie, agrege, etc.)
+    # On stocke les clés sans accent en DB, l'affichage avec accent est géré dans les helpers
+    raw_career_status = data['career_status'].to_s.strip.downcase
+    valid_values = Teacher::CAREER_STATUS_VALUES.values
+    valid_keys = Teacher::CAREER_STATUS_VALUES.keys.map(&:to_s)
+    
+    career_status = if valid_values.include?(raw_career_status) || valid_keys.include?(raw_career_status)
+      raw_career_status
+    else
+      # Mapping pour convertir les valeurs avec accent vers les clés
+      case raw_career_status
+      when "certifié", "certifie"
+        "certifie"
+      when "agrégé", "agrege"
+        "agrege"
+      when "prof des écoles", "prof_des_ecoles", "prof des ecoles"
+        "prof_des_ecoles"
+      when "autre"
+        "autre"
+      else
+        # Valeur par défaut
+        "certifie"
+      end
     end
 
     # Gérer l'email pro

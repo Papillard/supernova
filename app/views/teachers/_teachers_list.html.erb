@@ -63,24 +63,17 @@
           <!-- Career status et niveaux sur une ligne -->
           <% if teacher.career_status.present? || teacher.levels.present? %>
             <% parts = []
-               if teacher.career_status.present?
-                 prefix = if teacher.gender == "female"
-                   "Professeure"
-                 elsif teacher.gender == "male"
-                   "Professeur"
-                 else
-                   "Professeur(e)"
-                 end
-                 career_status_text = format_career_status(teacher.career_status).downcase
-                 parts << "#{prefix} #{career_status_text}"
-               end
+               career_status_text = format_career_status_for_card(teacher)
+               parts << career_status_text if career_status_text.present?
                if teacher.levels.present?
                  parts << teacher.levels.map { |level| format_level_tag(level) }.join(" · ")
                end
             %>
-            <div class="text-xs text-gray-600">
-              <%= parts.join(" · ") %>
-            </div>
+            <% if parts.any? %>
+              <div class="text-xs text-gray-600">
+                <%= parts.join(" · ") %>
+              </div>
+            <% end %>
           <% end %>
           
           <!-- Formats avec icônes -->

@@ -5,16 +5,21 @@
     <div class="card bg-white shadow-lg">
       <div class="card-body">
         <div class="flex justify-between items-start mb-6">
-          <div>
-            <h1 class="text-3xl font-bold text-gray-900"><%= teacher_short_name(@teacher) %></h1>
-            <p class="text-gray-600"><%= @teacher.email_pro.presence || @teacher.user.email %></p>
-            <% if @teacher.pending? %>
-              <span class="badge badge-warning mt-2">En attente</span>
-            <% elsif @teacher.approved? %>
-              <span class="badge bg-[#fe6618] text-white mt-2">Approuvé</span>
-            <% elsif @teacher.rejected? %>
-              <span class="badge badge-error mt-2">Refusé</span>
-            <% end %>
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0">
+              <%= render "shared/teacher_avatar", teacher: @teacher, size: :large, for_parent: false, shape: :square %>
+            </div>
+            <div>
+              <h1 class="text-3xl font-bold text-gray-900"><%= teacher_short_name(@teacher) %></h1>
+              <p class="text-gray-600"><%= @teacher.email_pro.presence || @teacher.user.email %></p>
+              <% if @teacher.pending? %>
+                <span class="badge badge-warning mt-2">En attente</span>
+              <% elsif @teacher.approved? %>
+                <span class="badge bg-[#fe6618] text-white mt-2">Approuvé</span>
+              <% elsif @teacher.rejected? %>
+                <span class="badge badge-error mt-2">Refusé</span>
+              <% end %>
+            </div>
           </div>
           <div class="flex gap-2">
             <% unless @teacher.approved? %>
@@ -35,7 +40,7 @@
             <p><strong>Prénom:</strong> <%= @teacher.first_name %></p>
             <p><strong>Nom:</strong> <%= @teacher.last_name %></p>
             <p><strong>Genre:</strong> <%= @teacher.gender == "female" ? "Féminin" : "Masculin" %></p>
-            <p><strong>Statut:</strong> <%= @teacher.career_status %></p>
+            <p><strong>Statut:</strong> <%= format_career_status(@teacher.career_status) %></p>
           </div>
 
           <div>
@@ -55,7 +60,7 @@
             <h3 class="font-semibold text-gray-900 mb-2">Localisation</h3>
             <p><strong>Ville:</strong> <%= @teacher.city || "-" %></p>
             <p><strong>Code postal:</strong> <%= @teacher.zip_code || "-" %></p>
-            <p><strong>Zones desservies:</strong> <%= @teacher.served_zones.present? ? @teacher.served_zones.join(", ") : "-" %></p>
+            <p><strong>Zones desservies:</strong> <%= @teacher.served_zones.present? ? format_served_zones_labels(@teacher).join(", ") : "-" %></p>
           </div>
         </div>
 
@@ -64,9 +69,56 @@
             <h3 class="font-semibold text-gray-900 mb-2">Matières</h3>
             <div class="flex flex-wrap gap-2">
               <% @teacher.subjects_tags.each do |tag| %>
-                <span class="badge badge-ghost"><%= tag %></span>
+                <span class="badge badge-ghost"><%= format_subject_tag(tag) %></span>
               <% end %>
             </div>
+          </div>
+        <% end %>
+
+        <% if @teacher.levels.present? %>
+          <div class="mt-6">
+            <h3 class="font-semibold text-gray-900 mb-2">Niveaux</h3>
+            <div class="flex flex-wrap gap-2">
+              <% @teacher.levels.each do |level| %>
+                <span class="badge badge-ghost"><%= format_level_tag(level) %></span>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <% if @teacher.teaching_formats.present? %>
+          <div class="mt-6">
+            <h3 class="font-semibold text-gray-900 mb-2">Formats de cours</h3>
+            <div class="flex flex-wrap gap-2">
+              <% @teacher.teaching_formats.each do |format| %>
+                <span class="badge badge-ghost"><%= format_teaching_format(format) %></span>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <% if @teacher.pricing_text.present? %>
+          <div class="mt-6">
+            <h3 class="font-semibold text-gray-900 mb-2">Tarif</h3>
+            <p class="text-gray-600"><%= format_pricing_text(@teacher.pricing_text) %></p>
+          </div>
+        <% end %>
+
+        <% if @teacher.exam_tags.present? %>
+          <div class="mt-6">
+            <h3 class="font-semibold text-gray-900 mb-2">Examens préparés</h3>
+            <div class="flex flex-wrap gap-2">
+              <% @teacher.exam_tags.each do |tag| %>
+                <span class="badge badge-ghost"><%= format_exam_tag(tag) %></span>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <% if @teacher.target_students_range.present? %>
+          <div class="mt-6">
+            <h3 class="font-semibold text-gray-900 mb-2">Niveaux d'élèves</h3>
+            <p class="text-gray-600"><%= @teacher.target_students_range.humanize %></p>
           </div>
         <% end %>
 

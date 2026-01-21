@@ -2,6 +2,7 @@
   # Paramètres par défaut
   size = local_assigns.fetch(:size, :small)
   for_parent = local_assigns.fetch(:for_parent, false)
+  shape = local_assigns.fetch(:shape, :round) # :round ou :square
 
   # Déterminer si on doit afficher la photo
   show_photo = false
@@ -22,9 +23,12 @@
   else
     { container: "w-10 h-10", text: "text-xs" }
   end
+
+  # Forme : rond ou carré avec radius léger
+  shape_class = shape == :square ? "rounded-lg" : "rounded-full"
 %>
 
-<div class="rounded-full overflow-hidden flex-shrink-0 bg-gray-300 flex items-center justify-center <%= size_classes[:container] %>">
+<div class="<%= shape_class %> overflow-hidden flex-shrink-0 bg-gray-300 flex items-center justify-center <%= size_classes[:container] %>">
   <% if show_photo %>
     <%= image_tag teacher.profile_image_url,
         alt: teacher_short_name(teacher),

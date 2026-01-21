@@ -1,14 +1,27 @@
 class Teacher < ApplicationRecord
   belongs_to :user
 
-  # Enums
-  enum :gender, { female: "female", male: "male", other: "other" }
-  enum :career_status, {
+  # Constantes pour career_status
+  # On stocke les CLÉS en DB (certifie, agrege) pour éviter les problèmes d'accents
+  # L'affichage avec accents est géré dans les helpers via CAREER_STATUS_DISPLAY
+  CAREER_STATUS_VALUES = {
+    certifie: "certifie",
+    agrege: "agrege",
+    prof_des_ecoles: "prof_des_ecoles",
+    autre: "autre"
+  }.freeze
+
+  # Mapping pour l'affichage (clé -> valeur avec accent)
+  CAREER_STATUS_DISPLAY = {
     certifie: "certifié",
     agrege: "agrégé",
     prof_des_ecoles: "prof des écoles",
     autre: "autre"
-  }
+  }.freeze
+
+  # Enums
+  enum :gender, { female: "female", male: "male", other: "other" }
+  enum :career_status, CAREER_STATUS_VALUES
   enum :status, { pending: "pending", approved: "approved", rejected: "rejected" }
   enum :target_students_range, {
     primaire: "primaire",
@@ -28,6 +41,7 @@ class Teacher < ApplicationRecord
   # primary_subject est optionnel
   validate :target_audience_tags_max_two
   validate :validate_array_values
+  validate :career_status_inclusion
 
   # Associations
   has_many :requests, dependent: :destroy
@@ -103,6 +117,15 @@ class Teacher < ApplicationRecord
     return unless target_audience_tags.present?
     if target_audience_tags.length > 2
       errors.add(:target_audience_tags, "ne peut contenir que 2 éléments maximum")
+    end
+  end
+
+  def career_status_inclusion
+    return if career_status.blank? # career_status est optionnel
+    
+    valid_values = CAREER_STATUS_VALUES.values
+    unless valid_values.include?(career_status.to_s)
+      errors.add(:career_status, "doit être une des valeurs valides: #{valid_values.join(', ')}")
     end
   end
 
