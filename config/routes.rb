@@ -44,6 +44,10 @@ Rails.application.routes.draw do
   get "parent/profile", to: "parent_profiles#show", as: :parent_profile
   patch "parent/profile", to: "parent_profiles#update"
 
+  # Account (email and password management)
+  get "account", to: "accounts#edit", as: :account
+  patch "account", to: "accounts#update"
+
   # Students (nested under parent profile)
   resources :students, only: [:create, :destroy]
 

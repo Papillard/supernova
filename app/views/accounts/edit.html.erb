@@ -1,0 +1,79 @@
+<div class="container mx-auto max-w-2xl px-4 py-8">
+  <div class="space-y-6">
+    <!-- Header -->
+    <div class="mb-6">
+      <h1 class="text-2xl font-bold text-gray-900">Mon compte</h1>
+      <p class="mt-2 text-sm text-gray-600">Gérez vos informations de connexion</p>
+    </div>
+
+    <%= render "devise/shared/error_messages", resource: @user %>
+
+    <!-- Carte 1: Email -->
+    <div class="card bg-white shadow-sm">
+      <div class="card-body">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Email</h2>
+        <%= form_with model: @user, url: account_path, method: :patch, local: true, class: "space-y-4" do |f| %>
+          <%= hidden_field_tag :update_type, "email" %>
+          
+          <div class="form-control">
+            <%= f.label :email, class: "label" do %>
+              <span class="label-text">Adresse email</span>
+            <% end %>
+            <%= f.email_field :email, autocomplete: "email", class: "input input-bordered w-full", required: true, value: @user.email %>
+          </div>
+
+          <div class="form-control">
+            <%= f.label :current_password, class: "label" do %>
+              <span class="label-text">Mot de passe actuel (obligatoire pour confirmer)</span>
+            <% end %>
+            <%= f.password_field :current_password, autocomplete: "current-password", class: "input input-bordered w-full", required: true %>
+          </div>
+
+          <div class="flex justify-end mt-4">
+            <%= f.submit "Mettre à jour l'email", class: "btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Carte 2: Mot de passe -->
+    <div class="card bg-white shadow-sm">
+      <div class="card-body">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Mot de passe</h2>
+        <%= form_with model: @user, url: account_path, method: :patch, local: true, class: "space-y-4" do |f| %>
+          <%= hidden_field_tag :update_type, "password" %>
+          
+          <div class="form-control">
+            <%= f.label :password, class: "label" do %>
+              <span class="label-text">Nouveau mot de passe</span>
+            <% end %>
+            <%= f.password_field :password, autocomplete: "new-password", class: "input input-bordered w-full", required: true %>
+            <% if @minimum_password_length %>
+              <label class="label">
+                <span class="label-text-alt text-gray-500"><%= @minimum_password_length %> caractères minimum</span>
+              </label>
+            <% end %>
+          </div>
+
+          <div class="form-control">
+            <%= f.label :password_confirmation, class: "label" do %>
+              <span class="label-text">Confirmation du nouveau mot de passe</span>
+            <% end %>
+            <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "input input-bordered w-full", required: true %>
+          </div>
+
+          <div class="form-control">
+            <%= f.label :current_password, class: "label" do %>
+              <span class="label-text">Mot de passe actuel (obligatoire pour confirmer)</span>
+            <% end %>
+            <%= f.password_field :current_password, autocomplete: "current-password", class: "input input-bordered w-full", required: true %>
+          </div>
+
+          <div class="flex justify-end mt-4">
+            <%= f.submit "Mettre à jour le mot de passe", class: "btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

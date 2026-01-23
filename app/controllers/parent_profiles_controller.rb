@@ -26,30 +26,6 @@ class ParentProfilesController < ApplicationController
       params_hash = params_hash.slice(:profile_image_url)
     end
 
-    # Gérer la mise à jour de l'email du user
-    user_email_updated = false
-    if params[:user].present? && params[:user][:email].present?
-      new_email = params[:user][:email].strip
-      if new_email != current_user.email
-        if current_user.update(email: new_email)
-          user_email_updated = true
-        else
-          # Si la mise à jour de l'email échoue, on affiche les erreurs
-          respond_to do |format|
-            format.turbo_stream do
-              flash.now[:alert] = "Erreur lors de la mise à jour de l'email : #{current_user.errors.full_messages.join(', ')}"
-              render :show, status: :unprocessable_entity
-            end
-            format.html do
-              flash[:alert] = "Erreur lors de la mise à jour de l'email : #{current_user.errors.full_messages.join(', ')}"
-              render :show, status: :unprocessable_entity
-            end
-          end
-          return
-        end
-      end
-    end
-
     # Gérer l'upload d'avatar
     if params[:parent_profile].present? && params[:parent_profile][:avatar].present?
       avatar_file = params[:parent_profile][:avatar]
@@ -124,8 +100,6 @@ class ParentProfilesController < ApplicationController
         @parent_profile.reload
         notice_message = if @is_avatar_upload
           "Photo de profil mise à jour avec succès."
-        elsif user_email_updated
-          "Profil et email mis à jour avec succès."
         else
           "Infos enregistrées"
         end

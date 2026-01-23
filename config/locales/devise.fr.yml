@@ -59,9 +59,18 @@ fr:
       not_found: "introuvable"
       not_locked: "n'était pas verrouillé(e)"
       taken: "est déjà utilisé(e)"
+      invalid: "est invalide"
+      blank: "ne peut pas être vide"
+      too_short: "est trop court (minimum %{count} caractères)"
       not_saved:
         one: "Une erreur a empêché l'enregistrement :"
         other: "%{count} erreurs ont empêché l'enregistrement :"
+    attributes:
+      current_password:
+        invalid: "est incorrect"
+        blank: "ne peut pas être vide"
+      password:
+        too_short: "est trop court (minimum %{count} caractères)"
   activerecord:
     errors:
       models:
@@ -69,5 +78,13 @@ fr:
           attributes:
             email:
               taken: "est déjà utilisé"
+            current_password:
+              invalid: "est incorrect"
+              blank: "ne peut pas être vide"
+            password:
+              too_short: "est trop court (minimum %{count} caractères)"
       messages:
         taken: "est déjà utilisé(e)"
+        invalid: "est invalide"
+        blank: "ne peut pas être vide"
+        too_short: "est trop court (minimum %{count} caractères)"

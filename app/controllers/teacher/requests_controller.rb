@@ -37,8 +37,11 @@ class Teacher::RequestsController < ApplicationController
       teacher = @request.teacher
       full_name = "#{teacher.first_name} #{teacher.last_name}"
 
-      # Email: priorité à email_pro, sinon email du compte
-      email_text = teacher.email_pro.presence || teacher.user.email
+      # Email: utiliser l'email du compte User (pas email_pro ni email_perso)
+      email_text = teacher.user.email
+      
+      # Debug: s'assurer qu'on utilise bien user.email
+      Rails.logger.info "Accept request: Using user email #{email_text} for teacher #{teacher.id}"
 
       phone_text = if teacher.phone.present?
         teacher.phone

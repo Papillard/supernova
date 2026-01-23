@@ -1,4 +1,27 @@
 fr:
+  errors:
+    messages:
+      invalid: "est invalide"
+      blank: "ne peut pas être vide"
+      too_short: "est trop court (minimum %{count} caractères)"
+    attributes:
+      current_password:
+        invalid: "est incorrect"
+        blank: "ne peut pas être vide"
+      password:
+        too_short: "est trop court (minimum %{count} caractères)"
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            current_password:
+              invalid: "est incorrect"
+              blank: "ne peut pas être vide"
+            password:
+              too_short: "est trop court (minimum %{count} caractères)"
+      messages:
+        too_short: "est trop court (minimum %{count} caractères)"
   datetime:
     distance_in_words:
       about_x_hours:
