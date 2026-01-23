@@ -12,6 +12,16 @@ class Teachers::RegistrationsController < Devise::RegistrationsController
 
     email = sign_up_params[:email]
 
+    # Validation : exclure les emails académiques (@ac-*)
+    if email.present? && email.match?(/@ac-.*\.fr$/i)
+      build_resource(sign_up_params.merge(role: "teacher"))
+      resource.errors.add(:email, "Les emails académiques (@ac-*.fr) ne sont pas acceptés. Veuillez utiliser votre email personnel.")
+      clean_up_passwords resource
+      set_minimum_password_length
+      respond_with resource
+      return
+    end
+
     # Chercher un Teacher (pending ou approved) qui a cet email dans email_pro OU email_perso
     # Cas du lancement : early adopters créés via seeds qui s'inscrivent
     teacher = Teacher.where("email_pro = ? OR email_perso = ?", email, email).first
@@ -65,7 +75,7 @@ class Teachers::RegistrationsController < Devise::RegistrationsController
 
     resource.save
     yield resource if block_given?
-    
+
     if resource.persisted?
       # Créer le Teacher avec rgpd_consent = true (les checkboxes ont été validées)
       if resource.teacher.nil?
@@ -78,7 +88,7 @@ class Teachers::RegistrationsController < Devise::RegistrationsController
           status: :pending,
           rgpd_consent: true # Les checkboxes ont été validées
         )
-        
+
         unless teacher.save
           Rails.logger.error "Erreur lors de la création du teacher: #{teacher.errors.full_messages.join(', ')}"
           resource.errors.add(:base, "Erreur lors de la création du profil professeur : #{teacher.errors.full_messages.join(', ')}")
@@ -87,10 +97,10 @@ class Teachers::RegistrationsController < Devise::RegistrationsController
           respond_with resource
           return
         end
-        
+
         Rails.logger.info "Teacher créé avec succès pour user #{resource.id}"
       end
-      
+
       # Connecter l'utilisateur et rediriger (sign_up gère les emails transactionnels)
       if resource.active_for_authentication?
         set_flash_message! :notice, :signed_up

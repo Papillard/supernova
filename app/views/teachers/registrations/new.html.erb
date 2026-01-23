@@ -31,9 +31,9 @@
             <%= f.label :email, class: "label" do %>
               <span class="label-text">Email *</span>
             <% end %>
-            <%= f.email_field :email, autocomplete: "email", class: "input input-bordered w-full", placeholder: "votre.email@ac-*.fr", required: true %>
+            <%= f.email_field :email, autocomplete: "email", class: "input input-bordered w-full", placeholder: "votre.email@gmail.com", required: true, id: "teacher_email" %>
             <label class="label">
-              <span class="label-text-alt text-gray-500">Utilisez votre email académique si possible</span>
+              <span class="label-text-alt text-gray-500">Utilisez votre email personnel. Les emails académiques sont souvent bloqués.</span>
             </label>
           </div>
 
@@ -101,3 +101,36 @@
     </div>
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const emailField = document.getElementById('teacher_email');
+    const form = emailField?.closest('form');
+    
+    if (emailField && form) {
+      // Validation en temps réel
+      emailField.addEventListener('input', function() {
+        const email = this.value.trim();
+        if (email.match(/@ac-.*\.fr$/i)) {
+          this.setCustomValidity('Les emails académiques (@ac-*.fr) ne sont pas acceptés. Veuillez utiliser votre email personnel.');
+          this.classList.add('border-red-500');
+        } else {
+          this.setCustomValidity('');
+          this.classList.remove('border-red-500');
+        }
+      });
+      
+      // Validation avant soumission
+      form.addEventListener('submit', function(e) {
+        const email = emailField.value.trim();
+        if (email.match(/@ac-.*\.fr$/i)) {
+          e.preventDefault();
+          emailField.setCustomValidity('Les emails académiques (@ac-*.fr) ne sont pas acceptés. Veuillez utiliser votre email personnel.');
+          emailField.reportValidity();
+          emailField.classList.add('border-red-500');
+          return false;
+        }
+      });
+    }
+  });
+</script>
