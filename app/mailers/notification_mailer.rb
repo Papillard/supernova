@@ -114,12 +114,12 @@ class NotificationMailer < ApplicationMailer
       # Le parent a envoyé, donc le destinataire est le prof
       @recipient = @request.teacher.user
       @recipient_profile = @request.teacher
-      @sender_name = @request.parent_profile&.first_name || @request.parent.first_name || @request.parent.email.split("@").first
+      @sender_name = @request.parent.parent_profile&.first_name || @request.parent.first_name || @request.parent.email.split("@").first
       @is_parent_sender = true
     else
       # Le prof a envoyé, donc le destinataire est le parent
       @recipient = @request.parent
-      @recipient_profile = @request.parent_profile
+      @recipient_profile = @request.parent.parent_profile
       @sender_name = @request.teacher.first_name
       @is_parent_sender = false
     end

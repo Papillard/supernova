@@ -28,6 +28,9 @@ Rails.application.configure do
   # Disable request forgery protection in test environment.
   config.action_controller.allow_forgery_protection = false
 
+  # Queue jobs instead of executing them inline so mailer callbacks don't run in tests.
+  config.active_job.queue_adapter = :test
+
   # Store uploaded files on the local file system in a temporary directory.
   config.active_storage.service = :test
 
