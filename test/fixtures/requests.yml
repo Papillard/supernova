@@ -1,0 +1,40 @@
+pending_request:
+  parent: parent_user
+  teacher: approved_teacher
+  student: college_student
+  status: "pending"
+  subject: "mathematiques"
+  level: "college"
+  request_text: "Bonjour, je cherche un prof de maths pour mon fils."
+  requested_at: <%= 2.days.ago.to_fs(:db) %>
+  last_message_at: <%= 2.days.ago.to_fs(:db) %>
+  archived_by_parent: false
+  archived_by_teacher: false
+
+accepted_request:
+  parent: parent_user
+  teacher: pending_teacher
+  student: college_student
+  status: "accepted"
+  subject: "francais"
+  level: "college"
+  request_text: "Bonjour, je cherche un prof de français."
+  requested_at: <%= 5.days.ago.to_fs(:db) %>
+  responded_at: <%= 3.days.ago.to_fs(:db) %>
+  last_message_at: <%= 1.day.ago.to_fs(:db) %>
+  archived_by_parent: false
+  archived_by_teacher: false
+
+declined_request:
+  parent: parent_user
+  teacher: pending_teacher
+  student: college_student
+  status: "declined"
+  subject: "anglais"
+  level: "lycee"
+  request_text: "Bonjour, cours d'anglais svp."
+  requested_at: <%= 10.days.ago.to_fs(:db) %>
+  responded_at: <%= 8.days.ago.to_fs(:db) %>
+  last_message_at: <%= 10.days.ago.to_fs(:db) %>
+  archived_by_parent: false
+  archived_by_teacher: false

@@ -1,0 +1,4 @@
+college_student:
+  parent_profile: completed_profile
+  first_name: "Lucas"
+  birth_year: 2013

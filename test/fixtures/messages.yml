@@ -1,0 +1,11 @@
+user_message:
+  request: pending_request
+  user: parent_user
+  body: "Bonjour, est-ce que vous êtes disponible le mercredi ?"
+  system: false
+
+system_message:
+  request: accepted_request
+  user: parent_user
+  body: "La demande a été acceptée."
+  system: true

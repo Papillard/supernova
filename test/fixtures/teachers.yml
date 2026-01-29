@@ -1,67 +1,43 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  user: one
-  first_name: MyString
-  last_name: MyString
-  display_name: MyString
-  gender: MyString
-  academy_name: MyString
-  school_name: MyString
-  career_status: MyString
-  levels: MyText
-  subjects_tags: MyText
-  teaching_formats: MyText
-  base_city: MyString
-  base_zip_code: MyString
-  radius_text: MyString
-  about_me: MyText
-  headline: MyString
-  primary_subject: MyString
-  specific_support: MyText
-  target_audience_tags: MyText
-  exams_raw_text: MyText
-  exam_tags: MyText
-  pricing_text: MyText
-  target_students_range: MyString
-  email_pro: MyString
-  email_perso: MyString
-  phone: MyString
-  profile_image_url: MyString
-  profile_image_attached: false
-  status: MyString
+pending_teacher:
+  user: teacher_user
+  first_name: "Jean"
+  last_name: "Martin"
+  display_name: "Jean M"
+  status: "pending"
   rgpd_consent: false
+  profile_image_attached: false
+  levels:
+    - "college"
+    - "lycee"
+  subjects_tags:
+    - "mathematiques"
+  teaching_formats:
+    - "online"
+  exam_tags: []
+  specific_support: []
+  target_audience_tags: []
   accepted_requests_count: 0
 
-two:
-  user: two
-  first_name: MyString
-  last_name: MyString
-  display_name: MyString
-  gender: MyString
-  academy_name: MyString
-  school_name: MyString
-  career_status: MyString
-  levels: MyText
-  subjects_tags: MyText
-  teaching_formats: MyText
-  base_city: MyString
-  base_zip_code: MyString
-  radius_text: MyString
-  about_me: MyText
-  headline: MyString
-  primary_subject: MyString
-  specific_support: MyText
-  target_audience_tags: MyText
-  exams_raw_text: MyText
-  exam_tags: MyText
-  pricing_text: MyText
-  target_students_range: MyString
-  email_pro: MyString
-  email_perso: MyString
-  phone: MyString
-  profile_image_url: MyString
+approved_teacher:
+  user: admin_user
+  first_name: "Sophie"
+  last_name: "Bernard"
+  display_name: "Sophie B"
+  status: "approved"
+  rgpd_consent: true
   profile_image_attached: false
-  status: MyString
-  rgpd_consent: false
-  accepted_requests_count: 0
+  city: "Paris"
+  zip_code: "75001"
+  levels:
+    - "primaire"
+    - "college"
+  subjects_tags:
+    - "francais"
+  teaching_formats:
+    - "online"
+    - "at_student_home"
+  exam_tags: []
+  specific_support: []
+  target_audience_tags:
+    - "eleves_en_difficulte"
+  accepted_requests_count: 3

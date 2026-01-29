@@ -1,0 +1,13 @@
+completed_profile:
+  user: parent_user
+  first_name: "Marie"
+  last_name: "Dupont"
+  zip_code: "75001"
+  city: "Paris"
+  profile_completed: true
+
+incomplete_profile:
+  user: admin_user
+  first_name: ""
+  last_name: ""
+  profile_completed: false
