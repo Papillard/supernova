@@ -31,7 +31,7 @@ class AuthenticationTest < ApplicationSystemTestCase
     assert_equal "parent", user.role
   end
 
-  test "teacher can sign up and is redirected to dashboard" do
+  test "teacher can sign up and is redirected to profile" do
     visit new_teacher_registration_path
 
     assert_selector "h1", text: "ProfConnect"
@@ -43,8 +43,7 @@ class AuthenticationTest < ApplicationSystemTestCase
 
     click_button "Créer mon compte professeur"
 
-    assert_current_path dashboard_teacher_path
-    assert_text "Votre espace professeur sera complété avec onboarding et validation dans un prochain sprint"
+    assert_current_path teacher_profile_path
   end
 
   test "teacher is created with teacher role" do
@@ -79,7 +78,7 @@ class AuthenticationTest < ApplicationSystemTestCase
     assert_current_path teachers_path
   end
 
-  test "teacher user is redirected to dashboard after login" do
+  test "teacher user is redirected to profile after login" do
     # Create a teacher user
     teacher = User.create!(
       email: "teacher@example.com",
@@ -94,7 +93,7 @@ class AuthenticationTest < ApplicationSystemTestCase
 
     click_button "Se connecter"
 
-    assert_current_path dashboard_teacher_path
+    assert_current_path teacher_profile_path
   end
 
   test "user can log out" do

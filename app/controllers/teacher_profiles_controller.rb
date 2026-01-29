@@ -6,6 +6,7 @@ class TeacherProfilesController < ApplicationController
 
   def show
     authorize @teacher, :edit?
+    render :show, formats: [:html]
   end
 
   def update
