@@ -510,7 +510,7 @@ module TeachersHelper
     end
   end
 
-  # Helper pour formater le statut de carrière avec genre et "Éducation nationale"
+  # Helper pour formater le statut de carrière avec genre et "Éducation Nationale"
   def format_career_status_with_gender(teacher)
     return "" if teacher.career_status.blank?
 
@@ -526,7 +526,7 @@ module TeachersHelper
       "Professeur(e)"
     end
 
-    "#{prefix} #{career_status_formatted.downcase} Éducation nationale"
+    "#{prefix} #{career_status_formatted.downcase} Éducation Nationale"
   end
 
   # Helper pour formater la localisation de manière naturelle

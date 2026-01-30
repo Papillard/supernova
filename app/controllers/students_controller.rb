@@ -18,7 +18,7 @@ class StudentsController < ApplicationController
           redirect_to parent_profile_path
         end
       else
-        flash.now[:alert] = "Erreur lors de l'ajout : #{@student.errors.full_messages.join(', ')}"
+        flash.now[:alert] = "Erreur lors de l'ajout de l'enfant : #{@student.errors.full_messages.join(', ')}"
         format.turbo_stream { render :create, status: :unprocessable_entity }
         format.html do
           flash[:alert] = "Erreur lors de l'ajout de l'enfant : #{@student.errors.full_messages.join(', ')}"

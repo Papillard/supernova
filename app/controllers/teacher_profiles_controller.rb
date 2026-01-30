@@ -111,7 +111,7 @@ class TeacherProfilesController < ApplicationController
         @teacher.reload
 
         if is_avatar_upload
-          flash.now[:notice] = "Photo de profil mise à jour."
+          flash.now[:notice] = "Photo de profil mise à jour avec succès."
           format.turbo_stream { render :update }
           format.html { redirect_to teacher_profile_path, notice: "Photo de profil mise à jour avec succès." }
         elsif params[:stay_on_page].present?

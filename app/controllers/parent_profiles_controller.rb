@@ -101,7 +101,7 @@ class ParentProfilesController < ApplicationController
         notice_message = if @is_avatar_upload
           "Photo de profil mise à jour avec succès."
         else
-          "Infos enregistrées"
+          "Infos enregistrées."
         end
         flash.now[:notice] = notice_message
         format.turbo_stream { render :update }

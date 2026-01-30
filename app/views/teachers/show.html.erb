@@ -3,7 +3,7 @@
   subjects = @teacher.subjects_tags.present? ? @teacher.subjects_tags.map { |t| format_subject_tag(t) }.join(", ") : "plusieurs matières"
   location = @teacher.city.present? ? "à #{@teacher.city}" : "en France"
 %>
-<% content_for(:title) { "Professeur de l'Éducation nationale en #{subjects} #{location} | ProfConnect" } %>
+<% content_for(:title) { "Professeur de l'Éducation Nationale en #{subjects} #{location} | ProfConnect" } %>
 <% content_for(:description) { "Professeur certifié en #{subjects} #{location}, proposant des cours particuliers adaptés au niveau et aux objectifs de chaque élève." } %>
 
 <div class="container mx-auto max-w-7xl px-4 py-8">
@@ -13,7 +13,7 @@
       <div class="flex flex-col md:flex-row items-center justify-between gap-4">
         <div class="flex-1 text-center md:text-left">
           <h3 class="text-xl font-bold mb-2">S'inscrire gratuitement sur ProfConnect</h3>
-          <p class="text-white/90">Pour voir la fiche détaillée des professeurs et demander une mise en relation</p>
+          <p class="text-white/90">Pour voir la fiche détaillée des professeurs et demander une mise en relation.</p>
         </div>
         <div class="flex gap-3">
           <%= link_to "S'inscrire", new_parent_registration_path, class: "btn bg-white text-[#fe6618] hover:bg-gray-100 border-white rounded-lg font-semibold" %>
@@ -77,7 +77,7 @@
                     <svg class="w-5 h-5 text-[#fe6618] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                     </svg>
-                    <span class="text-gray-700">J'enseigne les matières suivantes : <%= subjects_list.join(", ") %></span>
+                    <span class="text-gray-700">J'enseigne <%= subjects_list.size > 1 ? "les matières suivantes" : "la matière suivante" %> : <%= subjects_list.join(", ") %></span>
                   </li>
                 <% end %>
               <% end %>
