@@ -39,6 +39,76 @@ class AdminTeachersIntegrationTest < ActionDispatch::IntegrationTest
     assert_equal "rejected", teacher.status
   end
 
+  test "admin can access edit page" do
+    get edit_admin_teacher_path(teachers(:pending_teacher))
+    assert_response :success
+  end
+
+  test "admin can update teacher fields" do
+    teacher = teachers(:pending_teacher)
+    patch admin_teacher_path(teacher), params: { teacher: {
+      first_name: "Pierre",
+      last_name: "Dupont",
+      headline: "Maths expert",
+      city: "Lyon",
+      zip_code: "69001",
+      subjects_tags: ["francais", "anglais"],
+      levels: ["primaire"],
+      teaching_formats: ["online", "at_student_home"],
+      status: "approved"
+    } }
+    assert_redirected_to admin_teacher_path(teacher)
+
+    teacher.reload
+    assert_equal "Pierre", teacher.first_name
+    assert_equal "Dupont", teacher.last_name
+    assert_equal "Maths expert", teacher.headline
+    assert_equal "Lyon", teacher.city
+    assert_equal "69001", teacher.zip_code
+    assert_includes teacher.subjects_tags, "francais"
+    assert_includes teacher.levels, "primaire"
+    assert_includes teacher.teaching_formats, "online"
+    assert_equal "approved", teacher.status
+  end
+
+  test "admin update does not change excluded contact fields" do
+    teacher = teachers(:pending_teacher)
+    original_email_pro = teacher.email_pro
+    original_email_perso = teacher.email_perso
+    original_phone = teacher.phone
+
+    patch admin_teacher_path(teacher), params: { teacher: {
+      first_name: "Modifié",
+      email_pro: "hacked@example.com",
+      email_perso: "hacked2@example.com",
+      phone: "0600000000"
+    } }
+    assert_redirected_to admin_teacher_path(teacher)
+
+    teacher.reload
+    assert_equal "Modifié", teacher.first_name
+    assert_nil teacher.email_pro
+    assert_nil teacher.email_perso
+    assert_nil teacher.phone
+  end
+
+  test "non-admin user cannot access edit page" do
+    sign_out @admin
+    sign_in users(:parent_user)
+    get edit_admin_teacher_path(teachers(:pending_teacher))
+    assert_redirected_to root_path
+  end
+
+  test "non-admin user cannot update teacher" do
+    sign_out @admin
+    sign_in users(:parent_user)
+    patch admin_teacher_path(teachers(:pending_teacher)), params: { teacher: { first_name: "Hacked" } }
+    assert_redirected_to root_path
+
+    teachers(:pending_teacher).reload
+    assert_equal "Jean", teachers(:pending_teacher).first_name
+  end
+
   test "non-admin user is redirected" do
     sign_out @admin
     sign_in users(:parent_user)
