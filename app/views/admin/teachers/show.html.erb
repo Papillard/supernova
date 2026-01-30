@@ -22,6 +22,7 @@
             </div>
           </div>
           <div class="flex gap-2">
+            <%= link_to "Éditer", edit_admin_teacher_path(@teacher), class: "btn bg-white border border-stone-300 text-gray-900 hover:bg-white rounded-lg" %>
             <% unless @teacher.approved? %>
               <%= button_to "Approuver", approve_admin_teacher_path(@teacher), method: :patch, class: "btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg" %>
             <% end %>

@@ -1,0 +1,221 @@
+<div class="container mx-auto max-w-4xl px-4 py-12">
+  <div class="space-y-6">
+    <%= link_to "← Retour au profil", admin_teacher_path(@teacher), class: "link link-primary" %>
+
+    <h1 class="text-3xl font-bold text-gray-900">Éditer <%= teacher_short_name(@teacher) %></h1>
+
+    <%= form_with(model: @teacher, url: admin_teacher_path(@teacher), method: :patch, class: "space-y-8") do |f| %>
+
+      <%# === Identity === %>
+      <div class="card bg-white shadow-lg">
+        <div class="card-body">
+          <h2 class="card-title text-lg mb-4">Identité</h2>
+          <div class="grid gap-4 md:grid-cols-2">
+            <div>
+              <%= f.label :first_name, "Prénom", class: "label font-semibold" %>
+              <%= f.text_field :first_name, class: "input input-bordered w-full" %>
+            </div>
+            <div>
+              <%= f.label :last_name, "Nom", class: "label font-semibold" %>
+              <%= f.text_field :last_name, class: "input input-bordered w-full" %>
+            </div>
+            <div>
+              <%= f.label :gender, "Genre", class: "label font-semibold" %>
+              <%= f.select :gender, options_for_select([["Féminin", "female"], ["Masculin", "male"], ["Autre", "other"]], @teacher.gender), { prompt: "Sélectionner" }, { class: "select select-bordered w-full" } %>
+            </div>
+            <div>
+              <%= f.label :career_status, "Statut", class: "label font-semibold" %>
+              <%= f.select :career_status, options_for_select(career_status_options, normalize_career_status_for_select(@teacher.career_status)), { prompt: "Sélectionner" }, { class: "select select-bordered w-full" } %>
+            </div>
+            <div>
+              <%= f.label :academy_name, "Académie", class: "label font-semibold" %>
+              <%= f.text_field :academy_name, class: "input input-bordered w-full" %>
+            </div>
+            <div>
+              <%= f.label :school_name, "Établissement", class: "label font-semibold" %>
+              <%= f.text_field :school_name, class: "input input-bordered w-full" %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <%# === Profile image === %>
+      <div class="card bg-white shadow-lg">
+        <div class="card-body">
+          <h2 class="card-title text-lg mb-4">Photo de profil</h2>
+          <div class="flex items-center gap-4">
+            <%= render "shared/teacher_avatar", teacher: @teacher, size: :large, for_parent: false, shape: :square %>
+            <div>
+              <%= f.label :avatar, "Nouvelle photo", class: "label font-semibold" %>
+              <%= f.file_field :avatar, accept: "image/jpeg,image/png", class: "file-input file-input-bordered w-full max-w-xs" %>
+              <p class="text-sm text-gray-500 mt-1">JPEG ou PNG</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <%# === Pedagogy === %>
+      <div class="card bg-white shadow-lg">
+        <div class="card-body">
+          <h2 class="card-title text-lg mb-4">Pédagogie</h2>
+
+          <div class="space-y-4">
+            <div>
+              <%= f.label :headline, "Titre accrocheur (max 120 car.)", class: "label font-semibold" %>
+              <%= f.text_field :headline, maxlength: 120, class: "input input-bordered w-full" %>
+            </div>
+
+            <div>
+              <%= f.label :primary_subject, "Matière principale", class: "label font-semibold" %>
+              <%= f.select :primary_subject, options_for_select(TeachersHelper::SUBJECTS_OPTIONS, @teacher.primary_subject), { prompt: "Sélectionner" }, { class: "select select-bordered w-full" } %>
+            </div>
+
+            <div>
+              <span class="label font-semibold">Matières</span>
+              <div class="flex flex-wrap gap-2 mt-1">
+                <% TeachersHelper::SUBJECTS_OPTIONS.each do |label, value| %>
+                  <label class="cursor-pointer flex items-center gap-1">
+                    <%= check_box_tag "teacher[subjects_tags][]", value, @teacher.subjects_tags&.include?(value), class: "checkbox checkbox-sm" %>
+                    <span class="text-sm"><%= label %></span>
+                  </label>
+                <% end %>
+              </div>
+            </div>
+
+            <div>
+              <span class="label font-semibold">Niveaux</span>
+              <div class="flex flex-wrap gap-2 mt-1">
+                <% TeachersHelper::LEVELS_OPTIONS.each do |label, value| %>
+                  <label class="cursor-pointer flex items-center gap-1">
+                    <%= check_box_tag "teacher[levels][]", value, @teacher.levels&.include?(value), class: "checkbox checkbox-sm" %>
+                    <span class="text-sm"><%= label %></span>
+                  </label>
+                <% end %>
+              </div>
+            </div>
+
+            <div>
+              <span class="label font-semibold">Public cible prioritaire (max 2)</span>
+              <div class="flex flex-wrap gap-2 mt-1">
+                <% TeachersHelper::TARGET_AUDIENCE_TAGS_OPTIONS.each do |label, value| %>
+                  <label class="cursor-pointer flex items-center gap-1">
+                    <%= check_box_tag "teacher[target_audience_tags][]", value, @teacher.target_audience_tags&.include?(value), class: "checkbox checkbox-sm" %>
+                    <span class="text-sm"><%= label %></span>
+                  </label>
+                <% end %>
+              </div>
+            </div>
+
+            <div>
+              <span class="label font-semibold">Examens préparés</span>
+              <div class="flex flex-wrap gap-2 mt-1">
+                <% TeachersHelper::EXAM_TAGS_OPTIONS.each do |label, value| %>
+                  <label class="cursor-pointer flex items-center gap-1">
+                    <%= check_box_tag "teacher[exam_tags][]", value, @teacher.exam_tags&.include?(value), class: "checkbox checkbox-sm" %>
+                    <span class="text-sm"><%= label %></span>
+                  </label>
+                <% end %>
+              </div>
+            </div>
+
+            <div>
+              <%= f.label :about_me, "Ce que je propose", class: "label font-semibold" %>
+              <%= f.text_area :about_me, rows: 6, class: "textarea textarea-bordered w-full" %>
+            </div>
+
+            <div>
+              <span class="label font-semibold">Accompagnements spécifiques</span>
+              <div class="flex flex-wrap gap-2 mt-1">
+                <% TeachersHelper::SPECIFIC_SUPPORT_OPTIONS.each do |label, value| %>
+                  <label class="cursor-pointer flex items-center gap-1">
+                    <%= check_box_tag "teacher[specific_support][]", value, @teacher.specific_support&.include?(value), class: "checkbox checkbox-sm" %>
+                    <span class="text-sm"><%= label %></span>
+                  </label>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <%# === Course preferences === %>
+      <div class="card bg-white shadow-lg">
+        <div class="card-body">
+          <h2 class="card-title text-lg mb-4">Préférences de cours</h2>
+
+          <div class="space-y-4">
+            <div>
+              <span class="label font-semibold">Formats de cours</span>
+              <div class="flex flex-wrap gap-4 mt-1">
+                <% [["En ligne", "online"], ["Chez l'élève", "at_student_home"], ["Au domicile du professeur", "at_teacher_home"]].each do |label, value| %>
+                  <label class="cursor-pointer flex items-center gap-1">
+                    <%= check_box_tag "teacher[teaching_formats][]", value, @teacher.teaching_formats&.include?(value), class: "checkbox checkbox-sm" %>
+                    <span class="text-sm"><%= label %></span>
+                  </label>
+                <% end %>
+              </div>
+            </div>
+
+            <div>
+              <%= f.label :pricing_text, "Tarif", class: "label font-semibold" %>
+              <%= f.select :pricing_text, options_for_select((25..100).step(5).map { |price| ["#{price}€", "#{price}€"] }, @teacher.pricing_text), { prompt: "Sélectionner un tarif" }, { class: "select select-bordered w-full" } %>
+            </div>
+
+            <div class="grid gap-4 md:grid-cols-2">
+              <div>
+                <%= f.label :city, "Ville", class: "label font-semibold" %>
+                <%= f.text_field :city, class: "input input-bordered w-full" %>
+              </div>
+              <div>
+                <%= f.label :zip_code, "Code postal", class: "label font-semibold" %>
+                <%= f.text_field :zip_code, class: "input input-bordered w-full" %>
+              </div>
+            </div>
+
+            <div>
+              <span class="label font-semibold">Zones desservies</span>
+              <div class="flex flex-wrap gap-2 mt-1 max-h-48 overflow-y-auto">
+                <% all_served_zones_for_search.each do |zone| %>
+                  <label class="cursor-pointer flex items-center gap-1">
+                    <%= check_box_tag "teacher[served_zones][]", zone[:value], @teacher.served_zones&.include?(zone[:value]), class: "checkbox checkbox-sm" %>
+                    <span class="text-sm"><%= zone[:label] %></span>
+                  </label>
+                <% end %>
+              </div>
+            </div>
+
+            <div>
+              <%= f.label :target_students_range, "Niveaux d'élèves", class: "label font-semibold" %>
+              <%= f.select :target_students_range, options_for_select([["Primaire", "primaire"], ["Collège", "collège"], ["Lycée", "lycée"], ["Supérieur", "supérieur"], ["Tous niveaux", "tous niveaux"]], @teacher.target_students_range), { prompt: "Sélectionner" }, { class: "select select-bordered w-full" } %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <%# === Status & RGPD === %>
+      <div class="card bg-white shadow-lg">
+        <div class="card-body">
+          <h2 class="card-title text-lg mb-4">Statut</h2>
+          <div class="grid gap-4 md:grid-cols-2">
+            <div>
+              <%= f.label :status, "Statut de vérification", class: "label font-semibold" %>
+              <%= f.select :status, options_for_select([["En attente", "pending"], ["Approuvé", "approved"], ["Refusé", "rejected"]], @teacher.status), {}, { class: "select select-bordered w-full" } %>
+            </div>
+            <div>
+              <label class="label font-semibold">RGPD</label>
+              <label class="cursor-pointer flex items-center gap-2 mt-2">
+                <%= f.check_box :rgpd_consent, class: "checkbox" %>
+                <span>Consentement RGPD</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-4">
+        <%= link_to "Annuler", admin_teacher_path(@teacher), class: "btn bg-white border border-stone-300 text-gray-900 hover:bg-white rounded-lg" %>
+        <%= f.submit "Enregistrer", class: "btn btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg" %>
+      </div>
+    <% end %>
+  </div>
+</div>

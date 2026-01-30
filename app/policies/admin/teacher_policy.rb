@@ -22,6 +22,16 @@ module Admin
       admin?
     end
 
+    # edit? : admin
+    def edit?
+      admin?
+    end
+
+    # update? : admin
+    def update?
+      admin?
+    end
+
     # Scope : tous les teachers
     class Scope < ApplicationPolicy::Scope
       def resolve
