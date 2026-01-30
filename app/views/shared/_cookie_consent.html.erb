@@ -1,0 +1,11 @@
+<div data-controller="cookie-consent" class="hidden fixed bottom-0 left-0 right-0 z-[70] bg-white border-t border-stone-200 shadow-lg">
+  <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <p class="text-sm text-stone-600 text-center sm:text-left">
+      Ce site utilise uniquement des cookies essentiels au fonctionnement du service (authentification, session). Aucun cookie publicitaire ou de suivi n'est utilisé.
+      <%= link_to "En savoir plus", politique_de_confidentialite_path, class: "underline text-[#fe6618] hover:text-[#d85514]" %>
+    </p>
+    <button data-action="cookie-consent#accept" class="btn btn-sm bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white whitespace-nowrap">
+      J'ai compris
+    </button>
+  </div>
+</div>
