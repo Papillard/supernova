@@ -1,0 +1,184 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  h1, h2 {
+    font-family: "Nunito Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 900;
+    font-style: normal;
+  }
+
+  h2 {
+    font-size: 1.15em; /* Augmente légèrement la taille des h2 */
+  }
+}
+
+@layer components {
+  /* Fix input focus - avoid thick black borders */
+  .input.input-bordered:focus {
+    outline: none;
+    border-color: #fe6618;
+    box-shadow: 0 0 0 2px rgba(254, 102, 24, 0.2);
+  }
+
+  /* Custom checkbox style - orange brand color */
+  input[type="checkbox"].custom-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid #d1d5db;
+    border-radius: 0.375rem;
+    background-color: white;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  input[type="checkbox"].custom-checkbox:hover {
+    border-color: #fe6618;
+  }
+
+  input[type="checkbox"].custom-checkbox:checked {
+    background-color: #fe6618;
+    border-color: #fe6618;
+  }
+
+  input[type="checkbox"].custom-checkbox:checked::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    width: 0.375rem;
+    height: 0.625rem;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    border-radius: 0 0 0.125rem 0;
+  }
+
+  input[type="checkbox"].custom-checkbox:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(254, 102, 24, 0.2);
+  }
+
+  .hero-section-pattern {
+    position: relative;
+    overflow: hidden;
+    background-color: #ffffff;
+  }
+
+  .hero-section-pattern > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-section-pattern::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23c7c7c7' fill-opacity='0.6'%3E%3Cpath opacity='.75' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9z");
+    background-repeat: repeat;
+    background-size: 100px 100px;
+    opacity: 0.6;
+    pointer-events: none;
+    z-index: 0;
+    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.35) 65%, rgba(0, 0, 0, 0) 100%);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.35) 65%, rgba(0, 0, 0, 0) 100%);
+  }
+
+  /* Hero title animation */
+  #hero-title .hero-word {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+
+  #hero-title .hero-word.animate {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Profile form tabs */
+  .profile-tab {
+    color: #6b7280;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+  }
+
+  .profile-tab:hover {
+    color: #374151;
+  }
+
+  .profile-tab.tab-active {
+    color: #fe6618;
+    border-bottom-color: #fe6618;
+    font-weight: 600;
+  }
+
+  /* Step number styling for profile tabs */
+  .profile-tab .step-number {
+    font-size: 0.7rem;
+  }
+
+  .profile-tab.tab-active .step-number {
+    border-color: #fe6618;
+    color: #fe6618;
+  }
+
+  /* Safe area padding for iPhone X+ */
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+
+  /* Fix file input overflow on mobile */
+  .file-input {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Ensure form controls don't overflow their container */
+  .form-control {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  /* Hide home bottom nav initially on home page */
+  .home-bottom-nav-hidden {
+    opacity: 0;
+    transform: translateY(100%);
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  /* Fix checkbox label text wrapping on mobile */
+  .label {
+    flex-wrap: wrap !important;
+    white-space: normal !important;
+  }
+
+  .label .label-text {
+    flex: 1 1 0% !important;
+    min-width: 0 !important;
+    word-wrap: break-word !important;
+    white-space: normal !important;
+    overflow-wrap: break-word !important;
+  }
+
+  /* Checkbox label specific fix */
+  .form-control .label.cursor-pointer {
+    display: flex !important;
+    align-items: flex-start !important;
+  }
+
+  .form-control .label.cursor-pointer .label-text {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+  }
+}
