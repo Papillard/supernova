@@ -1,4 +1,4 @@
-<% content_for :main_background, "background-color: oklch(0.985 0.002 247.839);" %>
+<% content_for :main_background, "background-color: #fafafe;" %>
 <%
   subjects = @teacher.subjects_tags.present? ? @teacher.subjects_tags.map { |t| format_subject_tag(t) }.join(", ") : "plusieurs matières"
   location = @teacher.city.present? ? "à #{@teacher.city}" : "en France"

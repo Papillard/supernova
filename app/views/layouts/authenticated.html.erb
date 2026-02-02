@@ -137,7 +137,7 @@
       <% end %>
 
       <!-- Main content -->
-      <main class="flex-1 <%= content_for?(:hide_mobile_nav) ? '' : 'pb-20' %> md:pb-0" style="<%= content_for(:main_background).presence || 'background-color: oklch(0.985 0.002 247.839);' %>">
+      <main class="flex-1 <%= content_for?(:hide_mobile_nav) ? '' : 'pb-20' %> md:pb-0" style="<%= content_for(:main_background).presence || 'background-color: #fafafe;' %>">
         <%= yield %>
       </main>
 
