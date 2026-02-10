@@ -20,6 +20,9 @@
               <span class="badge badge-warning mt-2">Profil incomplet</span>
             <% end %>
           </div>
+          <div>
+            <%= button_to "Supprimer", admin_parent_path(@parent), method: :delete, class: "btn btn-error text-white rounded-lg", form: { data: { turbo_confirm: "Êtes-vous sûr de vouloir supprimer ce parent et son compte utilisateur ? Cette action est irréversible." } } %>
+          </div>
         </div>
 
         <div class="divider"></div>

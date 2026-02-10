@@ -10,6 +10,10 @@ module Admin
       admin?
     end
 
+    def destroy?
+      admin?
+    end
+
     class Scope < ApplicationPolicy::Scope
       def resolve
         if user&.admin?

@@ -2,7 +2,7 @@ module Admin
   class TeachersController < ApplicationController
     layout "authenticated"
     before_action :authenticate_user!
-    before_action :set_teacher, only: [:show, :edit, :update, :approve, :reject]
+    before_action :set_teacher, only: [:show, :edit, :update, :approve, :reject, :destroy]
 
     rescue_from Pundit::NotAuthorizedError, with: :redirect_non_admin
 
@@ -98,6 +98,15 @@ module Admin
         flash[:alert] = "Erreur lors du refus."
       end
       redirect_to admin_teacher_path(@teacher)
+    end
+
+    def destroy
+      authorize [:admin, @teacher]
+      display_name = "#{@teacher.first_name} #{@teacher.last_name}".strip.presence || "Professeur"
+      user = @teacher.user
+      @teacher.destroy!
+      user.destroy!
+      redirect_to admin_teachers_path, notice: "Le professeur #{display_name} et son compte utilisateur ont été supprimés."
     end
 
     private

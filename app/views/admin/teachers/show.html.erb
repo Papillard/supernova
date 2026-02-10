@@ -29,6 +29,7 @@
             <% unless @teacher.rejected? %>
               <%= button_to "Refuser", reject_admin_teacher_path(@teacher), method: :patch, class: "btn bg-white border border-stone-300 text-gray-900 hover:bg-white rounded-lg" %>
             <% end %>
+            <%= button_to "Supprimer", admin_teacher_path(@teacher), method: :delete, class: "btn btn-error text-white rounded-lg", form: { data: { turbo_confirm: "Êtes-vous sûr de vouloir supprimer ce professeur et son compte utilisateur ? Cette action est irréversible." } } %>
           </div>
         </div>
 

@@ -80,13 +80,13 @@ Rails.application.routes.draw do
 
   # Admin
   namespace :admin do
-    resources :teachers, only: [:index, :show, :edit, :update] do
+    resources :teachers, only: [:index, :show, :edit, :update, :destroy] do
       member do
         patch :approve
         patch :reject
       end
     end
-    resources :parents, only: [:index, :show]
+    resources :parents, only: [:index, :show, :destroy]
     get "overview", to: "overview#index"
   end
 

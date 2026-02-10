@@ -18,6 +18,7 @@
             <th>Email</th>
             <th>Ville</th>
             <th>Enfants</th>
+            <th>Requêtes</th>
             <th>Profil</th>
             <th>Inscription</th>
             <th>Actions</th>
@@ -36,6 +37,7 @@
               <td><%= parent.user.email %></td>
               <td><%= parent.city.presence || "-" %></td>
               <td><%= parent.students.size %></td>
+              <td><%= @requests_counts[parent.user_id] || 0 %></td>
               <td>
                 <% if parent.profile_completed? %>
                   <span class="badge bg-[#fe6618] text-white">Complet</span>

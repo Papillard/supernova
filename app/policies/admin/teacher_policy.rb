@@ -32,6 +32,11 @@ module Admin
       admin?
     end
 
+    # destroy? : admin
+    def destroy?
+      admin?
+    end
+
     # Scope : tous les teachers
     class Scope < ApplicationPolicy::Scope
       def resolve
