@@ -11,11 +11,11 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true
   validates :role, presence: true, inclusion: { in: %w[parent teacher] }
 
-  # Associations
+  # Associations (order matters: requests must be destroyed before parent_profile/students)
   has_one :teacher, dependent: :destroy
-  has_one :parent_profile, dependent: :destroy
   has_many :requests_as_parent, class_name: "Request", foreign_key: "parent_id", dependent: :destroy
   has_many :messages, dependent: :destroy
+  has_one :parent_profile, dependent: :destroy
 
   # Callbacks
   after_create_commit :send_welcome_email

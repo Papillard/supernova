@@ -109,6 +109,29 @@ class AdminTeachersIntegrationTest < ActionDispatch::IntegrationTest
     assert_equal "Jean", teachers(:pending_teacher).first_name
   end
 
+  test "admin can destroy a teacher and associated user" do
+    teacher = teachers(:pending_teacher)
+    user = teacher.user
+
+    assert_difference "Teacher.count", -1 do
+      assert_difference "User.count", -1 do
+        delete admin_teacher_path(teacher)
+      end
+    end
+
+    assert_redirected_to admin_teachers_path
+    assert_not Teacher.exists?(teacher.id)
+    assert_not User.exists?(user.id)
+  end
+
+  test "non-admin user cannot destroy a teacher" do
+    sign_out @admin
+    sign_in users(:parent_user)
+    delete admin_teacher_path(teachers(:pending_teacher))
+    assert_redirected_to root_path
+    assert Teacher.exists?(teachers(:pending_teacher).id)
+  end
+
   test "non-admin user is redirected" do
     sign_out @admin
     sign_in users(:parent_user)

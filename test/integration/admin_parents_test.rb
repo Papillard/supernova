@@ -33,6 +33,35 @@ class AdminParentsIntegrationTest < ActionDispatch::IntegrationTest
     assert_select "td", text: @parent_profile.students.first.first_name
   end
 
+  test "parents index displays requests count" do
+    get admin_parents_path
+    assert_response :success
+    assert_select "th", text: "Requêtes"
+  end
+
+  test "admin can destroy a parent and associated user" do
+    parent = @parent_profile
+    user = parent.user
+
+    assert_difference "ParentProfile.count", -1 do
+      assert_difference "User.count", -1 do
+        delete admin_parent_path(parent)
+      end
+    end
+
+    assert_redirected_to admin_parents_path
+    assert_not ParentProfile.exists?(parent.id)
+    assert_not User.exists?(user.id)
+  end
+
+  test "non-admin user cannot destroy a parent" do
+    sign_out @admin
+    sign_in users(:parent_user)
+    delete admin_parent_path(@parent_profile)
+    assert_redirected_to root_path
+    assert ParentProfile.exists?(@parent_profile.id)
+  end
+
   test "non-admin user is redirected" do
     sign_out @admin
     sign_in users(:parent_user)
