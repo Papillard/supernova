@@ -6,6 +6,25 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
+
+    <% og_title = content_for(:title) || "ProfConnect | Cours particuliers avec professeurs de l'Éducation Nationale" %>
+    <% og_description = content_for(:description) || "ProfConnect met en relation parents et professeurs de l'Éducation Nationale pour des cours particuliers en maths, français, anglais et sciences." %>
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="<%= og_title %>">
+    <meta property="og:description" content="<%= og_description %>">
+    <meta property="og:image" content="https://www.prof-connect.fr/og-image.jpg">
+    <meta property="og:url" content="<%= request.original_url %>">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Prof Connect">
+    <meta property="og:locale" content="fr_FR">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<%= og_title %>">
+    <meta name="twitter:description" content="<%= og_description %>">
+    <meta name="twitter:image" content="https://www.prof-connect.fr/og-image.jpg">
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
