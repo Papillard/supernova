@@ -1,4 +1,19 @@
 fr:
+  date:
+    month_names:
+      - ~
+      - janvier
+      - fevrier
+      - mars
+      - avril
+      - mai
+      - juin
+      - juillet
+      - aout
+      - septembre
+      - octobre
+      - novembre
+      - decembre
   errors:
     messages:
       invalid: "est invalide"

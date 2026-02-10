@@ -1,0 +1,56 @@
+<div class="container mx-auto max-w-6xl px-4 py-12">
+  <div class="space-y-6">
+    <h1 class="text-4xl font-bold text-gray-900">Administration - Parents</h1>
+
+    <!-- Filtres -->
+    <div class="flex gap-4">
+      <%= link_to "Tous", admin_parents_path, class: "btn #{params[:filter].blank? ? 'btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg' : 'btn-ghost'}" %>
+      <%= link_to "Profil complet", admin_parents_path(filter: "complete"), class: "btn #{params[:filter] == 'complete' ? 'btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg' : 'btn-ghost'}" %>
+      <%= link_to "Profil incomplet", admin_parents_path(filter: "incomplete"), class: "btn #{params[:filter] == 'incomplete' ? 'btn-primary bg-[#fe6618] hover:bg-[#d85514] border-[#fe6618] text-white rounded-lg' : 'btn-ghost'}" %>
+    </div>
+
+    <!-- Table -->
+    <div class="overflow-x-auto">
+      <table class="table table-zebra">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Ville</th>
+            <th>Enfants</th>
+            <th>Profil</th>
+            <th>Inscription</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @parents.each do |parent| %>
+            <tr>
+              <td>
+                <% if parent.first_name.present? || parent.last_name.present? %>
+                  <%= link_to "#{parent.first_name} #{parent.last_name}".strip, admin_parent_path(parent), class: "link link-primary" %>
+                <% else %>
+                  <%= link_to "(Non renseigne)", admin_parent_path(parent), class: "link link-primary text-gray-400" %>
+                <% end %>
+              </td>
+              <td><%= parent.user.email %></td>
+              <td><%= parent.city.presence || "-" %></td>
+              <td><%= parent.students.size %></td>
+              <td>
+                <% if parent.profile_completed? %>
+                  <span class="badge bg-[#fe6618] text-white">Complet</span>
+                <% else %>
+                  <span class="badge badge-warning">Incomplet</span>
+                <% end %>
+              </td>
+              <td><%= parent.created_at.strftime("%d/%m/%Y") %></td>
+              <td>
+                <%= link_to "Voir", admin_parent_path(parent), class: "btn btn-sm btn-ghost" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

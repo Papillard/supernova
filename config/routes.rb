@@ -86,6 +86,8 @@ Rails.application.routes.draw do
         patch :reject
       end
     end
+    resources :parents, only: [:index, :show]
+    get "overview", to: "overview#index"
   end
 
 end

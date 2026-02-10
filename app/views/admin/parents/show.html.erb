@@ -1,0 +1,80 @@
+<div class="container mx-auto max-w-4xl px-4 py-12">
+  <div class="space-y-6">
+    <%= link_to "← Retour a la liste", admin_parents_path, class: "link link-primary" %>
+
+    <div class="card bg-white shadow-lg">
+      <div class="card-body">
+        <div class="flex justify-between items-start mb-6">
+          <div>
+            <h1 class="text-3xl font-bold text-gray-900">
+              <% if @parent.first_name.present? || @parent.last_name.present? %>
+                <%= "#{@parent.first_name} #{@parent.last_name}".strip %>
+              <% else %>
+                (Non renseigne)
+              <% end %>
+            </h1>
+            <p class="text-gray-600"><%= @parent.user.email %></p>
+            <% if @parent.profile_completed? %>
+              <span class="badge bg-[#fe6618] text-white mt-2">Profil complet</span>
+            <% else %>
+              <span class="badge badge-warning mt-2">Profil incomplet</span>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Informations parent -->
+        <div class="grid gap-6 md:grid-cols-2">
+          <div>
+            <h3 class="font-semibold text-gray-900 mb-2">Identite</h3>
+            <p><strong>Prenom:</strong> <%= @parent.first_name.presence || "-" %></p>
+            <p><strong>Nom:</strong> <%= @parent.last_name.presence || "-" %></p>
+          </div>
+
+          <div>
+            <h3 class="font-semibold text-gray-900 mb-2">Localisation</h3>
+            <p><strong>Ville:</strong> <%= @parent.city.presence || "-" %></p>
+            <p><strong>Code postal:</strong> <%= @parent.zip_code.presence || "-" %></p>
+          </div>
+
+          <div>
+            <h3 class="font-semibold text-gray-900 mb-2">Statistiques</h3>
+            <p><strong>Nombre d'enfants:</strong> <%= @students.size %></p>
+            <p><strong>Nombre de requetes:</strong> <%= @requests_count %></p>
+          </div>
+
+          <div>
+            <h3 class="font-semibold text-gray-900 mb-2">Dates</h3>
+            <p><strong>Inscription:</strong> <%= @parent.created_at.strftime("%d/%m/%Y a %H:%M") %></p>
+            <p><strong>Derniere mise a jour:</strong> <%= @parent.updated_at.strftime("%d/%m/%Y a %H:%M") %></p>
+          </div>
+        </div>
+
+        <% if @students.any? %>
+          <div class="mt-6">
+            <h3 class="font-semibold text-gray-900 mb-4">Enfants</h3>
+            <div class="overflow-x-auto">
+              <table class="table table-zebra">
+                <thead>
+                  <tr>
+                    <th>Prenom</th>
+                    <th>Annee de naissance</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @students.each do |student| %>
+                    <tr>
+                      <td><%= student.first_name %></td>
+                      <td><%= student.birth_year %></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
