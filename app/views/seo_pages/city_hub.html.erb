@@ -1,0 +1,31 @@
+<% content_for(:title) { "Cours particuliers a #{@city.name} | ProfConnect" } %>
+<% content_for(:description) { "Trouvez un professeur de l'Education Nationale pour des cours particuliers a #{@city.name}. Toutes les matieres : maths, francais, anglais, physique..." } %>
+
+<% content_for(:head) do %>
+  <link rel="canonical" href="<%= seo_city_hub_url(city_slug: @city.slug) %>">
+  <script type="application/ld+json"><%= raw organization_schema_json_ld %></script>
+<% end %>
+
+<div class="max-w-5xl mx-auto px-4 py-8 md:py-12">
+  <h1 class="text-3xl md:text-4xl font-black text-stone-900 mb-4">Cours particuliers a <%= @city.name %></h1>
+  <p class="text-lg text-stone-600 mb-10">Trouvez un professeur certifie de l'Education Nationale pour des cours particuliers a <%= @city.name %>.</p>
+
+  <% if @subject_pages.any? %>
+    <div class="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+      <% @subject_pages.each do |page| %>
+        <% next unless page.subject %>
+        <%= link_to seo_subject_city_path(subject_slug: page.subject.slug, city_slug: @city.slug),
+              class: "card bg-white border border-stone-200 shadow-sm hover:shadow-md hover:border-[#fe6618] transition-all" do %>
+          <div class="card-body p-5">
+            <h2 class="card-title text-stone-800 text-lg"><%= page.subject.display_name %></h2>
+            <p class="text-sm text-stone-500"><%= pluralize(page.teacher_count, "professeur", "professeurs") %></p>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="bg-stone-50 rounded-xl p-8 text-center">
+      <p class="text-stone-500 text-lg">Aucune matiere disponible pour le moment.</p>
+    </div>
+  <% end %>
+</div>

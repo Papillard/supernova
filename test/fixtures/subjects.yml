@@ -1,0 +1,15 @@
+maths:
+  name: "Mathematiques"
+  slug: "maths"
+  tag_code: "mathematiques"
+  display_name: "Mathematiques"
+  category: "Fondamentaux"
+  position: 0
+
+francais:
+  name: "Francais"
+  slug: "francais"
+  tag_code: "francais"
+  display_name: "Francais"
+  category: "Fondamentaux"
+  position: 1

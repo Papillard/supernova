@@ -250,6 +250,14 @@ Teacher.class_eval do
 end
 
 puts "\n" + "="*60
+puts "✅ Traitement des professeurs terminé!"
+
+# SEO seeds
+load Rails.root.join("db/seeds/seo_subjects.rb")
+load Rails.root.join("db/seeds/seo_cities.rb")
+load Rails.root.join("db/seeds/seo_pages.rb")
+
+puts "\n" + "="*60
 puts "✅ Traitement terminé!"
 puts "   📊 Statistiques:"
 puts "   • Créés: #{stats[:created]}"

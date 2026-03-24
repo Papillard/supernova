@@ -1,0 +1,29 @@
+maths_paris_15e_intro:
+  seo_page: maths_paris_15e
+  block_type: "intro"
+  position: 0
+  content: "Vous recherchez un professeur de mathematiques a Paris 15e ?"
+
+maths_paris_15e_why_us:
+  seo_page: maths_paris_15e
+  block_type: "why_us"
+  position: 0
+  content: "Tous nos professeurs sont certifies Education Nationale."
+
+maths_paris_15e_how_it_works:
+  seo_page: maths_paris_15e
+  block_type: "how_it_works"
+  position: 0
+  content: "1. Choisissez\n2. Contactez\n3. Demarrez"
+
+maths_paris_15e_faq_1:
+  seo_page: maths_paris_15e
+  block_type: "faq"
+  position: 0
+  content: "Combien coute un cours ?\nLes tarifs varient selon le professeur."
+
+maths_paris_15e_faq_2:
+  seo_page: maths_paris_15e
+  block_type: "faq"
+  position: 1
+  content: "Comment sont selectionnes les professeurs ?\nTous sont certifies Education Nationale."

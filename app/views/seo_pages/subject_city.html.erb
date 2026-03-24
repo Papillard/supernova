@@ -1,0 +1,122 @@
+<% content_for(:title) { @seo_page.meta_title || @seo_page.h1 } %>
+<% content_for(:description) { @seo_page.meta_description } %>
+
+<% content_for(:head) do %>
+  <link rel="canonical" href="<%= seo_subject_city_url(subject_slug: @subject.slug, city_slug: @city.slug) %>">
+  <% if @seo_page.faq_items.any? %>
+    <script type="application/ld+json"><%= raw faq_schema_json_ld(@seo_page.faq_items) %></script>
+  <% end %>
+  <script type="application/ld+json"><%= raw organization_schema_json_ld %></script>
+<% end %>
+
+<div class="max-w-5xl mx-auto px-4 py-8 md:py-12">
+  <!-- H1 -->
+  <h1 class="text-3xl md:text-4xl font-black text-stone-900 mb-6"><%= @seo_page.h1 %></h1>
+
+  <!-- Intro -->
+  <% if (intro = @seo_page.content_block("intro")) %>
+    <div class="text-lg text-stone-600 mb-10 leading-relaxed">
+      <%= simple_format(intro) %>
+    </div>
+  <% end %>
+
+  <!-- Teacher cards -->
+  <section class="mb-12">
+    <h2 class="text-2xl font-bold text-stone-800 mb-6">
+      <%= pluralize(@teachers.count, "professeur disponible", "professeurs disponibles") %> en <%= @subject.display_name %> a <%= @city.name %>
+    </h2>
+
+    <% if @teachers.any? %>
+      <div class="grid gap-4 md:grid-cols-2">
+        <% @teachers.each do |teacher| %>
+          <%= render "seo_pages/teacher_card_seo", teacher: teacher %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="bg-stone-50 rounded-xl p-8 text-center">
+        <p class="text-stone-500 text-lg">Aucun professeur disponible pour le moment dans cette zone.</p>
+        <p class="text-stone-400 mt-2">De nouveaux professeurs s'inscrivent chaque semaine.</p>
+      </div>
+    <% end %>
+  </section>
+
+  <!-- Comment ca marche -->
+  <% if (how_it_works = @seo_page.content_block("how_it_works")) %>
+    <section class="mb-12 bg-[#FAEBE5] rounded-2xl p-8">
+      <h2 class="text-2xl font-bold text-stone-800 mb-6">Comment ca marche ?</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="text-center">
+          <div class="w-12 h-12 bg-[#fe6618] text-white rounded-full flex items-center justify-center mx-auto mb-3 text-xl font-bold">1</div>
+          <h3 class="font-bold text-stone-800 mb-2">Choisissez un professeur</h3>
+          <p class="text-stone-600 text-sm">Parcourez les profils et trouvez le professeur ideal pour votre enfant.</p>
+        </div>
+        <div class="text-center">
+          <div class="w-12 h-12 bg-[#fe6618] text-white rounded-full flex items-center justify-center mx-auto mb-3 text-xl font-bold">2</div>
+          <h3 class="font-bold text-stone-800 mb-2">Envoyez une demande</h3>
+          <p class="text-stone-600 text-sm">Decrivez vos besoins et le professeur vous repond sous 48h.</p>
+        </div>
+        <div class="text-center">
+          <div class="w-12 h-12 bg-[#fe6618] text-white rounded-full flex items-center justify-center mx-auto mb-3 text-xl font-bold">3</div>
+          <h3 class="font-bold text-stone-800 mb-2">Demarrez les cours</h3>
+          <p class="text-stone-600 text-sm">Organisez les cours directement avec le professeur, en ligne ou a domicile.</p>
+        </div>
+      </div>
+    </section>
+  <% end %>
+
+  <!-- Pourquoi Prof-Connect -->
+  <% if (why_us = @seo_page.content_block("why_us")) %>
+    <section class="mb-12">
+      <h2 class="text-2xl font-bold text-stone-800 mb-6">Pourquoi choisir ProfConnect ?</h2>
+      <div class="text-stone-600 leading-relaxed">
+        <%= simple_format(why_us) %>
+      </div>
+    </section>
+  <% end %>
+
+  <!-- FAQ -->
+  <% faq_items = @seo_page.faq_items %>
+  <% if faq_items.any? %>
+    <section class="mb-12">
+      <h2 class="text-2xl font-bold text-stone-800 mb-6">Questions frequentes</h2>
+      <div class="space-y-3">
+        <% faq_items.each do |item| %>
+          <div class="collapse collapse-arrow bg-base-100 border border-stone-200">
+            <input type="checkbox">
+            <div class="collapse-title font-semibold text-stone-800"><%= item[:question] %></div>
+            <div class="collapse-content text-stone-600"><%= simple_format(item[:answer]) %></div>
+          </div>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
+
+  <!-- Internal links -->
+  <section class="mb-12">
+    <% if @other_subjects.any? %>
+      <div class="mb-8">
+        <h3 class="text-lg font-bold text-stone-800 mb-4">Autres matieres a <%= @city.name %></h3>
+        <div class="flex flex-wrap gap-2">
+          <% @other_subjects.each do |subject| %>
+            <%= link_to subject.display_name,
+                  seo_subject_city_path(subject_slug: subject.slug, city_slug: @city.slug),
+                  class: "badge badge-lg badge-outline hover:bg-[#fe6618] hover:text-white hover:border-[#fe6618] transition-colors" %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <% if @related_cities.any? %>
+      <div>
+        <h3 class="text-lg font-bold text-stone-800 mb-4"><%= @subject.display_name %> dans les villes proches</h3>
+        <div class="flex flex-wrap gap-2">
+          <% @related_cities.each do |city| %>
+            <%= link_to city.name,
+                  seo_subject_city_path(subject_slug: @subject.slug, city_slug: city.slug),
+                  class: "badge badge-lg badge-outline hover:bg-[#fe6618] hover:text-white hover:border-[#fe6618] transition-colors" %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </section>
+</div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_20_144837) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_24_101408) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -40,6 +40,21 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_20_144837) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "cities", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "slug", null: false
+    t.string "department_code", null: false
+    t.text "served_zone_codes", default: [], array: true
+    t.integer "population_tier", default: 1
+    t.decimal "latitude", precision: 10, scale: 6
+    t.decimal "longitude", precision: 10, scale: 6
+    t.string "parent_city"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["department_code"], name: "index_cities_on_department_code"
+    t.index ["slug"], name: "index_cities_on_slug", unique: true
   end
 
   create_table "email_events", force: :cascade do |t|
@@ -191,6 +206,35 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_20_144837) do
     t.index ["teacher_id"], name: "index_requests_on_teacher_id"
   end
 
+  create_table "seo_contents", force: :cascade do |t|
+    t.bigint "seo_page_id", null: false
+    t.string "block_type", null: false
+    t.integer "position", default: 0
+    t.text "content", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["seo_page_id", "block_type", "position"], name: "index_seo_contents_on_seo_page_id_and_block_type_and_position"
+    t.index ["seo_page_id"], name: "index_seo_contents_on_seo_page_id"
+  end
+
+  create_table "seo_pages", force: :cascade do |t|
+    t.bigint "subject_id"
+    t.bigint "city_id", null: false
+    t.string "slug", null: false
+    t.string "page_type", default: "subject_city", null: false
+    t.string "h1", null: false
+    t.string "meta_title"
+    t.text "meta_description"
+    t.integer "teacher_count", default: 0
+    t.boolean "published", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["city_id"], name: "index_seo_pages_on_city_id"
+    t.index ["slug"], name: "index_seo_pages_on_slug", unique: true
+    t.index ["subject_id", "city_id"], name: "index_seo_pages_on_subject_id_and_city_id", unique: true
+    t.index ["subject_id"], name: "index_seo_pages_on_subject_id"
+  end
+
   create_table "students", force: :cascade do |t|
     t.bigint "parent_profile_id", null: false
     t.string "first_name"
@@ -198,6 +242,20 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_20_144837) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["parent_profile_id"], name: "index_students_on_parent_profile_id"
+  end
+
+  create_table "subjects", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "slug", null: false
+    t.string "tag_code", null: false
+    t.string "display_name", null: false
+    t.text "description"
+    t.string "category"
+    t.integer "position", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_subjects_on_slug", unique: true
+    t.index ["tag_code"], name: "index_subjects_on_tag_code", unique: true
   end
 
   create_table "teacher_documents", force: :cascade do |t|
@@ -247,6 +305,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_20_144837) do
     t.text "target_audience_tags", default: [], array: true
     t.integer "accepted_requests_count", default: 0, null: false
     t.text "specific_support", default: [], array: true
+    t.index ["served_zones"], name: "index_teachers_on_served_zones", using: :gin
+    t.index ["subjects_tags"], name: "index_teachers_on_subjects_tags", using: :gin
     t.index ["user_id"], name: "index_teachers_on_user_id", unique: true
   end
 
@@ -279,6 +339,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_20_144837) do
   add_foreign_key "requests", "students"
   add_foreign_key "requests", "teachers"
   add_foreign_key "requests", "users", column: "parent_id"
+  add_foreign_key "seo_contents", "seo_pages"
+  add_foreign_key "seo_pages", "cities"
+  add_foreign_key "seo_pages", "subjects"
   add_foreign_key "students", "parent_profiles"
   add_foreign_key "teacher_documents", "teachers"
   add_foreign_key "teachers", "users"

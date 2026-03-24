@@ -1,0 +1,30 @@
+maths_paris_15e:
+  subject: maths
+  city: paris_15e
+  slug: "maths/paris-15e"
+  page_type: "subject_city"
+  h1: "Cours particuliers de Mathematiques a Paris 15e"
+  meta_title: "Cours de Maths a Paris 15e | ProfConnect"
+  meta_description: "Trouvez un professeur certifie pour des cours de maths a Paris 15e."
+  teacher_count: 0
+  published: true
+
+francais_paris_15e:
+  subject: francais
+  city: paris_15e
+  slug: "francais/paris-15e"
+  page_type: "subject_city"
+  h1: "Cours particuliers de Francais a Paris 15e"
+  meta_title: "Cours de Francais a Paris 15e | ProfConnect"
+  meta_description: "Trouvez un professeur certifie pour des cours de francais a Paris 15e."
+  teacher_count: 0
+  published: true
+
+maths_paris_15e_unpublished:
+  subject: maths
+  city: paris_16e
+  slug: "maths/paris-16e"
+  page_type: "subject_city"
+  h1: "Cours particuliers de Mathematiques a Paris 16e"
+  teacher_count: 0
+  published: false

@@ -25,6 +25,8 @@ gem "aws-sdk-s3", require: false   # ok à garder si tu penses l’utiliser plus
 # gem "solid_cable"
 gem "good_job"
 
+gem "sitemap_generator"
+
 gem "bootsnap", require: false
 gem "kamal", require: false
 gem "thruster", require: false

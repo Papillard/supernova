@@ -54,6 +54,10 @@ Rails.application.routes.draw do
   # Profile completion page
   get "parent/profile/complete", to: "parent_profiles#complete", as: :parent_profile_complete
 
+  # SEO landing pages
+  get "cours-particuliers/:subject_slug/:city_slug", to: "seo_pages#subject_city", as: :seo_subject_city
+  get "cours-particuliers/:city_slug", to: "seo_pages#city_hub", as: :seo_city_hub
+
   # Teachers listing (public annuaire)
   get "teachers", to: "teachers#index", as: :teachers
   get "teachers/:id", to: "teachers#show", as: :teacher

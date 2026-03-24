@@ -1,0 +1,49 @@
+<div class="card bg-white border border-stone-200 shadow-sm hover:shadow-md transition-shadow">
+  <div class="card-body p-5">
+    <div class="flex items-start gap-4">
+      <!-- Avatar -->
+      <div class="w-14 h-14 rounded-full bg-stone-100 flex-shrink-0 overflow-hidden flex items-center justify-center">
+        <% if teacher.profile_image_url.present? %>
+          <%= image_tag teacher.profile_image_url, alt: teacher.display_name, class: "w-full h-full object-cover", loading: "lazy" %>
+        <% else %>
+          <span class="text-lg font-bold text-stone-400"><%= teacher.first_name[0] %><%= teacher.last_name[0] %></span>
+        <% end %>
+      </div>
+
+      <div class="flex-1 min-w-0">
+        <h3 class="font-bold text-stone-800 text-lg"><%= teacher.display_name %></h3>
+
+        <% if teacher.career_status.present? && teacher.career_status != "autre" %>
+          <p class="text-sm text-[#fe6618] font-medium"><%= format_career_status_for_card(teacher) %></p>
+        <% end %>
+
+        <% if teacher.headline.present? %>
+          <p class="text-sm text-stone-500 mt-1 line-clamp-2"><%= teacher.headline %></p>
+        <% end %>
+
+        <!-- Tags -->
+        <div class="flex flex-wrap gap-1.5 mt-2">
+          <% teacher.subjects_tags.first(3).each do |tag| %>
+            <span class="badge badge-sm bg-stone-100 text-stone-600"><%= format_subject_tag(tag) %></span>
+          <% end %>
+          <% teacher.levels.first(2).each do |level| %>
+            <span class="badge badge-sm bg-blue-50 text-blue-600"><%= format_level_tag(level) %></span>
+          <% end %>
+        </div>
+
+        <% if teacher.city.present? %>
+          <p class="text-xs text-stone-400 mt-2"><%= teacher.city %><%= " (#{teacher.zip_code})" if teacher.zip_code.present? %></p>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="mt-3 pt-3 border-t border-stone-100 flex items-center justify-between">
+      <% if teacher.pricing_text.present? %>
+        <span class="text-sm font-semibold text-stone-700"><%= format_pricing_text(teacher.pricing_text) %></span>
+      <% else %>
+        <span></span>
+      <% end %>
+      <%= link_to "Voir le profil", teacher_path(teacher), class: "btn btn-sm bg-[#fe6618] hover:bg-[#e55a15] text-white border-none" %>
+    </div>
+  </div>
+</div>

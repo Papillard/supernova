@@ -1,0 +1,25 @@
+paris_15e:
+  name: "Paris 15e"
+  slug: "paris-15e"
+  department_code: "75"
+  served_zone_codes:
+    - "ile_de_france:paris"
+  parent_city: "Paris"
+  population_tier: 3
+
+paris_16e:
+  name: "Paris 16e"
+  slug: "paris-16e"
+  department_code: "75"
+  served_zone_codes:
+    - "ile_de_france:paris"
+  parent_city: "Paris"
+  population_tier: 3
+
+boulogne:
+  name: "Boulogne-Billancourt"
+  slug: "boulogne-billancourt"
+  department_code: "92"
+  served_zone_codes:
+    - "ile_de_france:petite_couronne"
+  population_tier: 3
