@@ -2,12 +2,8 @@
   <div class="card-body p-5">
     <div class="flex items-start gap-4">
       <!-- Avatar -->
-      <div class="w-14 h-14 rounded-full flex-shrink-0 overflow-hidden flex items-center justify-center <%= teacher.profile_image_url.present? ? 'bg-stone-100' : 'bg-[#FAEBE5]' %>">
-        <% if teacher.profile_image_url.present? %>
-          <%= image_tag teacher.profile_image_url, alt: teacher.display_name, class: "w-full h-full object-cover", loading: "lazy" %>
-        <% else %>
-          <span class="text-lg font-bold text-[#fe6618]"><%= teacher_initials(teacher) %></span>
-        <% end %>
+      <div class="w-14 h-14 rounded-full flex-shrink-0 overflow-hidden flex items-center justify-center bg-[#FAEBE5]">
+        <span class="text-lg font-bold text-[#fe6618]"><%= teacher_initials(teacher) %></span>
       </div>
 
       <div class="flex-1 min-w-0">
