@@ -2,11 +2,11 @@
   <div class="card-body p-5">
     <div class="flex items-start gap-4">
       <!-- Avatar -->
-      <div class="w-14 h-14 rounded-full bg-stone-100 flex-shrink-0 overflow-hidden flex items-center justify-center">
+      <div class="w-14 h-14 rounded-full flex-shrink-0 overflow-hidden flex items-center justify-center <%= teacher.profile_image_url.present? ? 'bg-stone-100' : 'bg-[#FAEBE5]' %>">
         <% if teacher.profile_image_url.present? %>
           <%= image_tag teacher.profile_image_url, alt: teacher.display_name, class: "w-full h-full object-cover", loading: "lazy" %>
         <% else %>
-          <span class="text-lg font-bold text-stone-400"><%= teacher.first_name[0] %><%= teacher.last_name[0] %></span>
+          <span class="text-lg font-bold text-[#fe6618]"><%= teacher_initials(teacher) %></span>
         <% end %>
       </div>
 
