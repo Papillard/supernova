@@ -67,10 +67,16 @@ namespace :seo do
         response = http.request(request)
         body = JSON.parse(response.body)
 
+        unless response.code == "200"
+          raise "API error #{response.code}: #{body.dig('error', 'message') || response.body[0..200]}"
+        end
+
         text = body.dig("content", 0, "text")
+        raise "Empty response text" if text.nil?
+
         # Extract JSON from response (may be wrapped in markdown code block)
         json_match = text.match(/\{[\s\S]*\}/m)
-        abort "No JSON in response for page #{page.id}" unless json_match
+        raise "No JSON found in response" unless json_match
 
         data = JSON.parse(json_match[0])
 
