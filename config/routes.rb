@@ -91,6 +91,7 @@ Rails.application.routes.draw do
       end
     end
     resources :parents, only: [:index, :show, :destroy]
+    resources :requests, only: [:index, :show]
     get "overview", to: "overview#index"
   end
 

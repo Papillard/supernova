@@ -1,0 +1,73 @@
+<div class="container mx-auto max-w-6xl px-4 py-12">
+  <div class="space-y-6">
+    <div class="flex items-center gap-3">
+      <%= link_to admin_overview_path, class: "btn btn-ghost btn-sm" do %>
+        ← Vue d'ensemble
+      <% end %>
+    </div>
+    <h1 class="text-4xl font-bold text-gray-900">Administration - Demandes</h1>
+    <p class="text-gray-600">Toutes les demandes parent → professeur, triées par dernière activité.</p>
+
+    <!-- Table -->
+    <div class="overflow-x-auto">
+      <table class="table table-zebra">
+        <thead>
+          <tr>
+            <th>Dernière activité</th>
+            <th>Parent</th>
+            <th>Professeur</th>
+            <th>Matière</th>
+            <th>Niveau</th>
+            <th>Statut</th>
+            <th>Messages</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @requests.each do |req| %>
+            <% parent_profile = req.parent.parent_profile %>
+            <% parent_name = if parent_profile&.first_name.present? || parent_profile&.last_name.present?
+                 "#{parent_profile.first_name} #{parent_profile.last_name}".strip
+               else
+                 req.parent.email
+               end %>
+            <% activity_at = req.last_message_at || req.created_at %>
+            <tr>
+              <td>
+                <%= link_to admin_request_path(req), class: "link link-primary" do %>
+                  <%= activity_at.strftime("%d/%m/%Y à %H:%M") if activity_at %>
+                <% end %>
+              </td>
+              <td>
+                <% if parent_profile %>
+                  <%= link_to parent_name, admin_parent_path(parent_profile), class: "link link-primary" %>
+                <% else %>
+                  <span class="text-gray-500"><%= parent_name %></span>
+                <% end %>
+              </td>
+              <td>
+                <%= link_to "#{req.teacher.first_name} #{req.teacher.last_name}".strip.presence || teacher_short_name(req.teacher),
+                            admin_teacher_path(req.teacher), class: "link link-primary" %>
+              </td>
+              <td><%= format_subject_tag(req.subject) %></td>
+              <td><%= format_level_tag(req.level) %></td>
+              <td>
+                <% if req.pending? %>
+                  <span class="badge badge-warning">En attente</span>
+                <% elsif req.accepted? %>
+                  <span class="badge bg-[#fe6618] text-white border-[#fe6618]">Acceptée</span>
+                <% elsif req.declined? %>
+                  <span class="badge badge-error">Refusée</span>
+                <% end %>
+              </td>
+              <td><%= @message_counts[req.id] || 0 %></td>
+              <td>
+                <%= link_to "Voir", admin_request_path(req), class: "btn btn-sm btn-ghost" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

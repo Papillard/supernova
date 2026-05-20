@@ -18,12 +18,15 @@
         </div>
       </div>
 
-      <div class="card bg-white shadow-lg">
+      <%= link_to admin_requests_path, class: "card bg-white shadow-lg hover:shadow-xl transition-shadow cursor-pointer" do %>
         <div class="card-body">
-          <h2 class="card-title text-gray-600 text-sm">Total Requetes</h2>
+          <h2 class="card-title text-gray-600 text-sm flex items-center justify-between">
+            <span>Total Requetes</span>
+            <span class="text-gray-400">→</span>
+          </h2>
           <p class="text-3xl font-bold text-gray-900"><%= @total_requests %></p>
         </div>
-      </div>
+      <% end %>
 
       <div class="card bg-white shadow-lg">
         <div class="card-body">

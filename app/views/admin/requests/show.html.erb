@@ -1,0 +1,192 @@
+<% parent_profile = @request.parent.parent_profile %>
+<% teacher = @request.teacher %>
+<% student = @request.student %>
+<% parent_full_name = if parent_profile && (parent_profile.first_name.present? || parent_profile.last_name.present?)
+     "#{parent_profile.first_name} #{parent_profile.last_name}".strip
+   else
+     @request.parent.email
+   end %>
+
+<div class="container mx-auto max-w-5xl px-4 py-12">
+  <div class="space-y-6">
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-3">
+      <%= link_to admin_requests_path, class: "btn btn-ghost btn-sm" do %>
+        ← Toutes les demandes
+      <% end %>
+    </div>
+
+    <!-- Header -->
+    <div class="card bg-white shadow">
+      <div class="card-body">
+        <div class="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <h1 class="text-2xl font-bold text-gray-900">
+              <%= format_subject_tag(@request.subject) %>
+              <span class="text-gray-500 font-normal">·</span>
+              <span class="text-gray-700"><%= format_level_tag(@request.level) %></span>
+            </h1>
+            <p class="text-sm text-gray-600 mt-1">
+              Demande créée le <%= @request.requested_at&.strftime("%d/%m/%Y à %H:%M") || @request.created_at.strftime("%d/%m/%Y à %H:%M") %>
+              <% if @request.responded_at.present? %>
+                · Réponse le <%= @request.responded_at.strftime("%d/%m/%Y à %H:%M") %>
+              <% end %>
+              <% if @request.last_message_at.present? %>
+                · Dernier message le <%= @request.last_message_at.strftime("%d/%m/%Y à %H:%M") %>
+              <% end %>
+            </p>
+          </div>
+          <div>
+            <% if @request.pending? %>
+              <span class="badge badge-warning badge-lg">En attente</span>
+            <% elsif @request.accepted? %>
+              <span class="badge bg-[#fe6618] text-white border-[#fe6618] badge-lg">Acceptée</span>
+            <% elsif @request.declined? %>
+              <span class="badge badge-error badge-lg">Refusée</span>
+            <% end %>
+          </div>
+        </div>
+
+        <% if @request.archived_by_parent || @request.archived_by_teacher %>
+          <div class="mt-3 flex flex-wrap gap-2 text-xs text-gray-500">
+            <% if @request.archived_by_parent %>
+              <span class="badge badge-ghost">Archivée par le parent</span>
+            <% end %>
+            <% if @request.archived_by_teacher %>
+              <span class="badge badge-ghost">Archivée par le prof</span>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Parties prenantes -->
+    <div class="grid gap-4 md:grid-cols-2">
+      <!-- Parent -->
+      <div class="card bg-white shadow">
+        <div class="card-body">
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="card-title text-gray-900">Parent</h2>
+            <% if parent_profile %>
+              <%= link_to "Fiche parent →", admin_parent_path(parent_profile), class: "link link-primary text-sm" %>
+            <% end %>
+          </div>
+          <div class="flex items-start gap-4">
+            <% if parent_profile %>
+              <%= render "shared/parent_avatar", parent_profile: parent_profile, size: :large %>
+            <% end %>
+            <div class="flex-1 min-w-0 space-y-1">
+              <p class="font-semibold text-gray-900"><%= parent_full_name %></p>
+              <p class="text-sm text-gray-600"><%= @request.parent.email %></p>
+              <% if parent_profile&.city.present? %>
+                <p class="text-sm text-gray-600">
+                  <%= parent_profile.city %><%= " (#{parent_profile.zip_code})" if parent_profile.zip_code.present? %>
+                </p>
+              <% end %>
+              <% if parent_profile.nil? %>
+                <p class="text-xs text-gray-400 italic">Profil parent non créé.</p>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Professeur -->
+      <div class="card bg-white shadow">
+        <div class="card-body">
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="card-title text-gray-900">Professeur</h2>
+            <%= link_to "Fiche prof →", admin_teacher_path(teacher), class: "link link-primary text-sm" %>
+          </div>
+          <div class="flex items-start gap-4">
+            <%= render "shared/teacher_avatar", teacher: teacher, size: :large, for_parent: false %>
+            <div class="flex-1 min-w-0 space-y-1">
+              <p class="font-semibold text-gray-900">
+                <%= "#{teacher.first_name} #{teacher.last_name}".strip.presence || teacher_short_name(teacher) %>
+              </p>
+              <p class="text-sm text-gray-600"><%= teacher.user.email %></p>
+              <% if teacher.city.present? %>
+                <p class="text-sm text-gray-600">
+                  <%= teacher.city %><%= " (#{teacher.zip_code})" if teacher.zip_code.present? %>
+                </p>
+              <% end %>
+              <% if teacher.subjects_tags.present? %>
+                <p class="text-xs text-gray-500">
+                  Matières : <%= teacher.subjects_tags.first(3).map { |t| format_subject_tag(t) }.join(", ") %>
+                </p>
+              <% end %>
+              <div class="flex gap-2 pt-1">
+                <% if teacher.pending? %>
+                  <span class="badge badge-sm badge-warning">Prof en attente</span>
+                <% elsif teacher.approved? %>
+                  <span class="badge badge-sm bg-[#fe6618] text-white border-[#fe6618]">Prof approuvé</span>
+                <% elsif teacher.rejected? %>
+                  <span class="badge badge-sm badge-error">Prof refusé</span>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Élève -->
+    <div class="card bg-white shadow">
+      <div class="card-body">
+        <h2 class="card-title text-gray-900 mb-3">Élève concerné</h2>
+        <% if student %>
+          <div class="grid gap-2 md:grid-cols-3 text-sm">
+            <div>
+              <span class="text-gray-500">Prénom :</span>
+              <span class="font-medium text-gray-900"><%= student.first_name %></span>
+            </div>
+            <div>
+              <span class="text-gray-500">Année de naissance :</span>
+              <span class="font-medium text-gray-900"><%= student.birth_year %></span>
+            </div>
+            <div>
+              <span class="text-gray-500">Niveau estimé :</span>
+              <span class="font-medium text-gray-900"><%= format_level_tag(student.level) %></span>
+            </div>
+          </div>
+        <% else %>
+          <p class="text-sm text-gray-400 italic">Aucun élève associé.</p>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Message initial (notes parent) -->
+    <% if @request.request_text.present? || @request.notes.present? %>
+      <div class="card bg-white shadow">
+        <div class="card-body">
+          <h2 class="card-title text-gray-900 mb-2">Note du parent à la création</h2>
+          <% if @request.request_text.present? %>
+            <p class="whitespace-pre-line text-sm text-gray-800"><%= @request.request_text %></p>
+          <% end %>
+          <% if @request.notes.present? %>
+            <p class="whitespace-pre-line text-xs text-gray-500 mt-2"><%= @request.notes %></p>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Conversation -->
+    <div class="card bg-white shadow">
+      <div class="card-body">
+        <h2 class="card-title text-gray-900 mb-4">
+          Conversation
+          <span class="text-sm font-normal text-gray-500">(<%= @messages.size %> message<%= "s" if @messages.size > 1 %>)</span>
+        </h2>
+        <% if @messages.any? %>
+          <div class="space-y-4">
+            <% @messages.each do |msg| %>
+              <%= render "admin/requests/message", message: msg %>
+            <% end %>
+          </div>
+        <% else %>
+          <p class="text-sm text-gray-400 italic">Aucun message dans cette demande.</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

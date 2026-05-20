@@ -16,7 +16,7 @@ class AdminOverviewIntegrationTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select ".card-title", text: "Total Professeurs"
     assert_select ".card-title", text: "Total Parents"
-    assert_select ".card-title", text: "Total Requetes"
+    assert_select ".card-title", text: /Total Requetes/
     assert_select ".card-title", text: "% Profs avec requetes"
   end
 
