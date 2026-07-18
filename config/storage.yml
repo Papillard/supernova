@@ -22,6 +22,12 @@ cloudflare:
   bucket:            <%= ENV["R2_BUCKET"] %>
   region:            auto
   force_path_style:  true
+  # R2 rejects requests that carry more than one checksum. Recent aws-sdk-s3
+  # versions add a default CRC32 checksum on top of Active Storage's Content-MD5,
+  # which triggers "You can only specify one non-default checksum at a time".
+  # Only send/validate checksums when the operation actually requires them.
+  request_checksum_calculation:  when_required
+  response_checksum_validation:  when_required
 
 # Use bin/rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
 # amazon:
