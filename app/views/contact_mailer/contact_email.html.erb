@@ -1,0 +1,12 @@
+<p>Nouveau message envoyé depuis le formulaire « Nous contacter » de ProfConnect.</p>
+
+<ul>
+  <li><strong>Nom :</strong> <%= @name %></li>
+  <li><strong>Email :</strong> <%= @email %></li>
+  <li><strong>Sujet :</strong> <%= @subject %></li>
+</ul>
+
+<p><strong>Message :</strong></p>
+<p><%= simple_format(@message) %></p>
+
+<p>Pour répondre, il suffit d'utiliser la fonction « Répondre » : le destinataire est <%= @email %>.</p>

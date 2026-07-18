@@ -89,6 +89,9 @@
               </label>
               <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[100] p-2 shadow bg-white rounded-box w-40">
                 <li>
+                  <%= link_to "Nous contacter", contact_path %>
+                </li>
+                <li>
                   <%= button_to "Déconnexion", destroy_user_session_path, method: :delete, class: "text-left w-full" %>
                 </li>
               </ul>

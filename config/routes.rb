@@ -33,6 +33,10 @@ Rails.application.routes.draw do
   get "politique-de-confidentialite", to: "pages#politique_de_confidentialite", as: :politique_de_confidentialite
   get "mentions-legales", to: "pages#mentions_legales", as: :mentions_legales
 
+  # Contact
+  get  "nous-contacter", to: "contacts#new",    as: :contact
+  post "nous-contacter", to: "contacts#create"
+
   # Teacher profile
   get "teacher/profile", to: "teacher_profiles#show", as: :teacher_profile
   patch "teacher/profile", to: "teacher_profiles#update"

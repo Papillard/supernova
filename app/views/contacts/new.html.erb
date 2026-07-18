@@ -1,4 +1,4 @@
-<% content_for(:title) { "Mentions légales | ProfConnect" } %>
+<% content_for(:title) { "Nous contacter | ProfConnect" } %>
 
 <div class="min-h-screen bg-white text-gray-900 pb-20 md:pb-0">
   <!-- Mobile Header (visible only on mobile) -->
@@ -60,52 +60,70 @@
     </header>
   <% end %>
 
-  <div class="max-w-4xl mx-auto px-4 md:px-6 py-12 md:py-16">
-    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-8">Mentions légales</h1>
+  <div class="max-w-2xl mx-auto px-4 md:px-6 py-12 md:py-16">
+    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Nous contacter</h1>
+    <p class="text-gray-700 leading-relaxed mb-8">
+      Une question, un doute sur un envoi de document ou une suggestion ? Écrivez-nous et nous vous répondrons rapidement.
+      Vous pouvez aussi nous joindre directement à
+      <%= link_to "contact@prof-connect.fr", "mailto:contact@prof-connect.fr", class: "text-[#fe6618] hover:underline font-medium" %>.
+    </p>
 
-    <div class="prose prose-lg max-w-none">
-      <p class="text-gray-700 leading-relaxed mb-6">
-        Conformément aux dispositions des Articles 6-III et 19 de la Loi n°2004-575 du 21 juin 2004 pour la Confiance dans l'Économie Numérique (L.C.E.N.), il est porté à la connaissance des utilisateurs du site ProfConnect les présentes mentions légales.
-      </p>
+    <%= form_with model: @contact_message, url: contact_path, method: :post, class: "space-y-5" do |f| %>
+      <% if @contact_message.errors.any? %>
+        <div class="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+          Merci de corriger les champs indiqués ci-dessous.
+        </div>
+      <% end %>
 
-      <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">1. ÉDITION DU SITE</h2>
-      <p class="text-gray-700 leading-relaxed mb-4">
-        Le site ProfConnect, accessible à l'adresse www.profconnect.fr, est édité par :
-      </p>
-      <div class="text-gray-700 leading-relaxed space-y-2 mb-6">
-        <p><strong>Nom / Raison Sociale :</strong> Gaëlle Bailly-Maître Léonardon, agissant pour le compte de la société ProfConnect, société en cours de formation.</p>
-        <p><strong>Siège social :</strong> 11 rue Villebois Mareuil, 75017 Paris.</p>
-        <p><strong>Numéro SIRET :</strong> En cours d'immatriculation.</p>
-        <p><strong>Directeur de la publication :</strong> Gaëlle Bailly-Maître Léonardon.</p>
-        <p><strong>Contact :</strong> <a href="mailto:contact@prof-connect.fr" class="text-[#fe6618] hover:underline">contact@prof-connect.fr</a></p>
+      <div>
+        <%= f.label :name, "Nom", class: "block text-sm font-medium text-gray-900 mb-1" %>
+        <%= f.text_field :name,
+              class: "input input-bordered w-full bg-white #{'input-error' if @contact_message.errors[:name].any?}",
+              autocomplete: "name" %>
+        <% if @contact_message.errors[:name].any? %>
+          <p class="mt-1 text-sm text-red-600"><%= @contact_message.errors[:name].to_sentence %></p>
+        <% end %>
       </div>
 
-      <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">2. HÉBERGEMENT DU SITE</h2>
-      <p class="text-gray-700 leading-relaxed mb-4">
-        Le site est hébergé par :
-      </p>
-      <div class="text-gray-700 leading-relaxed space-y-2 mb-6">
-        <p><strong>Nom de l'hébergeur :</strong> OVHcloud</p>
-        <p><strong>Adresse de l'hébergeur :</strong> 2 rue Kellermann, 59100 Roubaix, France.</p>
-        <p><strong>Contact :</strong> 09 72 10 10 07 — <a href="mailto:commercial@gs.ovh.net" class="text-[#fe6618] hover:underline">commercial@gs.ovh.net</a></p>
+      <div>
+        <%= f.label :email, "Email", class: "block text-sm font-medium text-gray-900 mb-1" %>
+        <%= f.email_field :email,
+              class: "input input-bordered w-full bg-white #{'input-error' if @contact_message.errors[:email].any?}",
+              autocomplete: "email" %>
+        <% if @contact_message.errors[:email].any? %>
+          <p class="mt-1 text-sm text-red-600"><%= @contact_message.errors[:email].to_sentence %></p>
+        <% end %>
       </div>
 
-      <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">3. PROPRIÉTÉ INTELLECTUELLE</h2>
-      <p class="text-gray-700 leading-relaxed mb-6">
-        L'ensemble de la structure du site ProfConnect (textes, graphismes, logos, icônes) est la propriété exclusive de l'éditeur, à l'exception des marques, logos ou contenus appartenant à des tiers (notamment les photographies de profil des Professeurs). Toute reproduction ou représentation, totale ou partielle, est strictement interdite sans l'autorisation écrite préalable de Gaëlle Bailly-Maître Léonardon.
-      </p>
+      <div>
+        <%= f.label :subject, "Sujet", class: "block text-sm font-medium text-gray-900 mb-1" %>
+        <%= f.text_field :subject,
+              class: "input input-bordered w-full bg-white #{'input-error' if @contact_message.errors[:subject].any?}" %>
+        <% if @contact_message.errors[:subject].any? %>
+          <p class="mt-1 text-sm text-red-600"><%= @contact_message.errors[:subject].to_sentence %></p>
+        <% end %>
+      </div>
 
-      <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">4. COLLECTE DE DONNÉES ET RGPD</h2>
-      <p class="text-gray-700 leading-relaxed mb-4">
-        Le site ProfConnect assure une collecte et un traitement d'informations personnelles dans le respect de la vie privée, conformément au Règlement Général sur la Protection des Données (RGPD) et à la loi Informatique et Libertés.
-      </p>
-      <p class="text-gray-700 leading-relaxed mb-6">
-        L'utilisateur dispose d'un droit d'accès, de rectification, de suppression et d'opposition de ses données personnelles.
-      </p>
-      <p class="text-gray-700 leading-relaxed mb-6">
-        Ce droit s'exerce par email à : <a href="mailto:contact@prof-connect.fr" class="text-[#fe6618] hover:underline">contact@prof-connect.fr</a>.
-      </p>
-    </div>
+      <div>
+        <%= f.label :message, "Message", class: "block text-sm font-medium text-gray-900 mb-1" %>
+        <%= f.text_area :message, rows: 6,
+              class: "textarea textarea-bordered w-full bg-white #{'textarea-error' if @contact_message.errors[:message].any?}" %>
+        <% if @contact_message.errors[:message].any? %>
+          <p class="mt-1 text-sm text-red-600"><%= @contact_message.errors[:message].to_sentence %></p>
+        <% end %>
+      </div>
+
+      <%# Honeypot anti-spam : doit rester vide, masqué aux utilisateurs humains %>
+      <div class="hidden" aria-hidden="true">
+        <%= f.label :company, "Ne pas remplir ce champ" %>
+        <%= f.text_field :company, autocomplete: "off", tabindex: "-1" %>
+      </div>
+
+      <div class="pt-2">
+        <%= f.submit "Envoyer le message",
+              class: "btn border-0 bg-[#fe6618] hover:bg-[#d85514] text-white w-full md:w-auto px-8" %>
+      </div>
+    <% end %>
   </div>
 
   <!-- Footer -->
@@ -117,7 +135,7 @@
           <p class="text-sm text-gray-500">© 2026 ProfConnect. Tous droits réservés.</p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 flex-1 md:max-w-2xl">
-          <!-- Colonne 1 – ProfConnect -->
+          <!-- Colonne 1 : ProfConnect -->
           <div class="space-y-3">
             <h3 class="text-sm font-semibold text-gray-900 mb-3">ProfConnect</h3>
             <ul class="space-y-2 text-sm text-gray-600">
@@ -135,7 +153,7 @@
               </li>
             </ul>
           </div>
-          <!-- Colonne 2 – Légal -->
+          <!-- Colonne 2 : Légal -->
           <div class="space-y-3">
             <h3 class="text-sm font-semibold text-gray-900 mb-3">Légal</h3>
             <ul class="space-y-2 text-sm text-gray-600">
