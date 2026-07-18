@@ -19,7 +19,15 @@ class TeacherVerificationDocumentsController < ApplicationController
         end
 
         begin
-          @teacher.verification_documents.attach(document)
+          # Upload to storage FIRST, then attach only once the file is safely
+          # stored. This prevents a failed upload from leaving a phantom
+          # attachment that shows up in the list but points to a missing file.
+          blob = ActiveStorage::Blob.create_and_upload!(
+            io: document.open,
+            filename: document.original_filename,
+            content_type: document.content_type
+          )
+          @teacher.verification_documents.attach(blob)
           attached_count += 1
         rescue => e
           Rails.logger.error "Error attaching document: #{e.class} - #{e.message}"
@@ -53,7 +61,7 @@ class TeacherVerificationDocumentsController < ApplicationController
     @document = @teacher.verification_documents.find_by_blob_id(params[:id])
     authorize @document, policy_class: TeacherVerificationDocumentPolicy if @document
     if @document
-      @document.purge
+      purge_document(@document)
       @teacher.reload
 
       respond_to do |format|
@@ -81,6 +89,19 @@ class TeacherVerificationDocumentsController < ApplicationController
 
   def set_teacher
     @teacher = current_user&.teacher
+  end
+
+  # Purge an attachment, tolerating an unreachable storage backend.
+  # Old documents may still live on a decommissioned bucket; if the storage
+  # delete fails we still remove the DB records so the document disappears
+  # from the UI instead of raising a 500.
+  def purge_document(attachment)
+    attachment.purge
+  rescue => e
+    Rails.logger.warn "Purge failed for blob #{attachment.blob_id}, removing DB records only: #{e.class} - #{e.message}"
+    blob = attachment.blob
+    attachment.destroy
+    blob&.destroy
   end
 
   def valid_document_type?(document)
